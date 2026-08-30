@@ -34,38 +34,40 @@ export const UpcomingDrawsSection: React.FC<UpcomingDrawsSectionProps> = ({ draw
           <div
             key={draw.id}
             onClick={() => onSelectState && onSelectState(draw.stateCode)}
-            className={`bg-white border border-stone-200 hover:border-stone-400 rounded-xl p-4.5 transition-all shadow-xs hover:shadow-sm flex flex-col justify-between ${
+            className={`bg-white border border-stone-200 hover:border-stone-400 rounded-xl p-4 sm:p-5 transition-all shadow-xs hover:shadow-sm flex flex-col justify-between ${
               onSelectState ? 'cursor-pointer' : ''
             }`}
           >
             <div>
-              {/* Header tags */}
-              <div className="flex items-center justify-between gap-2 mb-3">
-                <span className="text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded bg-stone-100 text-stone-800 border border-stone-300 font-mono-code">
+              {/* Top Meta Bar */}
+              <div className="flex items-center justify-between gap-2 pb-2.5 border-b border-stone-100 text-xs">
+                <span className="font-bold text-[11px] sm:text-xs uppercase px-2 py-0.5 rounded bg-stone-100 text-stone-800 border border-stone-300 font-mono-code">
                   {draw.stateName}
                 </span>
-                <div className="inline-flex items-center gap-1 text-[11px] font-bold text-stone-800 bg-stone-50 px-2 py-0.5 rounded border border-stone-300 font-mono-code">
-                  <Clock className="w-3 h-3 text-stone-600" />
+                <div className="inline-flex items-center gap-1 text-[10px] sm:text-[11px] font-bold text-stone-800 bg-stone-50 px-2 py-0.5 rounded border border-stone-300 font-mono-code">
+                  <Clock className="w-3 h-3 text-stone-600 shrink-0" />
                   <span>{draw.drawTime}</span>
                 </div>
               </div>
 
-              {/* Title */}
-              <h3 className="text-base font-bold text-stone-950 font-editorial-serif leading-snug mb-1">
-                {draw.lotteryName}
-              </h3>
-              <p className="text-xs text-stone-500 font-mono-code mb-3">
-                Draw Frequency: {draw.frequency || 'Daily Draw'}
-              </p>
+              {/* Title & Frequency */}
+              <div className="mt-3 mb-3">
+                <h3 className="text-base sm:text-lg font-bold text-stone-950 font-editorial-serif leading-tight mb-1">
+                  {draw.lotteryName}
+                </h3>
+                <p className="text-[11px] text-stone-500 font-mono-code">
+                  Schedule: {draw.frequency || 'Daily Draw'}
+                </p>
+              </div>
             </div>
 
             {/* Prize & Price summary bar */}
-            <div className="pt-3 border-t border-stone-100 flex items-center justify-between text-xs font-mono-code">
-              <div className="flex items-center gap-1.5 text-amber-950 font-bold">
+            <div className="pt-2.5 border-t border-stone-100 flex items-center justify-between text-xs font-mono-code mt-auto">
+              <div className="flex items-center gap-1.5 text-amber-950 font-bold text-[11px] sm:text-xs">
                 <Trophy className="w-3.5 h-3.5 text-amber-700 shrink-0" />
                 <span>1st: {draw.firstPrize}</span>
               </div>
-              <div className="text-[11px] text-stone-500 bg-stone-50 px-2 py-0.5 rounded border border-stone-200">
+              <div className="text-[11px] text-stone-600 bg-stone-50 px-2 py-0.5 rounded border border-stone-200">
                 Ticket: <span className="font-bold text-stone-900">{draw.ticketPrice}</span>
               </div>
             </div>

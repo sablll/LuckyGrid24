@@ -55,7 +55,7 @@ export const TodayResultsSection: React.FC<TodayResultsSectionProps> = ({
           </p>
         </div>
 
-        <div className="flex items-center gap-3 self-start sm:self-auto">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3 self-start sm:self-auto">
           <button
             onClick={handleSync}
             disabled={syncing}
@@ -68,7 +68,7 @@ export const TodayResultsSection: React.FC<TodayResultsSectionProps> = ({
 
           <button
             onClick={onViewAllLatest}
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-stone-900 hover:text-stone-700 transition-colors font-mono-code uppercase tracking-wider"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-stone-900 hover:text-stone-700 transition-colors font-mono-code uppercase tracking-wider py-1.5"
           >
             View All Results
             <ArrowRight className="w-4 h-4" />
