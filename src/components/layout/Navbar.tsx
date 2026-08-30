@@ -25,13 +25,10 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath, onNavigate, onOpenS
   const navItems = [
     { label: 'Home', path: '/' },
     { label: 'Latest Results', path: '/latest' },
-    { label: 'State Lotteries', path: '/states' },
+    { label: 'Lotteries', path: '/states' },
     { label: 'Previous Results', path: '/previous' },
-    { label: 'Search & Checker', path: '/search' },
     { label: 'Statistics', path: '/statistics' },
-    { label: 'Ingestion Admin', path: '/admin-ingestion' },
-    { label: 'About', path: '/about' },
-    { label: 'Disclaimer', path: '/disclaimer' }
+    { label: 'About', path: '/about' }
   ];
 
   const handleNavClick = (path: string) => {

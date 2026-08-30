@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { fetchResults } from '../services/api';
+import { fetchResults, syncKeralaLotteries } from '../services/api';
 import { LotteryResult } from '../types/lottery';
 import { LotteryCard } from '../components/lottery/LotteryCard';
 import { LoadingState } from '../components/common/LoadingState';
@@ -16,6 +16,7 @@ interface LatestResultsPageProps {
 export const LatestResultsPage: React.FC<LatestResultsPageProps> = ({ onSelectDraw, onOpenChecker }) => {
   const [results, setResults] = useState<LotteryResult[]>([]);
   const [loading, setLoading] = useState(true);
+  const [syncing, setSyncing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedState, setSelectedState] = useState<string>('ALL');
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -58,6 +59,18 @@ export const LatestResultsPage: React.FC<LatestResultsPageProps> = ({ onSelectDr
     loadLatestResults();
   };
 
+  const handleSync = async () => {
+    setSyncing(true);
+    try {
+      await syncKeralaLotteries(10);
+      await loadLatestResults();
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setSyncing(false);
+    }
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <SEOHead
@@ -80,6 +93,15 @@ export const LatestResultsPage: React.FC<LatestResultsPageProps> = ({ onSelectDr
         </div>
 
         <div className="flex items-center gap-2 self-start md:self-auto">
+          <button
+            onClick={handleSync}
+            disabled={syncing}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-stone-700 bg-white hover:bg-stone-50 border border-stone-300 transition-colors shadow-2xs no-print disabled:opacity-60 font-mono-code"
+            title="Fetch latest verified draws from Kerala official source"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${syncing ? 'animate-spin text-emerald-700' : ''}`} />
+            {syncing ? 'Fetching...' : 'Sync Live'}
+          </button>
           <button
             onClick={() => window.print()}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-stone-700 bg-white hover:bg-stone-100 border border-stone-300 transition-colors shadow-2xs no-print"
@@ -166,13 +188,14 @@ export const LatestResultsPage: React.FC<LatestResultsPageProps> = ({ onSelectDr
         <ErrorState message={error} onRetry={loadLatestResults} />
       ) : results.length === 0 ? (
         <EmptyState
-          title="No results found"
-          message="No lottery draws found matching your selected filters."
+          title="Result Unavailable"
+          message="No verified draw results found matching your criteria. If an official draw is currently taking place, results will appear as soon as published by the Directorate."
           onReset={() => {
             setSelectedState('ALL');
             setSearchQuery('');
             loadLatestResults();
           }}
+          resetText="Reset Filters & Refresh"
         />
       ) : viewMode === 'grid' ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">

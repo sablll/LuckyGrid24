@@ -145,11 +145,6 @@ export const LotteryDetailPage: React.FC<LotteryDetailPageProps> = ({
           </div>
 
           <div className="flex items-center gap-2">
-            {result.isDemoData && (
-              <span className="text-[10px] font-mono-code font-bold bg-amber-100 text-amber-900 px-2 py-0.5 rounded border border-amber-300">
-                SAMPLE RECORD
-              </span>
-            )}
             <span className="inline-flex items-center gap-1 text-xs text-stone-800 font-semibold bg-stone-100 px-2.5 py-1 rounded-md border border-stone-300 font-mono-code">
               <ShieldCheck className="w-4 h-4 text-emerald-700" />
               Verified Official Gazette

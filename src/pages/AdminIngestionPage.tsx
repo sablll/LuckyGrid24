@@ -50,7 +50,7 @@ export const AdminIngestionPage: React.FC = () => {
     setStatusMessage(null);
     try {
       const resp = await triggerIngestionSync(adapterId);
-      setStatusMessage('Ingestion sync executed successfully! Zero anomalies detected.');
+      setStatusMessage('Ingestion sync executed successfully! Verified results extracted.');
       await loadIngestionData();
     } catch (err: any) {
       setStatusMessage(`Error: ${err.message}`);
@@ -67,15 +67,15 @@ export const AdminIngestionPage: React.FC = () => {
       />
 
       {/* Page Header */}
-      <div className="pb-6 border-b border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="pb-6 border-b border-stone-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <Server className="w-6 h-6 text-emerald-400" />
-            <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+            <Server className="w-6 h-6 text-emerald-800" />
+            <h1 className="text-2xl sm:text-3xl font-bold text-stone-950 font-editorial-serif tracking-tight">
               Ingestion Pipeline &amp; Source Architecture
             </h1>
           </div>
-          <p className="text-xs sm:text-sm text-slate-400 mt-1">
+          <p className="text-xs sm:text-sm text-stone-500 mt-1">
             Automated fetch engine, whitelist domain filters, schema validation, and checksum deduplication.
           </p>
         </div>
@@ -83,7 +83,7 @@ export const AdminIngestionPage: React.FC = () => {
         <button
           onClick={() => handleTrigger()}
           disabled={triggering !== null}
-          className="flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-800 text-white text-xs font-bold uppercase tracking-wider rounded-xl transition-colors shadow-lg shadow-emerald-950 self-start md:self-auto"
+          className="flex items-center gap-2 px-4 py-2 bg-stone-900 hover:bg-stone-800 disabled:bg-stone-400 text-white text-xs font-bold uppercase tracking-wider rounded-xl transition-colors shadow-xs self-start md:self-auto font-mono-code"
         >
           {triggering === 'ALL' ? (
             <>
@@ -101,69 +101,69 @@ export const AdminIngestionPage: React.FC = () => {
 
       {/* Status Alert */}
       {statusMessage && (
-        <div className="p-4 bg-emerald-950/60 border border-emerald-500/50 rounded-xl text-xs text-emerald-300 flex items-center justify-between">
+        <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-900 flex items-center justify-between shadow-xs">
           <div className="flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+            <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0" />
             <span>{statusMessage}</span>
           </div>
-          <button onClick={() => setStatusMessage(null)} className="text-emerald-400 hover:text-white">
+          <button onClick={() => setStatusMessage(null)} className="text-emerald-700 hover:text-emerald-950 font-semibold">
             Dismiss
           </button>
         </div>
       )}
 
       {/* Architecture Pipeline Flow Graphic */}
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 space-y-4 shadow-xl">
+      <div className="bg-white border border-stone-200 rounded-2xl p-6 sm:p-8 space-y-4 shadow-xs">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Cpu className="w-5 h-5 text-indigo-400" />
-            <h2 className="text-base sm:text-lg font-bold text-white">
+            <Cpu className="w-5 h-5 text-stone-800" />
+            <h2 className="text-base sm:text-lg font-bold text-stone-950 font-editorial-serif">
               Deterministic Ingestion Pipeline Workflow
             </h2>
           </div>
-          <span className="text-[10px] font-mono-code uppercase font-bold bg-indigo-950 text-indigo-300 px-2 py-0.5 rounded border border-indigo-800">
+          <span className="text-[10px] font-mono-code uppercase font-bold bg-stone-100 text-stone-700 px-2 py-0.5 rounded border border-stone-300">
             Zero-Fabrication Guarantee
           </span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 text-xs pt-2">
-          <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-1.5">
-            <div className="text-emerald-400 font-mono-code font-bold text-[11px]">01. INITIATION</div>
-            <h3 className="font-bold text-white">Target Fetch</h3>
-            <p className="text-slate-400 text-[11px]">
-              CRON or Webhook triggers state adapter with official API/RSS target URL.
+          <div className="bg-stone-50 p-4 rounded-xl border border-stone-200 space-y-1.5">
+            <div className="text-emerald-800 font-mono-code font-bold text-[11px]">01. INITIATION</div>
+            <h3 className="font-bold text-stone-900">Target Fetch</h3>
+            <p className="text-stone-600 text-[11px]">
+              CRON or Webhook triggers state adapter with official publication target URL.
             </p>
           </div>
 
-          <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-1.5">
-            <div className="text-indigo-400 font-mono-code font-bold text-[11px]">02. SECURITY</div>
-            <h3 className="font-bold text-white">Origin Whitelist</h3>
-            <p className="text-slate-400 text-[11px]">
-              URL is strictly validated against permitted <code className="text-indigo-300 font-mono-code">*.gov.in / *.nic.in</code> domain list.
+          <div className="bg-stone-50 p-4 rounded-xl border border-stone-200 space-y-1.5">
+            <div className="text-stone-800 font-mono-code font-bold text-[11px]">02. SECURITY</div>
+            <h3 className="font-bold text-stone-900">Origin Whitelist</h3>
+            <p className="text-stone-600 text-[11px]">
+              URL is strictly validated against permitted state directorate &amp; authorized publication whitelist.
             </p>
           </div>
 
-          <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-1.5">
-            <div className="text-amber-400 font-mono-code font-bold text-[11px]">03. VALIDATION</div>
-            <h3 className="font-bold text-white">Schema Sanity</h3>
-            <p className="text-slate-400 text-[11px]">
+          <div className="bg-stone-50 p-4 rounded-xl border border-stone-200 space-y-1.5">
+            <div className="text-amber-800 font-mono-code font-bold text-[11px]">03. VALIDATION</div>
+            <h3 className="font-bold text-stone-900">Schema Sanity</h3>
+            <p className="text-stone-600 text-[11px]">
               Verifies 1st prize ticket structure, series count, and date sanity.
             </p>
           </div>
 
-          <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-1.5">
-            <div className="text-teal-400 font-mono-code font-bold text-[11px]">04. DEDUPLICATION</div>
-            <h3 className="font-bold text-white">SHA-256 Checksum</h3>
-            <p className="text-slate-400 text-[11px]">
-              Generates deterministic content hash to prevent duplicate draw records.
+          <div className="bg-stone-50 p-4 rounded-xl border border-stone-200 space-y-1.5">
+            <div className="text-teal-800 font-mono-code font-bold text-[11px]">04. DEDUPLICATION</div>
+            <h3 className="font-bold text-stone-900">Content Hash</h3>
+            <p className="text-stone-600 text-[11px]">
+              Generates deterministic content ID to prevent duplicate draw records.
             </p>
           </div>
 
-          <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-1.5">
-            <div className="text-rose-400 font-mono-code font-bold text-[11px]">05. PERSISTENCE</div>
-            <h3 className="font-bold text-white">Live Store &amp; SEO</h3>
-            <p className="text-slate-400 text-[11px]">
-              Draw is stored in memory / database and indexed for instant search &amp; JSON-LD.
+          <div className="bg-stone-50 p-4 rounded-xl border border-stone-200 space-y-1.5">
+            <div className="text-stone-800 font-mono-code font-bold text-[11px]">05. PERSISTENCE</div>
+            <h3 className="font-bold text-stone-900">Live Store &amp; SEO</h3>
+            <p className="text-stone-600 text-[11px]">
+              Draw is stored and indexed for instant ticket verification &amp; gazette search.
             </p>
           </div>
         </div>
@@ -173,10 +173,10 @@ export const AdminIngestionPage: React.FC = () => {
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-lg sm:text-xl font-bold text-white tracking-tight">
+            <h2 className="text-lg sm:text-xl font-bold text-stone-950 font-editorial-serif tracking-tight">
               Configured State Adapters ({adapters.length})
             </h2>
-            <p className="text-xs text-slate-400">Production-ready fetcher modules ready for live government endpoints.</p>
+            <p className="text-xs text-stone-500">Authorized source fetchers with automated parsing pipeline.</p>
           </div>
         </div>
 
@@ -187,49 +187,49 @@ export const AdminIngestionPage: React.FC = () => {
             {adapters.map(ad => (
               <div
                 key={ad.id}
-                className="bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col justify-between space-y-4 shadow-md"
+                className="bg-white border border-stone-200 rounded-xl p-5 flex flex-col justify-between space-y-4 shadow-xs"
               >
                 <div>
                   <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs font-bold uppercase bg-slate-800 text-slate-200 px-2 py-0.5 rounded font-mono-code">
+                    <span className="text-xs font-bold uppercase bg-stone-100 text-stone-800 px-2 py-0.5 rounded font-mono-code border border-stone-200">
                       {ad.stateCode}
                     </span>
-                    <span className="text-[11px] font-bold text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-800/40 font-mono-code">
+                    <span className="text-[11px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200 font-mono-code">
                       {ad.pollingSchedule}
                     </span>
                   </div>
 
-                  <h3 className="text-base font-bold text-white mb-1">{ad.name}</h3>
-                  <p className="text-xs text-slate-400 font-mono-code truncate mb-3">
+                  <h3 className="text-base font-bold text-stone-950 mb-1">{ad.name}</h3>
+                  <p className="text-xs text-stone-500 font-mono-code truncate mb-3">
                     Base: {ad.baseUrl}
                   </p>
 
-                  <div className="space-y-1.5 text-[11px] bg-slate-950 p-3 rounded-lg border border-slate-800">
+                  <div className="space-y-1.5 text-[11px] bg-stone-50 p-3 rounded-lg border border-stone-200">
                     <div className="flex justify-between">
-                      <span className="text-slate-400">Source Type:</span>
-                      <span className="text-slate-200 font-mono-code font-bold uppercase">{ad.sourceType}</span>
+                      <span className="text-stone-500">Source Type:</span>
+                      <span className="text-stone-800 font-mono-code font-bold uppercase">{ad.sourceType}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-slate-400">Parser Format:</span>
-                      <span className="text-slate-200 font-mono-code font-bold uppercase">{ad.parserFormat}</span>
+                      <span className="text-stone-500">Parser Format:</span>
+                      <span className="text-stone-800 font-mono-code font-bold uppercase">{ad.parserFormat}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-slate-400">Last Ingestion:</span>
-                      <span className="text-slate-300 font-mono-code">{new Date(ad.lastRunTime).toLocaleTimeString()}</span>
+                      <span className="text-stone-500">Last Ingestion:</span>
+                      <span className="text-stone-700 font-mono-code">{new Date(ad.lastRunTime).toLocaleTimeString()}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-slate-400">Success Rate:</span>
-                      <span className="text-emerald-400 font-semibold font-mono-code">{ad.successRate}%</span>
+                      <span className="text-stone-500">Success Rate:</span>
+                      <span className="text-emerald-800 font-semibold font-mono-code">{ad.successRate}%</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="pt-3 border-t border-slate-800 flex items-center justify-between">
-                  <span className="text-[11px] text-slate-500">Auto-fetching active</span>
+                <div className="pt-3 border-t border-stone-100 flex items-center justify-between">
+                  <span className="text-[11px] text-stone-500">Auto-fetching active</span>
                   <button
                     onClick={() => handleTrigger(ad.id)}
                     disabled={triggering !== null}
-                    className="inline-flex items-center gap-1 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-lg border border-slate-700 transition-colors"
+                    className="inline-flex items-center gap-1 px-3 py-1.5 bg-stone-900 hover:bg-stone-800 text-white text-xs font-semibold rounded-lg transition-colors font-mono-code"
                   >
                     {triggering === ad.id ? (
                       <RefreshCw className="w-3.5 h-3.5 animate-spin" />
@@ -246,20 +246,20 @@ export const AdminIngestionPage: React.FC = () => {
       </div>
 
       {/* Recent Ingestion Audit Trail Logs */}
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4 shadow-xl">
+      <div className="bg-white border border-stone-200 rounded-2xl p-6 space-y-4 shadow-xs">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <FileCheck2 className="w-5 h-5 text-emerald-400" />
-            <h2 className="text-base sm:text-lg font-bold text-white">
+            <FileCheck2 className="w-5 h-5 text-emerald-800" />
+            <h2 className="text-base sm:text-lg font-bold text-stone-950 font-editorial-serif">
               Recent Ingestion Audit Logs
             </h2>
           </div>
-          <span className="text-xs text-slate-400 font-mono-code">Live System Logs</span>
+          <span className="text-xs text-stone-500 font-mono-code">Live System Logs</span>
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs text-slate-300">
-            <thead className="bg-slate-950 text-slate-400 uppercase font-semibold text-[10px] border-b border-slate-800">
+          <table className="w-full text-left text-xs text-stone-700">
+            <thead className="bg-stone-50 text-stone-600 uppercase font-semibold text-[10px] border-b border-stone-200 font-mono-code">
               <tr>
                 <th className="px-4 py-2.5">Timestamp</th>
                 <th className="px-4 py-2.5">Adapter Name</th>
@@ -268,16 +268,16 @@ export const AdminIngestionPage: React.FC = () => {
                 <th className="px-4 py-2.5">Message / Latency</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/60 font-mono-code text-[11px]">
+            <tbody className="divide-y divide-stone-200 font-mono-code text-[11px]">
               {logs.map(lg => (
-                <tr key={lg.id} className="hover:bg-slate-950/50">
-                  <td className="px-4 py-2 text-slate-400">{new Date(lg.timestamp).toLocaleTimeString()}</td>
-                  <td className="px-4 py-2 font-bold text-white">{lg.adapterName}</td>
+                <tr key={lg.id} className="hover:bg-stone-50">
+                  <td className="px-4 py-2 text-stone-500">{new Date(lg.timestamp).toLocaleTimeString()}</td>
+                  <td className="px-4 py-2 font-bold text-stone-900">{lg.adapterName}</td>
                   <td className="px-4 py-2">
-                    <span className="text-emerald-400 font-semibold uppercase">{lg.status}</span>
+                    <span className="text-emerald-800 font-semibold uppercase">{lg.status}</span>
                   </td>
-                  <td className="px-4 py-2 text-slate-300">{lg.recordsProcessed} draws</td>
-                  <td className="px-4 py-2 text-slate-400">{lg.message} ({lg.executionTimeMs}ms)</td>
+                  <td className="px-4 py-2 text-stone-700">{lg.recordsProcessed} draws</td>
+                  <td className="px-4 py-2 text-stone-600">{lg.message} ({lg.executionTimeMs}ms)</td>
                 </tr>
               ))}
             </tbody>

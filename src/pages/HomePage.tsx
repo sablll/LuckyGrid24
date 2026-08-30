@@ -86,6 +86,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenChecker, o
             onViewDetails={onSelectDraw}
             onCheckTicket={onSelectDraw}
             onViewAllLatest={() => onNavigate('/latest')}
+            onRefresh={loadHomeData}
           />
 
           {/* Upcoming Draws Grid */}

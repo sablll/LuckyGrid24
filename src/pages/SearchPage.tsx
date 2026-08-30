@@ -158,7 +158,7 @@ export const SearchPage: React.FC<SearchPageProps> = ({ initialQuery = '', onSel
                 </label>
                 <input
                   type="text"
-                  placeholder="e.g. FE 892341, 76D 48912, 941203, 1045"
+                  placeholder="e.g. AB 123456, 123456, 1234"
                   value={ticketInput}
                   onChange={(e) => setTicketInput(e.target.value)}
                   className="w-full bg-stone-50 border border-stone-300 rounded-xl px-4 py-3 text-sm font-mono-code text-stone-900 placeholder:text-stone-400 focus:outline-none focus:bg-white focus:border-stone-900 uppercase transition-all"
@@ -230,7 +230,7 @@ export const SearchPage: React.FC<SearchPageProps> = ({ initialQuery = '', onSel
                   <div className="w-12 h-12 rounded-full bg-stone-100 flex items-center justify-center mx-auto text-stone-500">
                     <Ticket className="w-6 h-6" />
                   </div>
-                  <h3 className="text-base font-bold text-stone-950 font-editorial-serif">No Winning Match Found in Demo Archive</h3>
+                  <h3 className="text-base font-bold text-stone-950 font-editorial-serif">No Winning Match Found</h3>
                   <p className="text-xs text-stone-500 leading-relaxed">
                     The number <span className="font-mono-code text-stone-900 font-bold">{checkResult.ticketNumber}</span> did not win any prize in the current indexed draws. Please also inspect your official state government gazette paper.
                   </p>

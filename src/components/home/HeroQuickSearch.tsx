@@ -35,18 +35,18 @@ export const HeroQuickSearch: React.FC<HeroQuickSearchProps> = ({
         {/* Verification Pill */}
         <div className="inline-flex items-center gap-2 bg-stone-100 border border-stone-300 px-3.5 py-1.5 rounded-full text-xs text-stone-800">
           <ShieldCheck className="w-4 h-4 text-emerald-800" />
-          <span className="font-semibold font-mono-code text-[11px]">Official State Directorate Result Hub</span>
+          <span className="font-semibold font-mono-code text-[11px]">India Lottery Results</span>
           <span className="text-stone-400">&bull;</span>
-          <span className="text-stone-600 font-mono-code text-[11px]">Sec. 4 Act 1998 Gazette Compliant</span>
+          <span className="text-stone-600 font-mono-code text-[11px]">Official State Gazette Records</span>
         </div>
 
         {/* Hero Title */}
         <div className="space-y-2.5">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-stone-950 font-editorial-serif tracking-tight leading-tight">
-            Verified India Lottery Results &amp; Gazette Archives
+            Latest India Lottery Results
           </h1>
           <p className="text-sm sm:text-base text-stone-600 max-w-2xl mx-auto leading-relaxed">
-            Search daily, weekly &amp; bumper draw results directly published by authorized state governments across India.
+            Find verified lottery results, draw details and previous results from official sources.
           </p>
         </div>
 
@@ -58,7 +58,7 @@ export const HeroQuickSearch: React.FC<HeroQuickSearchProps> = ({
             </div>
             <input
               type="text"
-              placeholder="Search by scheme name, draw date (YYYY-MM-DD), or ticket number..."
+              placeholder="Search by lottery name, draw date or ticket number"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full bg-stone-50 border border-stone-300 rounded-xl pl-12 pr-28 py-3.5 text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none focus:bg-white focus:border-stone-900 focus:ring-1 focus:ring-stone-900 font-medium transition-all"

@@ -40,14 +40,9 @@ export const LotteryCard: React.FC<LotteryCardProps> = ({
         </div>
 
         <div className="flex items-center gap-2">
-          {result.isDemoData && (
-            <span className="text-[10px] font-mono-code font-bold bg-amber-100 text-amber-900 px-2 py-0.5 rounded border border-amber-300">
-              DEMO ARCHIVE
-            </span>
-          )}
           <span className="inline-flex items-center gap-1 text-[11px] text-emerald-800 font-semibold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-300">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" />
-            Verified Source
+            Official Source
           </span>
         </div>
       </div>
@@ -129,7 +124,7 @@ export const LotteryCard: React.FC<LotteryCardProps> = ({
       <div className="pt-3 border-t border-stone-100 flex flex-wrap items-center justify-between gap-3 text-xs">
         <div className="text-[11px] text-stone-500 flex items-center gap-1 truncate max-w-[240px]">
           <FileCheck className="w-3.5 h-3.5 text-stone-400 shrink-0" />
-          <span className="truncate">Source: {result.officialSource.sourceName}</span>
+          <span className="truncate">Official Source: {result.officialSource.sourceName}</span>
         </div>
 
         <div className="flex items-center gap-2">

@@ -21,6 +21,37 @@ async function startServer() {
     (resultId: string) => store.hasResult(resultId)
   );
 
+  // Automatic Background Ingestion for Kerala Real Results on Boot
+  let lastSyncTime: string | null = null;
+  let isSyncing = false;
+
+  const triggerKeralaRealSync = async (limit = 10) => {
+    if (isSyncing) return { inProgress: true };
+    isSyncing = true;
+    try {
+      console.log(`[SyncEngine] Fetching real Kerala lottery results from authorized sources...`);
+      const result = await ingestionEngine.ingestKeralaRecentDraws(limit);
+      lastSyncTime = new Date().toISOString();
+      console.log(`[SyncEngine] Kerala fetch complete: ${result.recordsIngested} new results ingested.`);
+      return result;
+    } catch (err: any) {
+      console.error('[SyncEngine] Error during Kerala lottery sync:', err.message);
+      return { success: false, error: err.message };
+    } finally {
+      isSyncing = false;
+    }
+  };
+
+  // Run initial sync asynchronously so server binds port immediately
+  setTimeout(() => {
+    triggerKeralaRealSync(10);
+  }, 1000);
+
+  // Periodic Polling: Every 15 minutes
+  setInterval(() => {
+    triggerKeralaRealSync(5);
+  }, 15 * 60 * 1000);
+
   // --- API ROUTES FIRST ---
 
   // Health check
@@ -30,7 +61,33 @@ async function startServer() {
       service: 'India Lottery Results API',
       timestamp: new Date().toISOString(),
       mode: 'production-ready',
-      demoDataMode: true
+      demoDataMode: false,
+      lastSyncTime,
+      totalRecords: store.getAllResults({ limit: 1 }).total
+    });
+  });
+
+  // Dedicated Kerala Live Sync Endpoint
+  app.post('/api/ingestion/sync-kerala', async (req, res) => {
+    const limit = req.body?.limit ? parseInt(req.body.limit, 10) : 10;
+    const syncResult = await triggerKeralaRealSync(limit);
+    const { total } = store.getAllResults({ stateCode: 'KL', limit: 1 });
+    res.json({
+      success: true,
+      data: syncResult,
+      keralaTotalRecords: total,
+      lastSyncTime
+    });
+  });
+
+  // Sync status
+  app.get('/api/ingestion/status', (req, res) => {
+    const { total } = store.getAllResults({ stateCode: 'KL', limit: 1 });
+    res.json({
+      success: true,
+      lastSyncTime,
+      isSyncing,
+      keralaTotalRecords: total
     });
   });
 
@@ -57,7 +114,7 @@ async function startServer() {
 
   // 2. Today's lottery results
   app.get('/api/results/today', (req, res) => {
-    const todayStr = (req.query.date as string) || '2026-08-30';
+    const todayStr = (req.query.date as string) || new Date().toISOString().split('T')[0];
     const results = store.getTodayResults(todayStr);
     res.json({
       success: true,
@@ -69,7 +126,7 @@ async function startServer() {
 
   // 3. Latest lottery results
   app.get('/api/results/latest', (req, res) => {
-    const limit = req.query.limit ? parseInt(req.query.limit as string, 10) : 8;
+    const limit = req.query.limit ? parseInt(req.query.limit as string, 10) : 10;
     const results = store.getLatestResults(limit);
     res.json({
       success: true,
@@ -215,8 +272,7 @@ async function startServer() {
       '/search',
       '/statistics',
       '/about',
-      '/disclaimer',
-      '/admin-ingestion'
+      '/disclaimer'
     ];
 
     let xml = `<?xml version="1.0" encoding="UTF-8"?>

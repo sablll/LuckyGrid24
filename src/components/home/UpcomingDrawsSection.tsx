@@ -15,11 +15,11 @@ export const UpcomingDrawsSection: React.FC<UpcomingDrawsSectionProps> = ({ draw
           <div className="flex items-center gap-2">
             <Clock className="w-5 h-5 text-stone-700" />
             <h2 className="text-2xl sm:text-3xl font-bold text-stone-950 font-editorial-serif tracking-tight">
-              Upcoming Draw Timetable
+              Upcoming Draws
             </h2>
           </div>
           <p className="text-xs sm:text-sm text-stone-500 mt-1">
-            Scheduled state lottery draw times and expected top prizes for today.
+            Check scheduled draw times and official result availability.
           </p>
         </div>
       </div>

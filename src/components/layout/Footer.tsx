@@ -173,9 +173,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             &copy; {new Date().getFullYear()} India Lottery Results. Official gazette records sourced from authorized state lottery directorates.
           </p>
           <div className="flex items-center gap-4">
-            <span className="text-stone-600 font-mono-code">Vercel Production Target</span>
-            <span>&bull;</span>
-            <span className="text-amber-800 font-medium">DEMO DATA ARCHIVE</span>
+            <span className="text-stone-600 font-mono-code">Authorized State Lotteries</span>
           </div>
         </div>
       </div>

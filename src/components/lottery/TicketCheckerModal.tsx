@@ -83,7 +83,7 @@ export const TicketCheckerModal: React.FC<TicketCheckerModalProps> = ({
             <div className="relative">
               <input
                 type="text"
-                placeholder="e.g. FE 892341, 76D 48912, 941203, 1045"
+                placeholder="e.g. AB 123456, 123456, 1234"
                 value={ticketInput}
                 onChange={(e) => setTicketInput(e.target.value)}
                 className="w-full bg-stone-50 border border-stone-300 rounded-xl px-4 py-3 text-sm font-mono-code text-stone-900 placeholder:text-stone-400 focus:outline-none focus:bg-white focus:border-stone-900 focus:ring-1 focus:ring-stone-900 uppercase transition-all"
@@ -91,7 +91,7 @@ export const TicketCheckerModal: React.FC<TicketCheckerModalProps> = ({
               />
             </div>
             <p className="text-[11px] text-stone-500">
-              Tip: You can enter full ticket (e.g. <span className="font-mono-code text-stone-700">FE 892341</span>) or 4/5 digits (<span className="font-mono-code text-stone-700">892341</span> or <span className="font-mono-code text-stone-700">1045</span>) for lower tier matching.
+              Tip: You can enter full ticket series and number or 4/5 digits for lower tier prize matching.
             </p>
           </div>
 
@@ -161,9 +161,9 @@ export const TicketCheckerModal: React.FC<TicketCheckerModalProps> = ({
                 <div className="w-10 h-10 rounded-full bg-stone-200 flex items-center justify-center mx-auto text-stone-600">
                   <X className="w-5 h-5" />
                 </div>
-                <p className="text-sm font-bold text-stone-950 font-editorial-serif">No Prize Match in Current Demo Archive</p>
+                <p className="text-sm font-bold text-stone-950 font-editorial-serif">No Prize Match Found</p>
                 <p className="text-xs text-stone-500 max-w-sm mx-auto">
-                  Ticket <span className="font-mono-code text-stone-800">{result.ticketNumber}</span> does not match winning numbers for the indexed draws. Always double check your original ticket with the state gazette.
+                  Ticket <span className="font-mono-code text-stone-800">{result.ticketNumber}</span> does not match winning numbers for the verified draws. Always verify your original physical ticket with the official state gazette.
                 </p>
               </div>
             ) : (

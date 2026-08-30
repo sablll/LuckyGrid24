@@ -41,7 +41,7 @@ export async function fetchTodayResults(date?: string): Promise<{ date: string; 
   return res.json();
 }
 
-export async function fetchLatestResults(limit = 8): Promise<{ data: LotteryResult[] }> {
+export async function fetchLatestResults(limit = 10): Promise<{ data: LotteryResult[] }> {
   const res = await fetch(`${BASE_URL}/results/latest?limit=${limit}`);
   if (!res.ok) throw new Error(`Failed to fetch latest results: ${res.statusText}`);
   return res.json();
@@ -93,6 +93,32 @@ export async function checkTicket(ticketNumber: string, stateCode?: string, draw
 export async function fetchStatistics(): Promise<{ data: StatisticsOverview }> {
   const res = await fetch(`${BASE_URL}/statistics`);
   if (!res.ok) throw new Error(`Failed to fetch statistics: ${res.statusText}`);
+  return res.json();
+}
+
+export async function syncKeralaLotteries(limit = 10): Promise<{
+  success: boolean;
+  data: any;
+  keralaTotalRecords: number;
+  lastSyncTime: string;
+}> {
+  const res = await fetch(`${BASE_URL}/ingestion/sync-kerala`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ limit })
+  });
+  if (!res.ok) throw new Error(`Kerala sync failed: ${res.statusText}`);
+  return res.json();
+}
+
+export async function fetchSyncStatus(): Promise<{
+  success: boolean;
+  lastSyncTime: string | null;
+  isSyncing: boolean;
+  keralaTotalRecords: number;
+}> {
+  const res = await fetch(`${BASE_URL}/ingestion/status`);
+  if (!res.ok) throw new Error(`Failed to fetch sync status: ${res.statusText}`);
   return res.json();
 }
 

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
-import { DemoBanner } from './components/layout/DemoBanner';
 import { TicketCheckerModal } from './components/lottery/TicketCheckerModal';
 
 // Pages
@@ -161,9 +160,6 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#FBFBF9] text-stone-900 font-sans selection:bg-stone-900 selection:text-stone-50">
-      {/* Top Demo Data Notice */}
-      <DemoBanner />
-
       {/* Global Navbar */}
       <Navbar
         currentPath={currentPath}
