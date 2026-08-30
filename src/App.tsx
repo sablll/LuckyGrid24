@@ -58,7 +58,7 @@ export default function App() {
   useEffect(() => {
     if (typeof (window as any).gtag === 'function') {
       const fullPath = currentPath + (searchParam ? `?q=${encodeURIComponent(searchParam)}` : '');
-      (window as any).gtag('config', 'G-RWNQ4E8577', {
+      (window as any).gtag('config', 'G-TGTJWTB3TC', {
         page_path: fullPath,
       });
     }
