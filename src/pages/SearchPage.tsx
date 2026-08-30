@@ -94,7 +94,7 @@ export const SearchPage: React.FC<SearchPageProps> = ({ initialQuery = '', onSel
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       <SEOHead
-        title="Lottery Ticket Checker & Search Engine | India Lottery Results"
+        title="Lottery Ticket Checker & Search Engine | My India Lottery"
         description="Verify your lottery ticket number against 1st to 8th prize tiers and search historical draw gazettes across Kerala, Nagaland, Sikkim, and Punjab."
       />
 

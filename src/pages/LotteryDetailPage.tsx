@@ -63,10 +63,10 @@ export const LotteryDetailPage: React.FC<LotteryDetailPageProps> = ({
     'dateModified': result.lastUpdatedTime,
     'publisher': {
       '@type': 'Organization',
-      'name': 'India Lottery Results',
-      'url': 'https://indialotteryresults.org'
+      'name': 'My India Lottery',
+      'url': 'https://myindialottery.online'
     },
-    'mainEntityOfPage': `https://indialotteryresults.org/results/${result.id}`,
+    'mainEntityOfPage': `https://myindialottery.online/results/${result.id}`,
     'about': {
       '@type': 'Thing',
       'name': `${result.stateName} State Lottery`,

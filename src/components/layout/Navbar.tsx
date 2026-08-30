@@ -65,13 +65,13 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath, onNavigate, onOpenS
             onClick={() => handleNavClick('/')}
             className="flex items-center gap-3 cursor-pointer group select-none"
           >
-            <div className="w-9 h-9 rounded-lg bg-stone-900 text-stone-50 flex items-center justify-center font-editorial-serif text-lg font-bold shadow-xs border border-stone-800 group-hover:bg-stone-800 transition-colors">
-              IL
+            <div className="w-9 h-9 rounded-lg bg-stone-900 text-stone-50 flex items-center justify-center font-editorial-serif text-sm font-bold shadow-xs border border-stone-800 group-hover:bg-stone-800 transition-colors">
+              MIL
             </div>
             <div>
               <div className="flex items-center gap-2">
                 <span className="font-editorial-serif font-bold text-lg sm:text-xl tracking-tight text-stone-950 group-hover:text-emerald-900 transition-colors">
-                  India Lottery Results
+                  My India Lottery
                 </span>
                 <span className="text-[10px] uppercase font-bold bg-stone-100 text-stone-700 px-1.5 py-0.5 rounded border border-stone-300 hidden md:inline-block font-mono-code">
                   Gazette

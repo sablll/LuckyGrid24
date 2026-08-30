@@ -31,11 +31,11 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           {/* Brand and Description */}
           <div className="text-center md:text-left space-y-1">
             <div className="flex items-center justify-center md:justify-start gap-2">
-              <div className="w-6 h-6 rounded bg-stone-900 flex items-center justify-center font-editorial-serif font-bold text-white text-xs">
-                IL
+              <div className="w-6 h-6 rounded bg-stone-900 flex items-center justify-center font-editorial-serif font-bold text-white text-[10px]">
+                MIL
               </div>
               <span className="font-editorial-serif font-bold text-base text-stone-950">
-                India Lottery Results
+                My India Lottery
               </span>
             </div>
             <p className="text-stone-500 text-xs">
@@ -68,7 +68,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
 
         {/* Copyright */}
         <div className="mt-6 pt-4 border-t border-stone-100 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-stone-400">
-          <p>&copy; {new Date().getFullYear()} India Lottery Results. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} My India Lottery. All rights reserved.</p>
           <div className="flex items-center gap-4">
             <a
               href="/sitemap.xml"

@@ -69,7 +69,7 @@ async function startServer() {
   app.get('/api/health', (req, res) => {
     res.json({
       status: 'ok',
-      service: 'India Lottery Results API',
+      service: 'My India Lottery API',
       timestamp: new Date().toISOString(),
       mode: 'production-ready',
       demoDataMode: false,
@@ -269,71 +269,83 @@ async function startServer() {
     });
   });
 
-  // 13. SEO Sitemap Generator
+  // 13. SEO Dynamic XML Sitemap Generator
   app.get(['/sitemap.xml', '/api/sitemap.xml'], (req, res) => {
-    const { results } = store.getAllResults({ limit: 100 });
+    const { results } = store.getAllResults({ limit: 500 });
     const states = store.getAllStates();
-    const domain = process.env.APP_URL || 'https://indialotteryresults.org';
+    const domain = 'https://myindialottery.online';
+    const today = new Date().toISOString().split('T')[0];
 
     const staticPages = [
-      '',
-      '/latest',
-      '/states',
-      '/previous',
-      '/search',
-      '/statistics',
-      '/about',
-      '/disclaimer'
+      { path: '', changefreq: 'hourly', priority: '1.0' },
+      { path: '/latest', changefreq: 'hourly', priority: '0.9' },
+      { path: '/previous', changefreq: 'daily', priority: '0.8' },
+      { path: '/states', changefreq: 'daily', priority: '0.8' },
+      { path: '/search', changefreq: 'daily', priority: '0.8' },
+      { path: '/statistics', changefreq: 'daily', priority: '0.7' },
+      { path: '/about', changefreq: 'monthly', priority: '0.5' },
+      { path: '/disclaimer', changefreq: 'monthly', priority: '0.5' },
+      { path: '/contact', changefreq: 'monthly', priority: '0.5' }
     ];
 
     let xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 `;
 
+    // Static core pages
     for (const page of staticPages) {
       xml += `  <url>
-    <loc>${domain}${page}</loc>
-    <changefreq>hourly</changefreq>
-    <priority>${page === '' ? '1.0' : '0.8'}</priority>
+    <loc>${domain}${page.path === '' ? '/' : page.path}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>${page.changefreq}</changefreq>
+    <priority>${page.priority}</priority>
   </url>
 `;
     }
 
+    // State category pages
     for (const st of states) {
       xml += `  <url>
     <loc>${domain}/states/${st.code.toLowerCase()}</loc>
+    <lastmod>${today}</lastmod>
     <changefreq>daily</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
 `;
     }
 
+    // Individual Draw results
     for (const r of results) {
+      const lastModDate = r.publishedTime ? r.publishedTime.split('T')[0] : today;
       xml += `  <url>
     <loc>${domain}/results/${r.id}</loc>
-    <lastmod>${r.publishedTime.split('T')[0]}</lastmod>
-    <changefreq>never</changefreq>
-    <priority>0.6</priority>
+    <lastmod>${lastModDate}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
 `;
     }
 
     xml += `</urlset>`;
 
-    res.header('Content-Type', 'application/xml');
+    res.header('Content-Type', 'application/xml; charset=utf-8');
+    res.header('Cache-Control', 'public, max-age=3600, s-maxage=3600');
     res.send(xml);
   });
 
   // 14. SEO Robots.txt
   app.get(['/robots.txt', '/api/robots.txt'], (req, res) => {
-    const domain = process.env.APP_URL || 'https://indialotteryresults.org';
     const robotsContent = `User-agent: *
 Allow: /
+Disallow: /admin-ingestion
 Disallow: /api/ingestion/trigger
 
-Sitemap: ${domain}/sitemap.xml
+Sitemap: https://myindialottery.online/sitemap.xml
 `;
-    res.header('Content-Type', 'text/plain');
+    res.header('Content-Type', 'text/plain; charset=utf-8');
+    res.header('Cache-Control', 'public, max-age=86400, s-maxage=86400');
     res.send(robotsContent);
   });
 
@@ -353,7 +365,7 @@ Sitemap: ${domain}/sitemap.xml
   }
 
   app.listen(PORT, '0.0.0.0', () => {
-    console.log(`India Lottery Results server running on http://0.0.0.0:${PORT}`);
+    console.log(`My India Lottery server running on http://0.0.0.0:${PORT}`);
   });
 }
 

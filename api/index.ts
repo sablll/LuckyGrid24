@@ -29,7 +29,7 @@ export default async function handler(req: IncomingMessage & { query?: Record<st
   try {
     if (pathname === '/health' || pathname === '') {
       res.statusCode = 200;
-      res.end(JSON.stringify({ status: 'ok', service: 'India Lottery Results Vercel API' }));
+      res.end(JSON.stringify({ status: 'ok', service: 'My India Lottery Vercel API' }));
       return;
     }
 
@@ -106,6 +106,57 @@ export default async function handler(req: IncomingMessage & { query?: Record<st
       const stats = store.getStatistics();
       res.statusCode = 200;
       res.end(JSON.stringify({ success: true, data: stats }));
+      return;
+    }
+
+    if (pathname === '/sitemap.xml') {
+      const { results } = store.getAllResults({ limit: 500 });
+      const states = store.getAllStates();
+      const domain = 'https://myindialottery.online';
+      const today = new Date().toISOString().split('T')[0];
+
+      const staticPages = [
+        { path: '', changefreq: 'hourly', priority: '1.0' },
+        { path: '/latest', changefreq: 'hourly', priority: '0.9' },
+        { path: '/previous', changefreq: 'daily', priority: '0.8' },
+        { path: '/states', changefreq: 'daily', priority: '0.8' },
+        { path: '/search', changefreq: 'daily', priority: '0.8' },
+        { path: '/statistics', changefreq: 'daily', priority: '0.7' },
+        { path: '/about', changefreq: 'monthly', priority: '0.5' },
+        { path: '/disclaimer', changefreq: 'monthly', priority: '0.5' },
+        { path: '/contact', changefreq: 'monthly', priority: '0.5' }
+      ];
+
+      let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\n        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">\n`;
+
+      for (const page of staticPages) {
+        xml += `  <url>\n    <loc>${domain}${page.path === '' ? '/' : page.path}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>${page.changefreq}</changefreq>\n    <priority>${page.priority}</priority>\n  </url>\n`;
+      }
+
+      for (const st of states) {
+        xml += `  <url>\n    <loc>${domain}/states/${st.code.toLowerCase()}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>0.8</priority>\n  </url>\n`;
+      }
+
+      for (const r of results) {
+        const lastModDate = r.publishedTime ? r.publishedTime.split('T')[0] : today;
+        xml += `  <url>\n    <loc>${domain}/results/${r.id}</loc>\n    <lastmod>${lastModDate}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.7</priority>\n  </url>\n`;
+      }
+
+      xml += `</urlset>`;
+
+      res.statusCode = 200;
+      res.setHeader('Content-Type', 'application/xml; charset=utf-8');
+      res.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=3600');
+      res.end(xml);
+      return;
+    }
+
+    if (pathname === '/robots.txt') {
+      const robotsContent = `User-agent: *\nAllow: /\nDisallow: /admin-ingestion\nDisallow: /api/ingestion/trigger\n\nSitemap: https://myindialottery.online/sitemap.xml\n`;
+      res.statusCode = 200;
+      res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+      res.setHeader('Cache-Control', 'public, max-age=86400, s-maxage=86400');
+      res.end(robotsContent);
       return;
     }
 

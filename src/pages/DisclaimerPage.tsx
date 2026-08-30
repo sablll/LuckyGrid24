@@ -14,7 +14,7 @@ export const DisclaimerPage: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
       <SEOHead
-        title="Disclaimer, Legal Terms & Statutory Compliance | India Lottery Results"
+        title="Disclaimer, Legal Terms & Statutory Compliance | My India Lottery"
         description="Statutory legal disclaimer under The Lotteries (Regulation) Act, 1998, 18+ policy, state legality notices, and prize claim procedures."
       />
 
@@ -38,7 +38,7 @@ export const DisclaimerPage: React.FC = () => {
           Mandatory Verification with Official Gazette
         </div>
         <p className="text-xs sm:text-sm text-stone-700 leading-relaxed">
-          While utmost care is taken to ensure accuracy by parsing authorized state directorate records, <strong>India Lottery Results is not responsible for any inadvertent error, typo, or omission</strong> that may have crept into the results published on this website. <strong>Winners are strongly advised to verify their numbers with the official State Government Gazette before surrendering tickets or making prize claims.</strong>
+          While utmost care is taken to ensure accuracy by parsing authorized state directorate records, <strong>My India Lottery is not responsible for any inadvertent error, typo, or omission</strong> that may have crept into the results published on this website. <strong>Winners are strongly advised to verify their numbers with the official State Government Gazette before surrendering tickets or making prize claims.</strong>
         </p>
       </div>
 
@@ -73,7 +73,7 @@ export const DisclaimerPage: React.FC = () => {
             3. Non-Affiliation and No Commercial Activity
           </h2>
           <p className="text-stone-600 leading-relaxed">
-            India Lottery Results is an independent archival and news portal. We are NOT affiliated with, authorized by, or an agent of any State Lottery Department. We DO NOT sell tickets, accept money, process wagers, or run syndicates.
+            My India Lottery is an independent archival and news portal. We are NOT affiliated with, authorized by, or an agent of any State Lottery Department. We DO NOT sell tickets, accept money, process wagers, or run syndicates.
           </p>
         </div>
 

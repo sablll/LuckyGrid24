@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin-ingestion
+Disallow: /api/ingestion/trigger
+
+Sitemap: https://myindialottery.online/sitemap.xml

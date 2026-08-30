@@ -35,7 +35,7 @@ export const HeroQuickSearch: React.FC<HeroQuickSearchProps> = ({
         {/* Verification Pill */}
         <div className="inline-flex items-center gap-2 bg-stone-100 border border-stone-300 px-3.5 py-1.5 rounded-full text-xs text-stone-800">
           <ShieldCheck className="w-4 h-4 text-emerald-800" />
-          <span className="font-semibold font-mono-code text-[11px]">India Lottery Results</span>
+          <span className="font-semibold font-mono-code text-[11px]">My India Lottery</span>
           <span className="text-stone-400">&bull;</span>
           <span className="text-stone-600 font-mono-code text-[11px]">Official State Gazette Records</span>
         </div>
@@ -43,10 +43,10 @@ export const HeroQuickSearch: React.FC<HeroQuickSearchProps> = ({
         {/* Hero Title */}
         <div className="space-y-2.5">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-stone-950 font-editorial-serif tracking-tight leading-tight">
-            Latest India Lottery Results
+            My India Lottery
           </h1>
           <p className="text-sm sm:text-base text-stone-600 max-w-2xl mx-auto leading-relaxed">
-            Find verified lottery results, draw details and previous results from official sources.
+            Find verified state government lottery results, draw gazettes and historical archives.
           </p>
         </div>
 

@@ -49,12 +49,12 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenChecker, o
   const jsonLdHome = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    'name': 'India Lottery Results',
-    'url': 'https://indialotteryresults.org',
-    'description': 'Verified Indian state government lottery draw results archive and live gazette notices.',
+    'name': 'My India Lottery',
+    'url': 'https://myindialottery.online',
+    'description': 'My India Lottery - Official results archive, live draw announcements, state schemes, and verified winning numbers for authorized Indian state lotteries.',
     'potentialAction': {
       '@type': 'SearchAction',
-      'target': 'https://indialotteryresults.org/search?q={search_term_string}',
+      'target': 'https://myindialottery.online/search?q={search_term_string}',
       'query-input': 'required name=search_term_string'
     }
   };
@@ -62,7 +62,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenChecker, o
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
       <SEOHead
-        title="India Lottery Results | Verified State Government Draws & Archives"
+        title="My India Lottery | Official State Government Results & Archives"
         description="Official results archive, live draw announcements, state schemes, and verified winning numbers for authorized Indian state lotteries."
         jsonLd={jsonLdHome}
       />

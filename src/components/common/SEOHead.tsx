@@ -8,8 +8,8 @@ interface SEOHeadProps {
 }
 
 export const SEOHead: React.FC<SEOHeadProps> = ({
-  title = 'India Lottery Results | Verified State Government Draws & Archives',
-  description = 'Official results archive, live draw announcements, state schemes, and verified winning numbers for authorized Indian state lotteries.',
+  title = 'My India Lottery | Official State Government Results & Archives',
+  description = 'My India Lottery - Official results archive, live draw announcements, state schemes, and verified winning numbers for authorized Indian state lotteries.',
   jsonLd,
   url
 }) => {

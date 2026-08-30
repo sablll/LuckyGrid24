@@ -33,7 +33,7 @@ export const StatisticsPage: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       <SEOHead
-        title="Lottery Draw Statistics & Timings Distribution | India Lottery Results"
+        title="Lottery Draw Statistics & Timings Distribution | My India Lottery"
         description="Comprehensive draw frequency breakdown, state prize pool distribution, and timing analysis for Indian state lotteries."
       />
 

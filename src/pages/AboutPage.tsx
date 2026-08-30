@@ -16,8 +16,8 @@ export const AboutPage: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
       <SEOHead
-        title="About Us & Integrity Pledge | India Lottery Results"
-        description="Learn about the India Lottery Results mission, our zero-fabrication pledge, verified government gazette sources, and platform architecture."
+        title="About Us & Integrity Pledge | My India Lottery"
+        description="Learn about the My India Lottery mission, our zero-fabrication pledge, verified government gazette sources, and platform architecture."
       />
 
       {/* Header */}
@@ -27,7 +27,7 @@ export const AboutPage: React.FC = () => {
           Independent Public Information Directory
         </div>
         <h1 className="text-3xl sm:text-4xl font-bold text-stone-950 font-editorial-serif tracking-tight">
-          About India Lottery Results
+          About My India Lottery
         </h1>
         <p className="text-sm sm:text-base text-stone-600 max-w-2xl mx-auto leading-relaxed">
           Providing verified, transparent, and accurate draw results published exclusively by authorized State Government Directorates across India.
@@ -41,7 +41,7 @@ export const AboutPage: React.FC = () => {
           Our Zero-Fabrication Integrity Pledge
         </div>
         <p className="text-xs sm:text-sm text-stone-700 leading-relaxed">
-          We strictly believe in data integrity and public trust. <strong>India Lottery Results never predicts, invents, simulates, or fabricates lottery results.</strong> Every winning number indexed on this platform is extracted and verified from official state government gazettes and directorate announcements.
+          We strictly believe in data integrity and public trust. <strong>My India Lottery never predicts, invents, simulates, or fabricates lottery results.</strong> Every winning number indexed on this platform is extracted and verified from official state government gazettes and directorate announcements.
         </p>
       </div>
 

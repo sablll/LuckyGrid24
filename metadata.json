@@ -1,6 +1,6 @@
 {
-  "name": "India Lottery Results",
-  "description": "Production-ready India lottery results archive, live draw announcements, state schemes, and verified winning numbers with automated ingestion pipeline.",
+  "name": "My India Lottery",
+  "description": "My India Lottery - Official results archive, live draw announcements, state schemes, and verified winning numbers for authorized Indian state lotteries.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

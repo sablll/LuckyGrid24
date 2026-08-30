@@ -62,7 +62,7 @@ export const AdminIngestionPage: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       <SEOHead
-        title="Automated Ingestion Pipeline & Architecture | India Lottery Results"
+        title="Automated Ingestion Pipeline & Architecture | My India Lottery"
         description="Modular ingestion engine and adapter configurations for automated fetching from verified state government directorate portals."
       />
 

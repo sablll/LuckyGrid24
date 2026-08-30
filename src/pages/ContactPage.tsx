@@ -19,8 +19,8 @@ export const ContactPage: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
       <SEOHead
-        title="Contact Us | India Lottery Results"
-        description="Get in touch with India Lottery Results for inquiries, gazette corrections, or technical assistance."
+        title="Contact Us | My India Lottery"
+        description="Get in touch with My India Lottery for inquiries, gazette corrections, or technical assistance."
       />
 
       {/* Header */}
@@ -45,13 +45,13 @@ export const ContactPage: React.FC = () => {
               Archival Team Contact
             </h2>
             <p className="text-xs text-stone-600 leading-relaxed">
-              India Lottery Results maintains an index of official state government lottery gazettes. For data correction requests, please include the state name, lottery scheme name, draw date, and draw number.
+              My India Lottery maintains an index of official state government lottery gazettes. For data correction requests, please include the state name, lottery scheme name, draw date, and draw number.
             </p>
 
             <div className="space-y-2 text-xs text-stone-700 font-mono-code pt-2 border-t border-stone-100">
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-stone-500" />
-                <span>contact@indialotteryresults.org</span>
+                <span>contact@myindialottery.online</span>
               </div>
               <div className="flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-emerald-700" />
@@ -82,7 +82,7 @@ export const ContactPage: React.FC = () => {
                 Message Received
               </h3>
               <p className="text-xs text-stone-600 max-w-xs mx-auto">
-                Thank you for contacting India Lottery Results. Our archival team will review your inquiry.
+                Thank you for contacting My India Lottery. Our archival team will review your inquiry.
               </p>
               <button
                 onClick={() => {
