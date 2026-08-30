@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    background-color: #FBFBF9;
+    color: #1C1917;
+  }
+  
+  h1, h2, h3 {
+    font-family: 'Newsreader', Georgia, Cambria, "Times New Roman", Times, serif;
+    letter-spacing: -0.02em;
+  }
+
+  h4, h5, h6 {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+
+  .font-editorial-serif {
+    font-family: 'Newsreader', Georgia, Cambria, "Times New Roman", Times, serif;
+  }
+
+  .font-mono-code {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+/* Custom editorial paper card styling */
+.editorial-card {
+  background-color: #FFFFFF;
+  border: 1px solid #E7E5E4;
+  box-shadow: 0 1px 3px 0 rgba(28, 25, 23, 0.04), 0 1px 2px -1px rgba(28, 25, 23, 0.04);
+}
+
+.editorial-card:hover {
+  border-color: #D6D3D1;
+}
+
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+}
