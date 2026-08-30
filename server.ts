@@ -32,35 +32,46 @@ async function startServer() {
     (resultId: string) => store.hasResult(resultId)
   );
 
-  // Automatic Background Ingestion for Kerala Real Results on Boot
+  // Automatic Background Ingestion for ALL 10 States on Boot
   let lastSyncTime: string | null = null;
   let isSyncing = false;
+  let lastSyncSummary: Record<string, any> | null = null;
 
-  const triggerKeralaRealSync = async (limit = 10) => {
-    if (isSyncing) return { inProgress: true };
+  const triggerAllStatesSync = async (limit = 10) => {
+    if (isSyncing) return { inProgress: true, lastSyncTime };
     isSyncing = true;
     try {
-      console.log(`[SyncEngine] Fetching real Kerala lottery results from authorized sources...`);
-      const result = await ingestionEngine.ingestKeralaRecentDraws(limit);
+      console.log(`[SyncEngine] Fetching real lottery results from authorized sources for ALL 10 states...`);
+      const results = await ingestionEngine.runAllAdapters();
       lastSyncTime = new Date().toISOString();
-      console.log(`[SyncEngine] Kerala fetch complete: ${result.recordsIngested} new results ingested.`);
-      return result;
+      const totalIngested = results.reduce((acc, r) => acc + (r.recordsIngested || 0), 0);
+      lastSyncSummary = {
+        timestamp: lastSyncTime,
+        totalIngested,
+        adapterResults: results
+      };
+      console.log(`[SyncEngine] All-states fetch complete: ${totalIngested} total records ingested.`);
+      return { success: true, totalIngested, results, lastSyncTime };
     } catch (err: any) {
-      console.error('[SyncEngine] Error during Kerala lottery sync:', err.message);
+      console.error('[SyncEngine] Error during all-states lottery sync:', err.message);
       return { success: false, error: err.message };
     } finally {
       isSyncing = false;
     }
   };
 
-  // Run initial sync asynchronously so server binds port immediately
+  const triggerKeralaRealSync = async (limit = 10) => {
+    return ingestionEngine.runAdapterIngestion('kerala-lotteries-gov');
+  };
+
+  // Run initial sync asynchronously for all 10 states
   setTimeout(() => {
-    triggerKeralaRealSync(10);
+    triggerAllStatesSync(10);
   }, 1000);
 
-  // Periodic Polling: Every 15 minutes
+  // Periodic Polling: Every 15 minutes across all states
   setInterval(() => {
-    triggerKeralaRealSync(5);
+    triggerAllStatesSync(5);
   }, 15 * 60 * 1000);
 
   // --- API ROUTES FIRST ---
@@ -78,7 +89,19 @@ async function startServer() {
     });
   });
 
-  // Dedicated Kerala Live Sync Endpoint
+  // Global All-States Live Sync Endpoint
+  app.post(['/api/ingestion/sync-all', '/api/ingestion/sync'], async (req, res) => {
+    const syncResult = await triggerAllStatesSync();
+    const { total } = store.getAllResults({ limit: 1 });
+    res.json({
+      success: true,
+      data: syncResult,
+      totalRecords: total,
+      lastSyncTime
+    });
+  });
+
+  // Dedicated Kerala Live Sync Endpoint (Backward Compatibility)
   app.post('/api/ingestion/sync-kerala', async (req, res) => {
     const limit = req.body?.limit ? parseInt(req.body.limit, 10) : 10;
     const syncResult = await triggerKeralaRealSync(limit);
@@ -93,12 +116,15 @@ async function startServer() {
 
   // Sync status
   app.get('/api/ingestion/status', (req, res) => {
-    const { total } = store.getAllResults({ stateCode: 'KL', limit: 1 });
+    const { total } = store.getAllResults({ limit: 1 });
+    const { total: keralaTotal } = store.getAllResults({ stateCode: 'KL', limit: 1 });
     res.json({
       success: true,
       lastSyncTime,
       isSyncing,
-      keralaTotalRecords: total
+      totalRecords: total,
+      keralaTotalRecords: keralaTotal,
+      lastSyncSummary
     });
   });
 

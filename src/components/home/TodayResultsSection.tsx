@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { LotteryResult } from '../../types/lottery';
 import { LotteryCard } from '../lottery/LotteryCard';
 import { ArrowRight, RefreshCw, CheckCircle2 } from 'lucide-react';
-import { syncKeralaLotteries } from '../../services/api';
+import { syncAllStateLotteries } from '../../services/api';
 
 interface TodayResultsSectionProps {
   results: LotteryResult[];
@@ -26,16 +26,16 @@ export const TodayResultsSection: React.FC<TodayResultsSectionProps> = ({
     setSyncing(true);
     setSyncMessage(null);
     try {
-      const resp = await syncKeralaLotteries(10);
+      const resp = await syncAllStateLotteries();
       if (resp.success) {
-        setSyncMessage(`Fetched ${resp.data?.recordsIngested || resp.keralaTotalRecords} official Kerala results`);
+        setSyncMessage(`Synced latest official results for all supported states (Total: ${resp.totalRecords || resp.data?.totalIngested || 'Updated'})`);
         if (onRefresh) onRefresh();
       }
     } catch (err: any) {
       setSyncMessage(err.message || 'Sync failed');
     } finally {
       setSyncing(false);
-      setTimeout(() => setSyncMessage(null), 4000);
+      setTimeout(() => setSyncMessage(null), 5000);
     }
   };
 

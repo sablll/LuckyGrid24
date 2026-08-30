@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { fetchResults, syncKeralaLotteries } from '../services/api';
+import { fetchResults, syncAllStateLotteries } from '../services/api';
 import { LotteryResult } from '../types/lottery';
 import { LotteryCard } from '../components/lottery/LotteryCard';
 import { LoadingState } from '../components/common/LoadingState';
@@ -30,8 +30,11 @@ export const LatestResultsPage: React.FC<LatestResultsPageProps> = ({ onSelectDr
     { label: 'Sikkim', code: 'SK' },
     { label: 'Punjab', code: 'PB' },
     { label: 'Goa (Rajshree)', code: 'GA' },
+    { label: 'Mizoram', code: 'MZ' },
     { label: 'Maharashtra', code: 'MH' },
-    { label: 'Mizoram', code: 'MZ' }
+    { label: 'West Bengal', code: 'WB' },
+    { label: 'Arunachal Pradesh', code: 'AR' },
+    { label: 'Meghalaya', code: 'ML' }
   ];
 
   const loadLatestResults = async () => {
@@ -63,7 +66,7 @@ export const LatestResultsPage: React.FC<LatestResultsPageProps> = ({ onSelectDr
   const handleSync = async () => {
     setSyncing(true);
     try {
-      await syncKeralaLotteries(10);
+      await syncAllStateLotteries();
       await loadLatestResults();
     } catch (err) {
       console.error(err);
@@ -189,8 +192,8 @@ export const LatestResultsPage: React.FC<LatestResultsPageProps> = ({ onSelectDr
         <ErrorState message={error} onRetry={loadLatestResults} />
       ) : results.length === 0 ? (
         <EmptyState
-          title="Result Unavailable"
-          message="No verified draw results found matching your criteria. If an official draw is currently taking place, results will appear as soon as published by the Directorate."
+          title="Result unavailable from official source"
+          message="No verified draw results found matching your criteria. Results are fetched strictly from official State Directorate publications and gazettes."
           onReset={() => {
             setSelectedState('ALL');
             setSearchQuery('');

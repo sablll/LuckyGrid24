@@ -152,8 +152,11 @@ export const StateDetailPage: React.FC<StateDetailPageProps> = ({
         </div>
 
         {recentDraws.length === 0 ? (
-          <div className="p-8 bg-white border border-stone-200 rounded-xl text-center text-stone-500 text-sm shadow-xs">
-            No recent results found for {state.name}.
+          <div className="p-8 bg-white border border-stone-200 rounded-xl text-center space-y-2 shadow-xs">
+            <h3 className="text-base font-bold text-stone-900 font-editorial-serif">Result unavailable from official source</h3>
+            <p className="text-xs text-stone-500 max-w-md mx-auto">
+              No verified results currently available for {state.name}. Results are published exclusively when verified by official government gazettes and directorate portals.
+            </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">

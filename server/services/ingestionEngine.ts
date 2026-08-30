@@ -4,6 +4,11 @@ import { NagalandLotteryAdapter } from '../adapters/nagalandAdapter';
 import { SikkimLotteryAdapter } from '../adapters/sikkimAdapter';
 import { PunjabLotteryAdapter } from '../adapters/punjabAdapter';
 import { GoaLotteryAdapter } from '../adapters/goaAdapter';
+import { MizoramLotteryAdapter } from '../adapters/mizoramAdapter';
+import { MaharashtraLotteryAdapter } from '../adapters/maharashtraAdapter';
+import { WestBengalLotteryAdapter } from '../adapters/westBengalAdapter';
+import { ArunachalLotteryAdapter } from '../adapters/arunachalAdapter';
+import { MeghalayaLotteryAdapter } from '../adapters/meghalayaAdapter';
 import { LotteryResult, IngestionLog, IngestionAdapter } from '../../src/types/lottery';
 import { IngestionExecutionResult } from '../types';
 
@@ -33,6 +38,11 @@ export class IngestionEngine {
     this.registerAdapter(new SikkimLotteryAdapter());
     this.registerAdapter(new PunjabLotteryAdapter());
     this.registerAdapter(new GoaLotteryAdapter());
+    this.registerAdapter(new MizoramLotteryAdapter());
+    this.registerAdapter(new MaharashtraLotteryAdapter());
+    this.registerAdapter(new WestBengalLotteryAdapter());
+    this.registerAdapter(new ArunachalLotteryAdapter());
+    this.registerAdapter(new MeghalayaLotteryAdapter());
   }
 
   public registerAdapter(adapter: BaseLotteryAdapter) {
@@ -316,14 +326,38 @@ export class IngestionEngine {
   }
 
   /**
-   * Runs all registered adapters sequentially
+   * Runs all registered adapters with isolated execution
    */
   public async runAllAdapters(): Promise<IngestionExecutionResult[]> {
-    const results: IngestionExecutionResult[] = [];
-    for (const adapterId of this.adapters.keys()) {
-      const res = await this.runAdapterIngestion(adapterId);
-      results.push(res);
-    }
-    return results;
+    const promises = Array.from(this.adapters.keys()).map(adapterId =>
+      this.runAdapterIngestion(adapterId).catch(err => ({
+        adapterId,
+        success: false,
+        recordsIngested: 0,
+        recordsSkippedDuplicates: 0,
+        recordsRejectedValidation: 0,
+        errors: [err.message || 'Unknown error'],
+        logs: [],
+        sourceUrl: 'N/A'
+      }))
+    );
+
+    const settled = await Promise.allSettled(promises);
+    return settled.map(res => {
+      if (res.status === 'fulfilled') {
+        return res.value;
+      }
+      return {
+        adapterId: 'unknown',
+        success: false,
+        recordsIngested: 0,
+        recordsSkippedDuplicates: 0,
+        recordsRejectedValidation: 0,
+        errors: [(res as PromiseRejectedResult).reason?.message || 'Promise rejection'],
+        logs: [],
+        sourceUrl: 'N/A'
+      };
+    });
   }
 }
+

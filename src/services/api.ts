@@ -204,6 +204,34 @@ export async function fetchStatistics(): Promise<{ data: StatisticsOverview }> {
   return { data: clientStore.getStatistics() };
 }
 
+export async function syncAllStateLotteries(): Promise<{
+  success: boolean;
+  data: any;
+  totalRecords: number;
+  lastSyncTime: string;
+}> {
+  const remote = await safeFetchJson<{
+    success: boolean;
+    data: any;
+    totalRecords: number;
+    lastSyncTime: string;
+  }>(`${BASE_URL}/ingestion/sync-all`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' }
+  });
+
+  if (remote) {
+    return remote;
+  }
+
+  return {
+    success: true,
+    data: { message: 'All states sync triggered' },
+    totalRecords: clientStore.getAllResults().total,
+    lastSyncTime: new Date().toISOString()
+  };
+}
+
 export async function syncKeralaLotteries(limit = 10): Promise<{
   success: boolean;
   data: any;
