@@ -1,36 +1,76 @@
-import { LotteryResult, LotteryState, LotteryScheme, UpcomingDraw, StatisticsOverview, TicketCheckResult } from '../src/types/lottery';
+import {
+  LotteryResult,
+  LotteryState,
+  LotteryScheme,
+  UpcomingDraw,
+  StatisticsOverview,
+  TicketCheckResult
+} from '../types/lottery';
 import {
   INDIAN_LOTTERY_STATES,
   INDIAN_LOTTERY_SCHEMES,
   getUpcomingDrawsList
-} from '../src/data/lotteryReferenceData';
+} from '../data/lotteryReferenceData';
 
-export class LotteryStore {
+const LOCAL_STORAGE_KEY = 'india_lottery_results_cache_v1';
+
+export class ClientLotteryStore {
   private results: Map<string, LotteryResult> = new Map();
   private states: Map<string, LotteryState> = new Map();
   private schemes: Map<string, LotteryScheme> = new Map();
 
   constructor() {
-    this.seedStates();
-    this.seedSchemes();
+    this.initStatesAndSchemes();
+    this.loadFromLocalStorage();
   }
 
-  public hasResult(id: string): boolean {
-    return this.results.has(id);
+  private initStatesAndSchemes() {
+    for (const st of INDIAN_LOTTERY_STATES) {
+      this.states.set(st.code.toUpperCase(), st);
+    }
+    for (const sc of INDIAN_LOTTERY_SCHEMES) {
+      this.schemes.set(sc.id, sc);
+    }
   }
 
-  public saveResult(result: LotteryResult): void {
-    this.results.set(result.id, result);
+  private loadFromLocalStorage() {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        const saved = window.localStorage.getItem(LOCAL_STORAGE_KEY);
+        if (saved) {
+          const parsed = JSON.parse(saved) as LotteryResult[];
+          if (Array.isArray(parsed)) {
+            for (const r of parsed) {
+              if (r && r.id) {
+                this.results.set(r.id, r);
+              }
+            }
+          }
+        }
+      }
+    } catch {
+      // Ignore localStorage errors
+    }
+  }
+
+  private saveToLocalStorage() {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        const list = Array.from(this.results.values()).slice(0, 100);
+        window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(list));
+      }
+    } catch {
+      // Ignore localStorage errors
+    }
   }
 
   public saveResults(resultsList: LotteryResult[]): void {
     for (const res of resultsList) {
-      this.results.set(res.id, res);
+      if (res && res.id) {
+        this.results.set(res.id, res);
+      }
     }
-  }
-
-  public getResultById(id: string): LotteryResult | undefined {
-    return this.results.get(id);
+    this.saveToLocalStorage();
   }
 
   public getAllResults(options?: {
@@ -62,7 +102,7 @@ export class LotteryStore {
 
     if (options?.query) {
       const q = options.query.toLowerCase().trim();
-      list = list.filter(r => 
+      list = list.filter(r =>
         r.lotteryName.toLowerCase().includes(q) ||
         r.stateName.toLowerCase().includes(q) ||
         r.drawNumber.toLowerCase().includes(q) ||
@@ -71,7 +111,6 @@ export class LotteryStore {
       );
     }
 
-    // Sort by draw date descending, then draw time
     list.sort((a, b) => b.drawDate.localeCompare(a.drawDate) || (b.publishedTime || '').localeCompare(a.publishedTime || ''));
 
     const total = list.length;
@@ -82,12 +121,15 @@ export class LotteryStore {
     return { results: paginated, total };
   }
 
-  public getTodayResults(todayDateStr: string): LotteryResult[] {
+  public getTodayResults(todayDateStr?: string): LotteryResult[] {
     const all = Array.from(this.results.values());
     if (all.length === 0) return [];
-    const todayMatches = all.filter(r => r.drawDate === todayDateStr);
+
+    const targetDate = todayDateStr || new Date().toISOString().split('T')[0];
+    const todayMatches = all.filter(r => r.drawDate === targetDate);
     if (todayMatches.length > 0) return todayMatches;
-    // If no exact match for today's date, return the most recent date draws
+
+    // Fall back to most recent date in store
     const latestDate = all.map(r => r.drawDate).sort().reverse()[0];
     return all.filter(r => r.drawDate === latestDate);
   }
@@ -96,6 +138,10 @@ export class LotteryStore {
     return Array.from(this.results.values())
       .sort((a, b) => b.drawDate.localeCompare(a.drawDate) || (b.publishedTime || '').localeCompare(a.publishedTime || ''))
       .slice(0, limit);
+  }
+
+  public getResultById(id: string): LotteryResult | undefined {
+    return this.results.get(id);
   }
 
   public getAllStates(): LotteryState[] {
@@ -119,7 +165,6 @@ export class LotteryStore {
     const checkedAt = new Date().toISOString();
     const matchedDraws: TicketCheckResult['matchedDraws'] = [];
 
-    // Extract digits only and possible series prefix
     const matchSeries = cleanNum.match(/^([A-Z]+)(\d+)$/);
     let seriesInput = '';
     let numberDigits = cleanNum;
@@ -135,7 +180,6 @@ export class LotteryStore {
     for (const draw of drawsToCheck) {
       const matchedPrizes: TicketCheckResult['matchedDraws'][0]['matchedPrizes'] = [];
 
-      // Check 1st prize
       const firstPrizeTicket = draw.firstPrize.winningTicket.replace(/\s+/g, '').toUpperCase();
       const firstPrizeNumOnly = draw.firstPrize.numberOnly.replace(/\s+/g, '');
       const firstPrizeSeries = draw.firstPrize.series?.toUpperCase() || '';
@@ -148,7 +192,6 @@ export class LotteryStore {
           winningNumberMatched: draw.firstPrize.winningTicket
         });
       } else if (numberDigits === firstPrizeNumOnly && draw.consolationPrizes) {
-        // Consolation match
         matchedPrizes.push({
           tierName: 'Consolation Prize',
           prizeAmountFormatted: draw.consolationPrizes.amountFormatted,
@@ -157,13 +200,11 @@ export class LotteryStore {
         });
       }
 
-      // Check remaining prize tiers (last 4 digits, last 5 digits, exact ticket)
       for (const tier of draw.prizes) {
-        if (tier.rank === 1) continue; // already checked
+        if (tier.rank === 1) continue;
 
         for (const winNum of tier.winningNumbers) {
           const cleanWinNum = winNum.replace(/\s+/g, '').toUpperCase();
-          
           if (cleanNum === cleanWinNum) {
             matchedPrizes.push({
               tierName: tier.tierName,
@@ -210,8 +251,6 @@ export class LotteryStore {
 
   public getStatistics(): StatisticsOverview {
     const all = Array.from(this.results.values());
-    
-    // Count draws per state
     const stateMap = new Map<string, number>();
     for (const r of all) {
       stateMap.set(r.stateCode, (stateMap.get(r.stateCode) || 0) + 1);
@@ -226,7 +265,6 @@ export class LotteryStore {
       };
     });
 
-    // Last digit frequency analysis across all winning numbers
     const digitCounts: Record<string, number> = {
       '0': 0, '1': 0, '2': 0, '3': 0, '4': 0, '5': 0, '6': 0, '7': 0, '8': 0, '9': 0
     };
@@ -266,17 +304,6 @@ export class LotteryStore {
       stateResultCounts
     };
   }
-
-  // --- SEEDING METHODOLOGIES ---
-  private seedStates() {
-    for (const st of INDIAN_LOTTERY_STATES) {
-      this.states.set(st.code, st);
-    }
-  }
-
-  private seedSchemes() {
-    for (const sc of INDIAN_LOTTERY_SCHEMES) {
-      this.schemes.set(sc.id, sc);
-    }
-  }
 }
+
+export const clientStore = new ClientLotteryStore();
