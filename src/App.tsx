@@ -54,6 +54,16 @@ export default function App() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
+  // GA4 Page View Tracking
+  useEffect(() => {
+    if (typeof (window as any).gtag === 'function') {
+      const fullPath = currentPath + (searchParam ? `?q=${encodeURIComponent(searchParam)}` : '');
+      (window as any).gtag('config', 'G-RWNQ4E8577', {
+        page_path: fullPath,
+      });
+    }
+  }, [currentPath, searchParam]);
+
   const navigateTo = (path: string) => {
     let cleanPath = path;
     let queryParam = '';
