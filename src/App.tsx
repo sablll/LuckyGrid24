@@ -15,6 +15,7 @@ import { StatisticsPage } from './pages/StatisticsPage';
 import { AdminIngestionPage } from './pages/AdminIngestionPage';
 import { AboutPage } from './pages/AboutPage';
 import { DisclaimerPage } from './pages/DisclaimerPage';
+import { ContactPage } from './pages/ContactPage';
 
 export default function App() {
   const [currentPath, setCurrentPath] = useState<string>(() => {
@@ -108,6 +109,7 @@ export default function App() {
           <LatestResultsPage
             onSelectDraw={(id) => navigateTo(`/results/${id}`)}
             onOpenChecker={() => handleOpenCheckerForDraw()}
+            onCheckTicket={(id) => handleOpenCheckerForDraw(id)}
           />
         );
 
@@ -145,6 +147,9 @@ export default function App() {
 
       case '/disclaimer':
         return <DisclaimerPage />;
+
+      case '/contact':
+        return <ContactPage />;
 
       case '/':
       default:

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { X, Search, Trophy, CheckCircle2, AlertCircle, Sparkles, RefreshCw } from 'lucide-react';
+import { X, Search, Trophy, CheckCircle2, AlertCircle, RefreshCw, ShieldCheck, FileCheck } from 'lucide-react';
 import { checkTicket } from '../../services/api';
 import { TicketCheckResult } from '../../types/lottery';
-import { WinningNumberPill } from '../common/WinningNumberPill';
 
 interface TicketCheckerModalProps {
   isOpen: boolean;
@@ -19,6 +18,7 @@ export const TicketCheckerModal: React.FC<TicketCheckerModalProps> = ({
 }) => {
   const [ticketInput, setTicketInput] = useState('');
   const [stateCode, setStateCode] = useState('');
+  const [targetSpecificDraw, setTargetSpecificDraw] = useState(true);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<TicketCheckResult | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -27,8 +27,9 @@ export const TicketCheckerModal: React.FC<TicketCheckerModalProps> = ({
     if (isOpen) {
       setError(null);
       setResult(null);
+      setTargetSpecificDraw(Boolean(initialDrawId));
     }
-  }, [isOpen]);
+  }, [isOpen, initialDrawId]);
 
   if (!isOpen) return null;
 
@@ -43,7 +44,11 @@ export const TicketCheckerModal: React.FC<TicketCheckerModalProps> = ({
     setLoading(true);
     setError(null);
     try {
-      const resp = await checkTicket(clean, stateCode || undefined, initialDrawId);
+      const resp = await checkTicket(
+        clean,
+        stateCode || undefined,
+        targetSpecificDraw && initialDrawId ? initialDrawId : undefined
+      );
       setResult(resp.data);
     } catch (err: any) {
       setError(err.message || 'Failed to check ticket against database.');
@@ -55,15 +60,19 @@ export const TicketCheckerModal: React.FC<TicketCheckerModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/60 backdrop-blur-xs animate-in fade-in duration-150">
       <div className="bg-white border border-stone-300 rounded-2xl w-full max-w-xl overflow-hidden shadow-2xl">
-        {/* Header */}
+        {/* Modal Header */}
         <div className="flex items-center justify-between p-5 border-b border-stone-200 bg-stone-50/80">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-stone-900 flex items-center justify-center text-white font-editorial-serif text-sm font-bold">
               IL
             </div>
             <div>
-              <h3 className="text-base font-bold text-stone-950 font-editorial-serif">Ticket Number Verification</h3>
-              <p className="text-xs text-stone-500">Cross-reference your ticket against authorized draw gazettes</p>
+              <h3 className="text-base font-bold text-stone-950 font-editorial-serif">
+                Verify Ticket
+              </h3>
+              <p className="text-xs text-stone-500">
+                Cross-reference your ticket against verified draw results
+              </p>
             </div>
           </div>
           <button
@@ -74,16 +83,32 @@ export const TicketCheckerModal: React.FC<TicketCheckerModalProps> = ({
           </button>
         </div>
 
-        {/* Search Input Form */}
+        {/* Input Form */}
         <form onSubmit={handleCheck} className="p-6 space-y-4">
+          {initialDrawId && targetSpecificDraw && (
+            <div className="p-3 bg-stone-100 border border-stone-300 rounded-xl flex items-center justify-between text-xs text-stone-700">
+              <div className="flex items-center gap-2">
+                <FileCheck className="w-4 h-4 text-emerald-800 shrink-0" />
+                <span>Checking against selected draw record</span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setTargetSpecificDraw(false)}
+                className="text-stone-900 underline font-semibold text-[11px] hover:text-stone-700"
+              >
+                Search all draws
+              </button>
+            </div>
+          )}
+
           <div className="space-y-1.5">
             <label className="text-xs font-semibold text-stone-800">
-              Enter Your Ticket Number (With or without series)
+              Enter Ticket Number (e.g. KL 123456 or last 4 digits)
             </label>
             <div className="relative">
               <input
                 type="text"
-                placeholder="e.g. AB 123456, 123456, 1234"
+                placeholder="e.g. AB 123456 or 1234"
                 value={ticketInput}
                 onChange={(e) => setTicketInput(e.target.value)}
                 className="w-full bg-stone-50 border border-stone-300 rounded-xl px-4 py-3 text-sm font-mono-code text-stone-900 placeholder:text-stone-400 focus:outline-none focus:bg-white focus:border-stone-900 focus:ring-1 focus:ring-stone-900 uppercase transition-all"
@@ -91,7 +116,7 @@ export const TicketCheckerModal: React.FC<TicketCheckerModalProps> = ({
               />
             </div>
             <p className="text-[11px] text-stone-500">
-              Tip: You can enter full ticket series and number or 4/5 digits for lower tier prize matching.
+              Supports full ticket code with series or last 4 digits for tier prizes.
             </p>
           </div>
 
@@ -118,12 +143,12 @@ export const TicketCheckerModal: React.FC<TicketCheckerModalProps> = ({
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full h-[38px] flex items-center justify-center gap-2 bg-stone-900 hover:bg-stone-800 disabled:bg-stone-300 text-white text-xs font-semibold uppercase tracking-wider rounded-lg transition-colors shadow-xs"
+                className="w-full h-[38px] flex items-center justify-center gap-2 bg-stone-900 hover:bg-stone-800 disabled:bg-stone-300 text-white text-xs font-bold uppercase tracking-wider rounded-lg transition-colors shadow-xs font-mono-code"
               >
                 {loading ? (
                   <>
                     <RefreshCw className="w-4 h-4 animate-spin" />
-                    Verifying Archive...
+                    Verifying...
                   </>
                 ) : (
                   <>
@@ -163,7 +188,7 @@ export const TicketCheckerModal: React.FC<TicketCheckerModalProps> = ({
                 </div>
                 <p className="text-sm font-bold text-stone-950 font-editorial-serif">No Prize Match Found</p>
                 <p className="text-xs text-stone-500 max-w-sm mx-auto">
-                  Ticket <span className="font-mono-code text-stone-800">{result.ticketNumber}</span> does not match winning numbers for the verified draws. Always verify your original physical ticket with the official state gazette.
+                  Ticket <span className="font-mono-code text-stone-800">{result.ticketNumber}</span> does not match winning numbers for verified draws in this archive. Always verify original physical tickets with the official government gazette.
                 </p>
               </div>
             ) : (

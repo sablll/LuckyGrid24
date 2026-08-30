@@ -11,9 +11,10 @@ import { Search, Filter, LayoutGrid, List, Sparkles, RefreshCw, Printer, ShieldC
 interface LatestResultsPageProps {
   onSelectDraw: (drawId: string) => void;
   onOpenChecker: () => void;
+  onCheckTicket?: (drawId: string) => void;
 }
 
-export const LatestResultsPage: React.FC<LatestResultsPageProps> = ({ onSelectDraw, onOpenChecker }) => {
+export const LatestResultsPage: React.FC<LatestResultsPageProps> = ({ onSelectDraw, onOpenChecker, onCheckTicket }) => {
   const [results, setResults] = useState<LotteryResult[]>([]);
   const [loading, setLoading] = useState(true);
   const [syncing, setSyncing] = useState(false);
@@ -204,7 +205,7 @@ export const LatestResultsPage: React.FC<LatestResultsPageProps> = ({ onSelectDr
               key={res.id}
               result={res}
               onViewDetails={onSelectDraw}
-              onCheckTicket={onSelectDraw}
+              onCheckTicket={onCheckTicket || onSelectDraw}
             />
           ))}
         </div>
