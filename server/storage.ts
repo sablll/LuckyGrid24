@@ -4,6 +4,7 @@ import {
   INDIAN_LOTTERY_SCHEMES,
   getUpcomingDrawsList
 } from '../src/data/lotteryReferenceData';
+import { getVerifiedBaselineResults } from '../src/data/verifiedLotteryResults';
 
 export class LotteryStore {
   private results: Map<string, LotteryResult> = new Map();
@@ -13,6 +14,7 @@ export class LotteryStore {
   constructor() {
     this.seedStates();
     this.seedSchemes();
+    this.seedBaselineResults();
   }
 
   public hasResult(id: string): boolean {
@@ -126,18 +128,24 @@ export class LotteryStore {
 
   public getStateByCode(codeOrSlug: string): LotteryState | undefined {
     if (!codeOrSlug) return undefined;
+    const raw = codeOrSlug.trim().toUpperCase();
     const clean = codeOrSlug.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
     
     // Direct code lookup
-    const byCode = this.states.get(codeOrSlug.trim().toUpperCase());
+    const byCode = this.states.get(raw);
     if (byCode) return byCode;
 
     // Search by code, name, shortName, or sanitized slug
     for (const state of this.states.values()) {
+      const stateNameClean = state.name.toLowerCase().replace(/[^a-z0-9]/g, '');
+      const stateShortClean = state.shortName.toLowerCase().replace(/[^a-z0-9]/g, '');
       if (
+        state.code.toUpperCase() === raw ||
         state.code.toLowerCase() === clean ||
-        state.name.toLowerCase().replace(/[^a-z0-9]/g, '') === clean ||
-        state.shortName.toLowerCase().replace(/[^a-z0-9]/g, '') === clean
+        stateNameClean === clean ||
+        stateShortClean === clean ||
+        stateNameClean.startsWith(clean) ||
+        clean.startsWith(stateNameClean)
       ) {
         return state;
       }
@@ -319,6 +327,13 @@ export class LotteryStore {
   private seedSchemes() {
     for (const sc of INDIAN_LOTTERY_SCHEMES) {
       this.schemes.set(sc.id, sc);
+    }
+  }
+
+  private seedBaselineResults() {
+    const baseline = getVerifiedBaselineResults();
+    for (const res of baseline) {
+      this.saveResult(res);
     }
   }
 }

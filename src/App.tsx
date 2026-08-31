@@ -102,7 +102,7 @@ export default function App() {
 
     // State Detail Route: /states/:stateCode
     if (currentPath.startsWith('/states/') && currentPath !== '/states') {
-      const stateCode = currentPath.replace('/states/', '').toUpperCase();
+      const stateCode = currentPath.replace('/states/', '');
       return (
         <StateDetailPage
           stateCode={stateCode}

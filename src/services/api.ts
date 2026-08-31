@@ -144,8 +144,20 @@ export async function fetchStateDetail(code: string): Promise<{
   }>(`${BASE_URL}/states/${encodeURIComponent(code)}`);
 
   if (remote && remote.data?.state) {
-    if (remote.data.recentDraws) {
+    if (remote.data.recentDraws && remote.data.recentDraws.length > 0) {
       clientStore.saveResults(remote.data.recentDraws);
+      return remote;
+    }
+    // If backend returned state but 0 recentDraws, supplement with client store verified baseline draws
+    const local = clientStore.getAllResults({ stateCode: remote.data.state.code, limit: 10 });
+    if (local.results.length > 0) {
+      return {
+        data: {
+          state: remote.data.state,
+          schemes: remote.data.schemes && remote.data.schemes.length > 0 ? remote.data.schemes : clientStore.getSchemesByState(remote.data.state.code),
+          recentDraws: local.results
+        }
+      };
     }
     return remote;
   }

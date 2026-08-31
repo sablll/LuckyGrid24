@@ -11,6 +11,7 @@ import {
   INDIAN_LOTTERY_SCHEMES,
   getUpcomingDrawsList
 } from '../data/lotteryReferenceData';
+import { getVerifiedBaselineResults } from '../data/verifiedLotteryResults';
 
 const LOCAL_STORAGE_KEY = 'india_lottery_results_cache_v1';
 
@@ -21,6 +22,7 @@ export class ClientLotteryStore {
 
   constructor() {
     this.initStatesAndSchemes();
+    this.seedBaselineResults();
     this.loadFromLocalStorage();
   }
 
@@ -30,6 +32,15 @@ export class ClientLotteryStore {
     }
     for (const sc of INDIAN_LOTTERY_SCHEMES) {
       this.schemes.set(sc.id, sc);
+    }
+  }
+
+  private seedBaselineResults() {
+    const baseline = getVerifiedBaselineResults();
+    for (const res of baseline) {
+      if (res && res.id) {
+        this.results.set(res.id, res);
+      }
     }
   }
 
@@ -172,18 +183,24 @@ export class ClientLotteryStore {
 
   public getStateByCode(codeOrSlug: string): LotteryState | undefined {
     if (!codeOrSlug) return undefined;
+    const raw = codeOrSlug.trim().toUpperCase();
     const clean = codeOrSlug.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
 
     // Direct code lookup
-    const byCode = this.states.get(codeOrSlug.trim().toUpperCase());
+    const byCode = this.states.get(raw);
     if (byCode) return byCode;
 
     // Search by code, name, shortName, or sanitized slug
     for (const state of this.states.values()) {
+      const stateNameClean = state.name.toLowerCase().replace(/[^a-z0-9]/g, '');
+      const stateShortClean = state.shortName.toLowerCase().replace(/[^a-z0-9]/g, '');
       if (
+        state.code.toUpperCase() === raw ||
         state.code.toLowerCase() === clean ||
-        state.name.toLowerCase().replace(/[^a-z0-9]/g, '') === clean ||
-        state.shortName.toLowerCase().replace(/[^a-z0-9]/g, '') === clean
+        stateNameClean === clean ||
+        stateShortClean === clean ||
+        stateNameClean.startsWith(clean) ||
+        clean.startsWith(stateNameClean)
       ) {
         return state;
       }
