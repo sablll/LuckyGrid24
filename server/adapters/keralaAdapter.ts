@@ -351,6 +351,26 @@ export class KeralaLotteryAdapter extends BaseLotteryAdapter {
         });
       }
 
+      // Extract official result gazette image from post if available
+      let officialResultImage: string | undefined = undefined;
+      const imgRegex = /<img[^>]+src=["'](https?:\/\/[^"']+)["'][^>]*>/gi;
+      let imgMatch: RegExpExecArray | null;
+      while ((imgMatch = imgRegex.exec(html)) !== null) {
+        const src = imgMatch[1];
+        if (
+          (src.includes('blogger.googleusercontent.com') ||
+            src.includes('bp.blogspot.com') ||
+            src.includes('keralalotteries') ||
+            src.includes('keralalotteryresult')) &&
+          !src.includes('Logo.png') &&
+          !src.includes('icon') &&
+          !src.includes('headerimg')
+        ) {
+          officialResultImage = src;
+          break;
+        }
+      }
+
       const ticketSeries = firstPrize.ticket.split(' ')[0] || '';
       const ticketNumber = firstPrize.ticket.split(' ')[1] || firstPrize.ticket;
 
@@ -373,12 +393,14 @@ export class KeralaLotteryAdapter extends BaseLotteryAdapter {
           numberOnly: ticketNumber,
         },
         prizes: prizeTiers,
+        officialResultImage: officialResultImage || undefined,
         officialSource: {
           sourceName: 'Directorate of Kerala State Lotteries / Official Gazette Publication',
           sourceUrl: url,
           gazetteNotificationNo: `KL-DIR-LOTIS/${drawNo}/${drawDate}`,
           verified: true,
-          directorateName: this.officialDirectorate
+          directorateName: this.officialDirectorate,
+          officialImageUrl: officialResultImage || undefined
         },
         publishedTime: `${drawDate}T15:30:00+05:30`,
         lastUpdatedTime: new Date().toISOString(),

@@ -4,7 +4,7 @@ interface WinningNumberPillProps {
   number: string;
   isFirstPrize?: boolean;
   isConsolation?: boolean;
-  highlightDigits?: number; // e.g. 4 for 4-digit tier
+  highlightDigits?: number;
   size?: 'sm' | 'md' | 'lg' | 'xl';
   showSeries?: boolean;
 }
@@ -28,13 +28,13 @@ export const WinningNumberPill: React.FC<WinningNumberPillProps> = ({
 
   if (isFirstPrize) {
     return (
-      <div className="inline-flex items-center gap-2.5 bg-amber-50 border border-amber-300 rounded-xl px-4 py-2 text-amber-950 shadow-xs">
+      <div className="inline-flex items-center gap-2 bg-blue-50 border-2 border-blue-600 rounded-lg px-4 py-2 text-blue-950 shadow-xs">
         {series && showSeries && (
-          <span className="font-mono-code text-xs font-bold bg-amber-200/80 text-amber-900 px-2 py-0.5 rounded border border-amber-300 uppercase">
+          <span className="font-mono-code text-xs sm:text-sm font-extrabold bg-blue-600 text-white px-2.5 py-1 rounded uppercase">
             {series}
           </span>
         )}
-        <span className="font-mono-code text-xl sm:text-2xl font-bold tracking-widest text-amber-950">
+        <span className="font-mono-code text-2xl sm:text-3xl font-black tracking-widest text-blue-900">
           {digits}
         </span>
       </div>
@@ -43,7 +43,7 @@ export const WinningNumberPill: React.FC<WinningNumberPillProps> = ({
 
   if (isConsolation) {
     return (
-      <span className="inline-flex items-center font-mono-code text-xs sm:text-sm font-semibold bg-stone-100 text-stone-800 border border-stone-300 px-2.5 py-1 rounded-md">
+      <span className="inline-flex items-center font-mono-code text-xs sm:text-sm font-bold bg-slate-100 text-slate-800 border border-slate-300 px-2.5 py-1 rounded">
         {number}
       </span>
     );
@@ -51,13 +51,13 @@ export const WinningNumberPill: React.FC<WinningNumberPillProps> = ({
 
   const sizeClasses = {
     sm: 'text-xs px-2 py-0.5',
-    md: 'text-sm px-2.5 py-1',
+    md: 'text-sm px-2.5 py-1 font-bold',
     lg: 'text-base px-3 py-1.5 font-bold',
-    xl: 'text-lg px-4 py-2 font-bold'
+    xl: 'text-xl px-4 py-2 font-black'
   };
 
   return (
-    <span className={`inline-flex items-center justify-center font-mono-code font-semibold bg-stone-50 text-stone-900 border border-stone-200 rounded-md tracking-wider hover:border-stone-400 transition-colors shadow-2xs ${sizeClasses[size]}`}>
+    <span className={`inline-flex items-center justify-center font-mono-code font-bold bg-white text-slate-900 border border-slate-300 hover:border-blue-500 rounded tracking-wider transition-colors shadow-2xs ${sizeClasses[size]}`}>
       {number}
     </span>
   );

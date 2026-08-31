@@ -19,7 +19,12 @@ export class IngestionEngine {
   private existingResultChecker?: (resultId: string) => boolean;
   private keralaAdapter: KeralaLotteryAdapter;
 
-  constructor() {
+  constructor(
+    onResultsIngested?: (results: LotteryResult[]) => void,
+    existingResultChecker?: (resultId: string) => boolean
+  ) {
+    this.onResultsIngested = onResultsIngested;
+    this.existingResultChecker = existingResultChecker;
     this.keralaAdapter = new KeralaLotteryAdapter();
     this.registerDefaultAdapters();
   }

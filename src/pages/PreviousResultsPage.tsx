@@ -12,8 +12,6 @@ import {
   Search,
   RotateCcw,
   History,
-  ArrowUpDown,
-  Download,
   Printer
 } from 'lucide-react';
 
@@ -88,39 +86,39 @@ export const PreviousResultsPage: React.FC<PreviousResultsPageProps> = ({
       />
 
       {/* Page Header */}
-      <div className="pb-6 border-b border-stone-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="pb-6 border-b-2 border-blue-600 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <History className="w-6 h-6 text-stone-700" />
-            <h1 className="text-2xl sm:text-4xl font-bold text-stone-950 font-editorial-serif tracking-tight">
-              Historical Results Archive
+            <History className="w-6 h-6 text-blue-600" />
+            <h1 className="text-2xl sm:text-4xl font-black text-blue-900 tracking-tight uppercase">
+              Previous Results Archive
             </h1>
           </div>
-          <p className="text-xs sm:text-sm text-stone-500 mt-1">
+          <p className="text-xs sm:text-sm text-slate-600 font-semibold mt-1">
             Search and filter past lottery results across Indian states by date, draw number, or scheme.
           </p>
         </div>
 
         <button
           onClick={() => window.print()}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-stone-700 bg-white hover:bg-stone-100 border border-stone-300 transition-colors self-start sm:self-auto shadow-2xs no-print"
+          className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-bold text-slate-700 bg-white hover:bg-slate-50 border border-slate-300 transition-colors self-start sm:self-auto shadow-2xs no-print cursor-pointer"
         >
-          <Printer className="w-3.5 h-3.5" />
-          Print Archive
+          <Printer className="w-3.5 h-3.5 text-blue-600" />
+          <span>Print Archive</span>
         </button>
       </div>
 
       {/* Comprehensive Filter Form */}
-      <form onSubmit={handleSearch} className="bg-white border border-stone-200 rounded-2xl p-5 sm:p-6 space-y-4 no-print shadow-xs">
-        <div className="flex items-center justify-between pb-3 border-b border-stone-100">
-          <span className="text-xs font-bold uppercase tracking-wider text-stone-800 flex items-center gap-1.5 font-mono-code">
-            <Filter className="w-4 h-4 text-stone-600" />
+      <form onSubmit={handleSearch} className="bg-white border-2 border-slate-200 rounded-lg p-5 sm:p-6 space-y-4 no-print shadow-xs">
+        <div className="flex items-center justify-between pb-3 border-b border-slate-200">
+          <span className="text-xs font-black uppercase tracking-wider text-blue-900 flex items-center gap-1.5">
+            <Filter className="w-4 h-4 text-blue-600" />
             Archive Filters
           </span>
           <button
             type="button"
             onClick={handleReset}
-            className="text-xs text-stone-500 hover:text-stone-900 flex items-center gap-1 transition-colors font-mono-code"
+            className="text-xs text-blue-700 hover:text-blue-900 font-bold flex items-center gap-1 transition-colors cursor-pointer"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             Reset Filters
@@ -130,14 +128,14 @@ export const PreviousResultsPage: React.FC<PreviousResultsPageProps> = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {/* State Filter */}
           <div>
-            <label className="text-xs font-medium text-stone-600 mb-1 block">State / Region</label>
+            <label className="text-xs font-bold text-slate-700 mb-1 block">State / Region</label>
             <select
               value={stateCode}
               onChange={(e) => {
                 setStateCode(e.target.value);
                 setPage(0);
               }}
-              className="w-full bg-stone-50 border border-stone-300 rounded-lg px-3 py-2 text-xs text-stone-900 focus:outline-none focus:bg-white focus:border-stone-900"
+              className="w-full bg-white border-2 border-slate-300 rounded-lg px-3 py-2 text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none focus:border-blue-600"
             >
               <option value="">All States</option>
               <option value="KL">Kerala</option>
@@ -152,7 +150,7 @@ export const PreviousResultsPage: React.FC<PreviousResultsPageProps> = ({
 
           {/* Date From */}
           <div>
-            <label className="text-xs font-medium text-stone-600 mb-1 block">From Date</label>
+            <label className="text-xs font-bold text-slate-700 mb-1 block">From Date</label>
             <input
               type="date"
               value={dateFrom}
@@ -160,13 +158,13 @@ export const PreviousResultsPage: React.FC<PreviousResultsPageProps> = ({
                 setDateFrom(e.target.value);
                 setPage(0);
               }}
-              className="w-full bg-stone-50 border border-stone-300 rounded-lg px-3 py-2 text-xs text-stone-900 focus:outline-none focus:bg-white focus:border-stone-900"
+              className="w-full bg-white border-2 border-slate-300 rounded-lg px-3 py-2 text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none focus:border-blue-600"
             />
           </div>
 
           {/* Date To */}
           <div>
-            <label className="text-xs font-medium text-stone-600 mb-1 block">To Date</label>
+            <label className="text-xs font-bold text-slate-700 mb-1 block">To Date</label>
             <input
               type="date"
               value={dateTo}
@@ -174,24 +172,24 @@ export const PreviousResultsPage: React.FC<PreviousResultsPageProps> = ({
                 setDateTo(e.target.value);
                 setPage(0);
               }}
-              className="w-full bg-stone-50 border border-stone-300 rounded-lg px-3 py-2 text-xs text-stone-900 focus:outline-none focus:bg-white focus:border-stone-900"
+              className="w-full bg-white border-2 border-slate-300 rounded-lg px-3 py-2 text-xs sm:text-sm font-semibold text-slate-900 focus:outline-none focus:border-blue-600"
             />
           </div>
 
           {/* Draw No / Keyword */}
           <div>
-            <label className="text-xs font-medium text-stone-600 mb-1 block">Draw Number / Scheme</label>
+            <label className="text-xs font-bold text-slate-700 mb-1 block">Scheme / Draw Number</label>
             <div className="flex gap-2">
               <input
                 type="text"
-                placeholder="e.g. FF-128 or Sandpiper"
+                placeholder="e.g. Fifty Fifty or 128"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-stone-50 border border-stone-300 rounded-lg px-3 py-2 text-xs text-stone-900 placeholder:text-stone-400 focus:outline-none focus:bg-white focus:border-stone-900"
+                className="w-full bg-white border-2 border-slate-300 rounded-lg px-3 py-2 text-xs sm:text-sm text-slate-900 font-semibold placeholder:text-slate-400 focus:outline-none focus:border-blue-600"
               />
               <button
                 type="submit"
-                className="bg-stone-900 hover:bg-stone-800 text-white px-3.5 py-2 rounded-lg text-xs font-bold transition-colors shadow-2xs"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-xs font-extrabold uppercase transition-colors shadow-2xs cursor-pointer"
               >
                 Search
               </button>
@@ -201,8 +199,8 @@ export const PreviousResultsPage: React.FC<PreviousResultsPageProps> = ({
       </form>
 
       {/* Results Presentation */}
-      <div className="flex items-center justify-between text-xs text-stone-500 font-mono-code">
-        <span>Showing <strong className="text-stone-900">{results.length}</strong> of <strong className="text-stone-900">{total}</strong> archived draws</span>
+      <div className="flex items-center justify-between text-xs text-slate-600 font-bold">
+        <span>Showing <strong className="text-blue-900">{results.length}</strong> of <strong className="text-blue-900">{total}</strong> archived draws</span>
       </div>
 
       {loading ? (
@@ -216,7 +214,7 @@ export const PreviousResultsPage: React.FC<PreviousResultsPageProps> = ({
           onReset={handleReset}
         />
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {results.map(res => (
             <LotteryCard
               key={res.id}
@@ -230,21 +228,21 @@ export const PreviousResultsPage: React.FC<PreviousResultsPageProps> = ({
 
       {/* Pagination Bar */}
       {total > limit && (
-        <div className="flex items-center justify-center gap-2 pt-6 border-t border-stone-200 no-print">
+        <div className="flex items-center justify-center gap-2 pt-6 border-t border-slate-200 no-print">
           <button
             onClick={() => setPage(Math.max(0, page - 1))}
             disabled={page === 0}
-            className="px-4 py-2 bg-white border border-stone-300 disabled:opacity-40 rounded-lg text-xs font-medium text-stone-700 hover:text-stone-900 hover:bg-stone-50 transition-colors shadow-2xs"
+            className="px-4 py-2 bg-white border-2 border-slate-300 disabled:opacity-40 rounded-lg text-xs font-extrabold text-slate-700 hover:text-blue-700 hover:bg-blue-50 transition-colors shadow-2xs cursor-pointer"
           >
             Previous Page
           </button>
-          <span className="text-xs text-stone-600 px-3 font-mono-code">
+          <span className="text-xs text-slate-700 px-3 font-bold font-mono-code">
             Page {page + 1} of {Math.ceil(total / limit)}
           </span>
           <button
             onClick={() => setPage(page + 1)}
             disabled={(page + 1) * limit >= total}
-            className="px-4 py-2 bg-white border border-stone-300 disabled:opacity-40 rounded-lg text-xs font-medium text-stone-700 hover:text-stone-900 hover:bg-stone-50 transition-colors shadow-2xs"
+            className="px-4 py-2 bg-white border-2 border-slate-300 disabled:opacity-40 rounded-lg text-xs font-extrabold text-slate-700 hover:text-blue-700 hover:bg-blue-50 transition-colors shadow-2xs cursor-pointer"
           >
             Next Page
           </button>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { LotteryState } from '../../types/lottery';
-import { Building2, ArrowRight, ShieldCheck, CheckCircle, ExternalLink } from 'lucide-react';
+import { Building2, ArrowRight, ShieldCheck } from 'lucide-react';
 
 interface StateCardsSectionProps {
   states: LotteryState[];
@@ -15,24 +15,24 @@ export const StateCardsSection: React.FC<StateCardsSectionProps> = ({
 }) => {
   return (
     <section className="my-12">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-3 border-b border-stone-200">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-3 border-b-2 border-blue-600">
         <div>
           <div className="flex items-center gap-2">
-            <Building2 className="w-5 h-5 text-stone-700" />
-            <h2 className="text-2xl sm:text-3xl font-bold text-stone-950 font-editorial-serif tracking-tight">
-              State-Wise Lottery Directorates
+            <Building2 className="w-6 h-6 text-blue-600" />
+            <h2 className="text-2xl sm:text-3xl font-black text-blue-900 tracking-tight uppercase">
+              State Lottery Information
             </h2>
           </div>
-          <p className="text-xs sm:text-sm text-stone-500 mt-1">
-            Directory of 13 Indian states with authorized, regulated government lottery operations.
+          <p className="text-xs sm:text-sm text-slate-600 mt-1 font-semibold">
+            Directory of legal, government-run state lotteries operating under Central Act 39 of 1998.
           </p>
         </div>
 
         <button
           onClick={onViewAllStates}
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-stone-900 hover:text-stone-700 self-start sm:self-auto transition-colors font-mono-code uppercase tracking-wider"
+          className="inline-flex items-center gap-1.5 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-extrabold rounded-lg shadow-xs transition-colors uppercase tracking-wider self-start sm:self-auto cursor-pointer"
         >
-          View All Legal States Guide
+          <span>View All State Guides</span>
           <ArrowRight className="w-4 h-4" />
         </button>
       </div>
@@ -42,53 +42,53 @@ export const StateCardsSection: React.FC<StateCardsSectionProps> = ({
           <div
             key={st.code}
             onClick={() => onSelectState(st.code)}
-            className="bg-white border border-stone-200 hover:border-stone-400 rounded-xl p-5 cursor-pointer transition-all shadow-xs hover:shadow-sm flex flex-col justify-between group"
+            className="bg-white border-2 border-slate-200 hover:border-blue-600 rounded-lg p-5 cursor-pointer transition-all shadow-xs flex flex-col justify-between group"
           >
             <div>
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-lg bg-stone-100 border border-stone-300 flex items-center justify-center font-bold text-xs text-stone-800 font-mono-code">
+                  <div className="w-9 h-9 rounded-lg bg-blue-600 text-white flex items-center justify-center font-black text-xs">
                     {st.code}
                   </div>
                   <div>
-                    <h3 className="text-base font-bold text-stone-950 font-editorial-serif group-hover:text-emerald-800 transition-colors">
+                    <h3 className="text-lg font-black text-slate-900 group-hover:text-blue-700 transition-colors">
                       {st.name}
                     </h3>
-                    <span className="text-[11px] text-stone-500 font-mono-code">Est. {st.establishedYear}</span>
+                    <span className="text-xs text-slate-500 font-medium">Est. {st.establishedYear}</span>
                   </div>
                 </div>
 
-                <span className="text-[10px] font-bold uppercase bg-stone-100 text-stone-800 px-2 py-0.5 rounded border border-stone-300 font-mono-code">
-                  Government Run
+                <span className="text-xs font-bold uppercase bg-blue-50 text-blue-900 px-2.5 py-1 rounded border border-blue-200">
+                  Govt Run
                 </span>
               </div>
 
-              <p className="text-xs text-stone-600 line-clamp-2 mb-4 leading-relaxed">
+              <p className="text-xs text-slate-600 line-clamp-2 mb-4 leading-relaxed font-medium">
                 {st.description}
               </p>
 
-              <div className="space-y-1.5 text-xs text-stone-700 bg-stone-50 p-3 rounded-lg border border-stone-200 mb-4">
-                <div className="flex justify-between text-[11px]">
-                  <span className="text-stone-500">Directorate:</span>
-                  <span className="text-stone-900 font-medium truncate max-w-[180px]">{st.directorateName}</span>
+              <div className="space-y-1.5 text-xs bg-slate-50 p-3 rounded-lg border border-slate-200 mb-4 font-semibold">
+                <div className="flex justify-between">
+                  <span className="text-slate-500">Directorate:</span>
+                  <span className="text-slate-900 font-bold truncate max-w-[180px]">{st.directorateName}</span>
                 </div>
-                <div className="flex justify-between text-[11px]">
-                  <span className="text-stone-500">Draw Timings:</span>
-                  <span className="text-stone-900 font-mono-code font-semibold">{st.drawTimings.join(', ')}</span>
+                <div className="flex justify-between">
+                  <span className="text-slate-500">Draw Times:</span>
+                  <span className="text-blue-900 font-bold font-mono-code">{st.drawTimings.join(', ')}</span>
                 </div>
-                <div className="flex justify-between text-[11px]">
-                  <span className="text-stone-500">Active Schemes:</span>
-                  <span className="text-stone-900 font-bold font-mono-code">{st.activeSchemesCount} schemes</span>
+                <div className="flex justify-between">
+                  <span className="text-slate-500">Active Schemes:</span>
+                  <span className="text-slate-900 font-bold">{st.activeSchemesCount} schemes</span>
                 </div>
               </div>
             </div>
 
-            <div className="pt-3 border-t border-stone-100 flex items-center justify-between text-xs">
-              <span className="text-stone-500 text-[11px]">
+            <div className="pt-3 border-t border-slate-200 flex items-center justify-between text-xs">
+              <span className="text-slate-500 font-medium truncate max-w-[160px]">
                 {st.popularSchemes.slice(0, 2).join(', ')}
               </span>
-              <span className="text-stone-900 font-semibold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform font-mono-code text-[11px]">
-                Explore Schemes
+              <span className="text-blue-700 font-extrabold flex items-center gap-1 group-hover:translate-x-0.5 transition-transform uppercase tracking-wide">
+                <span>View Draws</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </span>
             </div>

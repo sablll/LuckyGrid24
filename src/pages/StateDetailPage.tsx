@@ -62,43 +62,43 @@ export const StateDetailPage: React.FC<StateDetailPageProps> = ({
       {/* Back button */}
       <button
         onClick={onBack}
-        className="inline-flex items-center gap-1.5 text-xs font-semibold text-stone-600 hover:text-stone-950 transition-colors font-mono-code"
+        className="inline-flex items-center gap-2 text-sm font-extrabold text-blue-700 hover:text-blue-900 transition-colors cursor-pointer"
       >
         <ArrowLeft className="w-4 h-4" />
-        Back to All States
+        <span>Back to All States</span>
       </button>
 
       {/* State Banner Card */}
-      <div className="bg-white border border-stone-200 rounded-2xl p-6 sm:p-8 relative overflow-hidden shadow-xs">
+      <div className="bg-white border-2 border-slate-200 rounded-lg p-6 sm:p-8 relative overflow-hidden shadow-xs">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <span className="text-xs font-bold uppercase bg-stone-100 text-stone-800 px-2.5 py-0.5 rounded border border-stone-300 font-mono-code">
+              <span className="text-xs font-extrabold uppercase bg-blue-600 text-white px-3 py-1 rounded">
                 Authorized State Lottery
               </span>
-              <span className="text-xs text-stone-500 font-mono-code">Est. {state.establishedYear}</span>
+              <span className="text-xs text-slate-500 font-bold">Est. {state.establishedYear}</span>
             </div>
-            <h1 className="text-3xl sm:text-4xl font-bold text-stone-950 font-editorial-serif tracking-tight">
+            <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
               {state.name} State Lotteries
             </h1>
-            <p className="text-xs sm:text-sm text-stone-600 max-w-2xl leading-relaxed">
+            <p className="text-xs sm:text-sm text-slate-600 font-medium max-w-2xl leading-relaxed">
               {state.description}
             </p>
           </div>
 
-          <div className="bg-stone-50 border border-stone-200 rounded-xl p-4 space-y-2 text-xs text-stone-700 min-w-[260px] self-start md:self-auto">
-            <div className="text-stone-500 font-semibold uppercase text-[10px] tracking-wider font-mono-code">Directorate Details</div>
-            <div className="font-bold text-stone-950 text-xs font-editorial-serif">{state.directorateName}</div>
-            <div className="text-[11px] text-stone-500">{state.gazetteDept}</div>
-            <div className="pt-2 border-t border-stone-200">
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 space-y-2 text-xs text-slate-700 min-w-[260px] self-start md:self-auto">
+            <div className="text-blue-900 font-extrabold uppercase text-xs tracking-wider">Directorate Details</div>
+            <div className="font-bold text-slate-900 text-sm">{state.directorateName}</div>
+            <div className="text-xs text-slate-600">{state.gazetteDept}</div>
+            <div className="pt-2 border-t border-blue-200">
               <a
                 href={state.officialPortalUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-stone-900 hover:text-stone-700 font-semibold flex items-center gap-1 text-xs font-mono-code"
+                className="text-blue-700 hover:text-blue-900 font-extrabold flex items-center gap-1 text-xs"
               >
-                <ExternalLink className="w-3.5 h-3.5" />
-                Visit Official Portal
+                <ExternalLink className="w-4 h-4" />
+                Visit Official Government Portal
               </a>
             </div>
           </div>
@@ -107,33 +107,31 @@ export const StateDetailPage: React.FC<StateDetailPageProps> = ({
 
       {/* Active Schemes Section */}
       <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-xl sm:text-2xl font-bold text-stone-950 font-editorial-serif tracking-tight">
-              Active Lottery Schemes ({schemes.length})
-            </h2>
-            <p className="text-xs text-stone-500">Regular weekly, daily &amp; bumper draw formats organized by {state.name}.</p>
-          </div>
+        <div>
+          <h2 className="text-xl sm:text-2xl font-black text-blue-900 tracking-tight uppercase">
+            Active Lottery Schemes ({schemes.length})
+          </h2>
+          <p className="text-xs sm:text-sm text-slate-600 font-medium">Regular weekly, daily &amp; bumper draw formats organized by {state.name}.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {schemes.map(sc => (
-            <div key={sc.id} className="bg-white border border-stone-200 rounded-xl p-5 space-y-3 shadow-xs">
+            <div key={sc.id} className="bg-white border-2 border-slate-200 rounded-lg p-5 space-y-3 shadow-xs">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold uppercase bg-stone-100 text-stone-700 px-2 py-0.5 rounded font-mono-code border border-stone-200">
+                <span className="text-xs font-black uppercase bg-blue-50 text-blue-900 px-2.5 py-1 rounded border border-blue-200">
                   {sc.code}
                 </span>
-                <span className="text-xs font-semibold text-stone-800 bg-stone-100 px-2 py-0.5 rounded border border-stone-300 font-mono-code">
+                <span className="text-xs font-bold text-slate-800 bg-slate-100 px-2.5 py-1 rounded border border-slate-300 font-mono-code">
                   {sc.drawTime}
                 </span>
               </div>
 
-              <h3 className="text-base font-bold text-stone-950 font-editorial-serif">{sc.name}</h3>
-              <p className="text-xs text-stone-600 leading-relaxed">{sc.description}</p>
+              <h3 className="text-base font-black text-slate-900">{sc.name}</h3>
+              <p className="text-xs text-slate-600 leading-relaxed font-medium">{sc.description}</p>
 
-              <div className="pt-3 border-t border-stone-100 flex items-center justify-between text-xs font-mono-code">
-                <div className="text-amber-950 font-bold">1st: {sc.firstPrize}</div>
-                <div className="text-stone-500">Ticket: <strong className="text-stone-900">{sc.ticketPrice}</strong></div>
+              <div className="pt-3 border-t border-slate-200 flex items-center justify-between text-xs">
+                <div className="text-blue-900 font-black font-mono-code text-sm">1st: {sc.firstPrize}</div>
+                <div className="text-slate-600 font-semibold">Ticket: <strong className="text-slate-900 font-mono-code">{sc.ticketPrice}</strong></div>
               </div>
             </div>
           ))}
@@ -142,24 +140,22 @@ export const StateDetailPage: React.FC<StateDetailPageProps> = ({
 
       {/* Recent Draw Results */}
       <div className="space-y-4 pt-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-xl sm:text-2xl font-bold text-stone-950 font-editorial-serif tracking-tight">
-              Recent Verified Draw Results
-            </h2>
-            <p className="text-xs text-stone-500">Winning ticket numbers and official source archives for {state.name}.</p>
-          </div>
+        <div>
+          <h2 className="text-xl sm:text-2xl font-black text-blue-900 tracking-tight uppercase">
+            Recent Verified Draw Results
+          </h2>
+          <p className="text-xs sm:text-sm text-slate-600 font-medium">Winning ticket numbers and official source archives for {state.name}.</p>
         </div>
 
         {recentDraws.length === 0 ? (
-          <div className="p-8 bg-white border border-stone-200 rounded-xl text-center space-y-2 shadow-xs">
-            <h3 className="text-base font-bold text-stone-900 font-editorial-serif">Result unavailable from official source</h3>
-            <p className="text-xs text-stone-500 max-w-md mx-auto">
+          <div className="p-8 bg-white border-2 border-slate-200 rounded-lg text-center space-y-2 shadow-xs">
+            <h3 className="text-base font-bold text-slate-900">Result unavailable from official source</h3>
+            <p className="text-xs sm:text-sm text-slate-600 max-w-md mx-auto">
               No verified results currently available for {state.name}. Results are published exclusively when verified by official government gazettes and directorate portals.
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {recentDraws.map(res => (
               <LotteryCard
                 key={res.id}

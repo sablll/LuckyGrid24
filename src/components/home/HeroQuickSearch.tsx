@@ -1,98 +1,127 @@
 import React, { useState } from 'react';
-import { Search, Sparkles, ShieldCheck, ArrowRight, CheckCircle2, Ticket } from 'lucide-react';
+import { Search, MapPin, Sparkles, CheckCircle2, ArrowRight } from 'lucide-react';
 
 interface HeroQuickSearchProps {
-  onSearchSubmit: (query: string) => void;
-  onOpenChecker: () => void;
+  onSearch?: (query: string) => void;
+  onSearchSubmit?: (query: string) => void;
   onSelectState: (stateCode: string) => void;
+  onOpenChecker?: () => void;
 }
 
 export const HeroQuickSearch: React.FC<HeroQuickSearchProps> = ({
+  onSearch,
   onSearchSubmit,
-  onOpenChecker,
-  onSelectState
+  onSelectState,
+  onOpenChecker
 }) => {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchInput, setSearchInput] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (searchTerm.trim()) {
-      onSearchSubmit(searchTerm.trim());
+    const query = searchInput.trim();
+    if (query) {
+      if (onSearchSubmit) onSearchSubmit(query);
+      else if (onSearch) onSearch(query);
     }
   };
 
-  const quickStates = [
-    { name: 'Kerala', code: 'KL' },
-    { name: 'Nagaland (Dear)', code: 'NL' },
-    { name: 'Sikkim', code: 'SK' },
-    { name: 'Punjab', code: 'PB' },
-    { name: 'Goa', code: 'GA' }
+  const handleQuickClick = (q: string) => {
+    if (onSearchSubmit) onSearchSubmit(q);
+    else if (onSearch) onSearch(q);
+  };
+
+  // 10 Legal Indian States
+  const top10States = [
+    { code: 'KL', name: 'Kerala', draws: 'Daily 3:00 PM' },
+    { code: 'NL', name: 'Nagaland', draws: '1:00 PM, 6:00 PM, 8:00 PM' },
+    { code: 'SK', name: 'Sikkim', draws: '11:55 AM, 4:00 PM, 7:00 PM' },
+    { code: 'PB', name: 'Punjab', draws: 'Weekly & Monthly Bumpers' },
+    { code: 'GA', name: 'Goa', draws: 'Daily Multi-Draws' },
+    { code: 'MZ', name: 'Mizoram', draws: 'Daily 4:00 PM' },
+    { code: 'MH', name: 'Maharashtra', draws: 'Daily 4:00 PM' },
+    { code: 'WB', name: 'West Bengal', draws: 'Daily 4:00 PM' },
+    { code: 'AR', name: 'Arunachal Pradesh', draws: 'Daily 5:00 PM' },
+    { code: 'ML', name: 'Meghalaya', draws: 'Daily 4:30 PM' }
   ];
 
   return (
-    <div className="relative overflow-hidden rounded-2xl bg-white border border-stone-200 p-6 sm:p-10 my-6 shadow-xs">
-      <div className="relative z-10 max-w-3xl mx-auto text-center space-y-6">
-        {/* Verification Pill */}
-        <div className="inline-flex items-center gap-2 bg-stone-100 border border-stone-300 px-3.5 py-1.5 rounded-full text-xs text-stone-800">
-          <ShieldCheck className="w-4 h-4 text-emerald-800" />
-          <span className="font-semibold font-mono-code text-[11px]">My India Lottery</span>
-          <span className="text-stone-400">&bull;</span>
-          <span className="text-stone-600 font-mono-code text-[11px]">Official State Gazette Records</span>
-        </div>
-
-        {/* Hero Title */}
-        <div className="space-y-2.5">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-stone-950 font-editorial-serif tracking-tight leading-tight">
-            My India Lottery
+    <section className="bg-white border-b border-slate-200 py-8 sm:py-12">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        {/* Main Title Section */}
+        <div className="text-center space-y-2">
+          <h1 className="text-3xl sm:text-5xl font-black text-blue-900 tracking-tight uppercase">
+            MY INDIA LOTTERY
           </h1>
-          <p className="text-sm sm:text-base text-stone-600 max-w-2xl mx-auto leading-relaxed">
-            Find verified state government lottery results, draw gazettes and historical archives.
+          <p className="text-lg sm:text-2xl font-bold text-blue-600">
+            Latest Lottery Results
+          </p>
+          <p className="text-xs sm:text-sm text-slate-600 max-w-xl mx-auto pt-1 font-medium">
+            Daily winning numbers published directly from official State Government Gazettes across India.
           </p>
         </div>
 
-        {/* Quick Search Box */}
-        <form onSubmit={handleSubmit} className="max-w-xl mx-auto">
-          <div className="relative flex items-center shadow-xs">
-            <div className="absolute left-4 text-stone-400">
-              <Search className="w-5 h-5" />
+        {/* Simple Search Box */}
+        <div className="max-w-2xl mx-auto">
+          <form onSubmit={handleSearchSubmit} className="flex flex-col sm:flex-row gap-2">
+            <div className="relative flex-1">
+              <input
+                type="text"
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
+                placeholder="Search Lottery / Ticket Number"
+                className="w-full h-14 pl-4 pr-4 bg-white border-2 border-blue-600 rounded-lg text-slate-900 text-base sm:text-lg font-semibold placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-700 shadow-xs"
+              />
             </div>
-            <input
-              type="text"
-              placeholder="Search by lottery name, draw date or ticket number"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-stone-50 border border-stone-300 rounded-xl pl-12 pr-28 py-3.5 text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none focus:bg-white focus:border-stone-900 focus:ring-1 focus:ring-stone-900 font-medium transition-all"
-            />
             <button
               type="submit"
-              className="absolute right-2 bg-stone-900 hover:bg-stone-800 text-white text-xs font-semibold uppercase tracking-wider px-4 py-2 rounded-lg transition-colors shadow-xs"
+              className="h-14 px-8 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-extrabold text-base sm:text-lg rounded-lg transition-colors uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm cursor-pointer"
             >
-              Search
+              <Search className="w-5 h-5" />
+              <span>SEARCH</span>
             </button>
+          </form>
+          
+          <div className="flex items-center justify-center gap-4 mt-3 text-xs sm:text-sm font-semibold text-slate-600">
+            <span>Examples: <button type="button" onClick={() => handleQuickClick('Fifty Fifty')} className="text-blue-700 underline hover:text-blue-900">Fifty Fifty</button>, <button type="button" onClick={() => handleQuickClick('Dear')} className="text-blue-700 underline hover:text-blue-900">Dear Morning</button>, or enter ticket number like <button type="button" onClick={() => handleQuickClick('892341')} className="text-blue-700 underline hover:text-blue-900">892341</button></span>
           </div>
-        </form>
+        </div>
 
-        {/* Quick State Chips & Ticket Checker CTA */}
-        <div className="flex flex-wrap items-center justify-center gap-2 pt-2 text-xs">
-          <span className="text-stone-500 font-medium mr-1">Popular States:</span>
-          {quickStates.map(st => (
-            <button
-              key={st.code}
-              onClick={() => onSelectState(st.code)}
-              className="px-2.5 py-1 bg-stone-100 hover:bg-stone-200 border border-stone-300 text-stone-800 rounded-md transition-colors text-xs font-medium"
-            >
-              {st.name}
-            </button>
-          ))}
-          <button
-            onClick={onOpenChecker}
-            className="ml-2 inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 text-emerald-900 rounded-md transition-colors font-semibold text-xs shadow-xs"
-          >
-            <Ticket className="w-3.5 h-3.5 text-emerald-800" />
-            Verify Ticket
-          </button>
+        {/* 10 State Buttons / Cards Grid */}
+        <div className="space-y-4 pt-2">
+          <div className="flex items-center justify-between pb-2 border-b-2 border-blue-600">
+            <h2 className="text-lg sm:text-xl font-black text-blue-900 uppercase tracking-tight flex items-center gap-2">
+              <MapPin className="w-5 h-5 text-blue-600" />
+              Select State for Results
+            </h2>
+            <span className="text-xs sm:text-sm font-bold text-blue-700 bg-blue-50 px-3 py-1 rounded-md border border-blue-200">
+              10 State Lotteries
+            </span>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+            {top10States.map((state, idx) => (
+              <button
+                key={state.code}
+                onClick={() => onSelectState(state.code)}
+                className="flex flex-col items-start justify-between p-3.5 sm:p-4 rounded-lg bg-blue-50 hover:bg-blue-600 text-blue-900 hover:text-white border-2 border-blue-200 hover:border-blue-700 transition-all text-left group shadow-xs cursor-pointer"
+              >
+                <div className="flex items-center justify-between w-full mb-1">
+                  <span className="text-xs font-bold px-2 py-0.5 rounded bg-blue-200/80 group-hover:bg-blue-800 text-blue-950 group-hover:text-white transition-colors">
+                    #{idx + 1}
+                  </span>
+                  <ArrowRight className="w-4 h-4 text-blue-600 group-hover:text-white transition-transform group-hover:translate-x-0.5" />
+                </div>
+                <div className="font-black text-base sm:text-lg tracking-tight leading-tight mt-1">
+                  {state.name}
+                </div>
+                <div className="text-[11px] sm:text-xs text-blue-700 group-hover:text-blue-100 font-medium mt-1 transition-colors line-clamp-1">
+                  {state.draws}
+                </div>
+              </button>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };

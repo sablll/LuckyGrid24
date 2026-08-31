@@ -16,6 +16,7 @@ export interface OfficialSource {
   verified: boolean;
   directorateName: string;
   verificationHash?: string;
+  officialImageUrl?: string;
 }
 
 export interface LotteryResult {
@@ -43,6 +44,8 @@ export interface LotteryResult {
   };
   prizes: PrizeTier[];
   officialSource: OfficialSource;
+  officialResultImage?: string; // URL to official government result image scan
+  officialResultImageCaption?: string;
   publishedTime: string; // ISO string
   lastUpdatedTime: string; // ISO string
   isDemoData: boolean; // Must be true for test/demo dataset

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShieldCheck, AlertCircle, FileText, Globe } from 'lucide-react';
+import { ShieldCheck } from 'lucide-react';
 
 interface FooterProps {
   onNavigate: (path: string) => void;
@@ -7,20 +7,20 @@ interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   return (
-    <footer className="bg-white border-t border-stone-200 text-stone-600 text-xs mt-16 no-print">
+    <footer className="bg-white border-t-2 border-blue-600 text-slate-700 text-xs mt-16 no-print">
       {/* 18+ & Statutory Notice */}
-      <div className="bg-stone-50 border-b border-stone-200 py-3.5 px-4 sm:px-6 lg:px-8">
+      <div className="bg-blue-50 border-b border-blue-200 py-3.5 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
           <div className="flex items-center gap-2.5">
-            <span className="inline-flex items-center justify-center w-6 h-6 rounded bg-stone-200 font-bold text-stone-900 text-[11px] font-mono-code">
+            <span className="inline-flex items-center justify-center w-7 h-7 rounded bg-blue-600 font-black text-white text-xs">
               18+
             </span>
-            <p className="text-[11px] text-stone-600">
+            <p className="text-xs text-slate-800 font-bold">
               Legal Age 18+ Only. Governed by The Lotteries (Regulation) Act, 1998.
             </p>
           </div>
-          <div className="text-[11px] text-stone-500 font-mono-code">
-            Strictly Informational &bull; No Ticket Sales
+          <div className="text-xs text-blue-900 font-extrabold uppercase">
+            Informational Results Portal &bull; No Ticket Sales
           </div>
         </div>
       </div>
@@ -31,35 +31,53 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           {/* Brand and Description */}
           <div className="text-center md:text-left space-y-1">
             <div className="flex items-center justify-center md:justify-start gap-2">
-              <div className="w-6 h-6 rounded bg-stone-900 flex items-center justify-center font-editorial-serif font-bold text-white text-[10px]">
+              <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center font-black text-white text-xs">
                 MIL
               </div>
-              <span className="font-editorial-serif font-bold text-base text-stone-950">
+              <span className="font-black text-lg text-blue-900 uppercase">
                 My India Lottery
               </span>
             </div>
-            <p className="text-stone-500 text-xs">
+            <p className="text-slate-600 text-xs font-semibold">
               Verified lottery results and gazette records from official state government sources.
             </p>
           </div>
 
           {/* Simple Navigation Links */}
-          <nav className="flex flex-wrap items-center justify-center gap-6 text-xs font-semibold text-stone-700">
+          <nav className="flex flex-wrap items-center justify-center gap-6 text-xs sm:text-sm font-black text-blue-900 uppercase tracking-wider">
+            <button
+              onClick={() => onNavigate('/')}
+              className="hover:text-blue-700 transition-colors cursor-pointer"
+            >
+              Home
+            </button>
+            <button
+              onClick={() => onNavigate('/results')}
+              className="hover:text-blue-700 transition-colors cursor-pointer"
+            >
+              Results
+            </button>
+            <button
+              onClick={() => onNavigate('/states')}
+              className="hover:text-blue-700 transition-colors cursor-pointer"
+            >
+              States
+            </button>
             <button
               onClick={() => onNavigate('/about')}
-              className="hover:text-stone-950 transition-colors"
+              className="hover:text-blue-700 transition-colors cursor-pointer"
             >
               About
             </button>
             <button
               onClick={() => onNavigate('/disclaimer')}
-              className="hover:text-stone-950 transition-colors"
+              className="hover:text-blue-700 transition-colors cursor-pointer"
             >
               Disclaimer
             </button>
             <button
               onClick={() => onNavigate('/contact')}
-              className="hover:text-stone-950 transition-colors"
+              className="hover:text-blue-700 transition-colors cursor-pointer"
             >
               Contact
             </button>
@@ -67,14 +85,14 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         </div>
 
         {/* Copyright */}
-        <div className="mt-6 pt-4 border-t border-stone-100 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-stone-400">
+        <div className="mt-6 pt-4 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500 font-semibold">
           <p>&copy; {new Date().getFullYear()} My India Lottery. All rights reserved.</p>
           <div className="flex items-center gap-4">
             <a
               href="/sitemap.xml"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-stone-600 transition-colors"
+              className="hover:text-blue-700 transition-colors"
             >
               Sitemap
             </a>
@@ -83,7 +101,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               href="/robots.txt"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-stone-600 transition-colors"
+              className="hover:text-blue-700 transition-colors"
             >
               Robots.txt
             </a>

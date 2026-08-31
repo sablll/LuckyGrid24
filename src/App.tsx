@@ -174,7 +174,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FBFBF9] text-stone-900 font-sans selection:bg-stone-900 selection:text-stone-50">
+    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 font-sans selection:bg-blue-600 selection:text-white">
       {/* Global Navbar */}
       <Navbar
         currentPath={currentPath}

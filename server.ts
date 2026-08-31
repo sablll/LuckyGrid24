@@ -128,6 +128,36 @@ async function startServer() {
     });
   });
 
+  // Official Result Image Proxy / Download Endpoint
+  app.get('/api/proxy-image', async (req, res) => {
+    const imageUrl = req.query.url as string;
+    if (!imageUrl || !/^https?:\/\//i.test(imageUrl)) {
+      return res.status(400).json({ error: 'Valid image URL is required' });
+    }
+    try {
+      const response = await fetch(imageUrl, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        },
+        signal: AbortSignal.timeout(12000)
+      });
+      if (!response.ok) {
+        return res.status(response.status).json({ error: 'Failed to fetch image from official government source' });
+      }
+      const contentType = response.headers.get('content-type') || 'image/jpeg';
+      const buffer = await response.arrayBuffer();
+      res.setHeader('Content-Type', contentType);
+      res.setHeader('Cache-Control', 'public, max-age=86400');
+      if (req.query.download === 'true') {
+        const filename = (req.query.filename as string) || 'official-lottery-result.jpg';
+        res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+      }
+      res.send(Buffer.from(buffer));
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || 'Image proxy error' });
+    }
+  });
+
   // 1. Get results with search, filter, pagination
   app.get('/api/results', (req, res) => {
     const { state, scheme, dateFrom, dateTo, q, limit, offset } = req.query;

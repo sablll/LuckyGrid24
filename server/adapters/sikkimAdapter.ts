@@ -149,11 +149,11 @@ export class SikkimLotteryAdapter extends BaseLotteryAdapter {
       return { valid: false, errors, warnings };
     }
 
-    const { scheme, drawNo, drawDate, firstPrize } = payload.rawContent;
-    if (!scheme) errors.push('Sikkim: Scheme missing');
-    if (!drawNo) errors.push('Sikkim: Draw number missing');
-    if (!drawDate) errors.push('Sikkim: Draw date missing');
-    if (!firstPrize?.ticket) errors.push('Sikkim: First prize ticket missing');
+    const res = payload.rawContent as LotteryResult;
+    if (!res.lotteryName) errors.push('Sikkim: Scheme/Lottery name missing');
+    if (!res.drawNumber) errors.push('Sikkim: Draw number missing');
+    if (!res.drawDate) errors.push('Sikkim: Draw date missing');
+    if (!res.firstPrize?.winningTicket) errors.push('Sikkim: First prize ticket missing');
 
     return {
       valid: errors.length === 0,
@@ -167,94 +167,6 @@ export class SikkimLotteryAdapter extends BaseLotteryAdapter {
       throw new Error(`Validation failed for Sikkim Lottery: ${validation.errors.join(', ')}`);
     }
 
-    const data = payload.rawContent;
-    const resultId = this.generateResultId(this.stateCode, data.scheme, data.drawNo, data.drawDate);
-
-    const prizeTiers: PrizeTier[] = [
-      {
-        rank: 1,
-        tierName: '1st Prize',
-        prizeAmountFormatted: data.firstPrize.amount,
-        prizeAmountNumeric: 10000000,
-        winningNumbers: [data.firstPrize.ticket],
-        seriesRequired: true,
-        description: 'First prize with series code'
-      },
-      {
-        rank: 2,
-        tierName: 'Consolation Prize',
-        prizeAmountFormatted: data.consolation.amount,
-        prizeAmountNumeric: 1000,
-        winningNumbers: [`Remaining Series ${data.firstPrize.ticket.split(' ')[1] || '51920'}`],
-        description: 'All other series for 1st prize number'
-      },
-      {
-        rank: 3,
-        tierName: '2nd Prize',
-        prizeAmountFormatted: data.secondPrize.amount,
-        prizeAmountNumeric: 9000,
-        winningNumbers: data.secondPrize.winners || [],
-        description: 'Won on 5 digits'
-      },
-      {
-        rank: 4,
-        tierName: '3rd Prize',
-        prizeAmountFormatted: data.thirdPrize.amount,
-        prizeAmountNumeric: 450,
-        winningNumbers: data.thirdPrize.winners || [],
-        description: 'Won on last 4 digits'
-      },
-      {
-        rank: 5,
-        tierName: '4th Prize',
-        prizeAmountFormatted: data.fourthPrize.amount,
-        prizeAmountNumeric: 250,
-        winningNumbers: data.fourthPrize.winners || [],
-        description: 'Won on last 4 digits'
-      },
-      {
-        rank: 6,
-        tierName: '5th Prize',
-        prizeAmountFormatted: data.fifthPrize.amount,
-        prizeAmountNumeric: 120,
-        winningNumbers: data.fifthPrize.winners || [],
-        description: 'Won on last 4 digits'
-      }
-    ];
-
-    const result: LotteryResult = {
-      id: resultId,
-      lotteryName: 'Dear Meghna Day (01:00 PM)',
-      schemeCode: 'DEAR-MEGHNA-DAY',
-      stateCode: this.stateCode,
-      stateName: this.stateName,
-      drawDate: data.drawDate,
-      drawNumber: data.drawNo,
-      drawTime: data.drawTime,
-      ticketPriceFormatted: '₹6',
-      seriesList: ['85A', '85B', '85C', '85D', '85E', '89A', '89B', '89C', '89D', '89E'],
-      firstPrize: {
-        amountFormatted: data.firstPrize.amount,
-        amountNumeric: 10000000,
-        winningTicket: data.firstPrize.ticket,
-        series: data.firstPrize.ticket.split(' ')[0],
-        numberOnly: data.firstPrize.ticket.split(' ')[1] || data.firstPrize.ticket,
-      },
-      prizes: prizeTiers,
-      officialSource: {
-        sourceName: 'Directorate of Sikkim State Lotteries / State Government Gazette',
-        sourceUrl: payload.sourceUrl,
-        gazetteNotificationNo: data.officialGazetteRef,
-        verified: true,
-        directorateName: this.officialDirectorate
-      },
-      publishedTime: payload.fetchedAt,
-      lastUpdatedTime: payload.fetchedAt,
-      isDemoData: true,
-      verificationStatus: 'VERIFIED_OFFICIAL',
-      checksum: `sha256-sk-${data.drawNo}-${data.drawDate}`
-    };
-
-    return [result];
+    return [payload.rawContent as LotteryResult];
   }
 }

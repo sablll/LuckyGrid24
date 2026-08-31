@@ -4,13 +4,11 @@ import {
   X,
   Search,
   CheckCircle2,
-  BarChart3,
-  Globe2,
-  History,
-  FileCheck2,
-  Server,
-  Layers,
-  Sparkles
+  FileText,
+  MapPin,
+  Calendar,
+  BarChart2,
+  Info
 } from 'lucide-react';
 
 interface NavbarProps {
@@ -25,10 +23,11 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath, onNavigate, onOpenS
   const navItems = [
     { label: 'Home', path: '/' },
     { label: 'Latest Results', path: '/latest' },
-    { label: 'Lotteries', path: '/states' },
+    { label: 'State Lotteries', path: '/states' },
     { label: 'Previous Results', path: '/previous' },
+    { label: 'Search / Check Ticket', path: '/search' },
     { label: 'Statistics', path: '/statistics' },
-    { label: 'About', path: '/about' }
+    { label: 'About & Disclaimer', path: '/about' }
   ];
 
   const handleNavClick = (path: string) => {
@@ -38,123 +37,113 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath, onNavigate, onOpenS
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-[#FBFBF9]/95 backdrop-blur-md border-b border-stone-200">
-      {/* Live Draw Ticker */}
-      <div className="bg-stone-100/90 border-b border-stone-200 px-4 py-1 text-xs text-stone-600 overflow-hidden hidden sm:block">
+    <header className="sticky top-0 z-40 bg-white border-b-2 border-blue-600 shadow-sm">
+      {/* Top Simple Notification Bar */}
+      <div className="bg-blue-800 text-white px-4 py-1.5 text-xs">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <span className="flex h-2 w-2 relative">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-600 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-700"></span>
-            </span>
-            <span className="font-semibold text-stone-900 uppercase tracking-wider text-[10px] font-mono-code">Live Gazette Feed:</span>
-            <span className="text-stone-600">Kerala Fifty Fifty (FF-128) &bull; Nagaland Dear Sandpiper (8:00 PM) &bull; Sikkim Meghna Day &bull; Punjab Dear 100</span>
+          <div className="flex items-center gap-2 font-medium">
+            <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span>Official Government Lottery Results Portal &bull; Daily Draw Updates</span>
           </div>
-          <div className="flex items-center gap-3 text-[11px] text-stone-500">
-            <span className="text-emerald-800 font-mono-code font-semibold">100% Authorized State Sources</span>
+          <div className="hidden sm:flex items-center gap-3 text-[11px] text-blue-100 font-medium">
+            <span>100% Verified Official Sources</span>
             <span>&bull;</span>
-            <span>Sec. 4 Lotteries Act 1998</span>
+            <span>The Lotteries (Regulation) Act, 1998</span>
           </div>
         </div>
       </div>
 
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Brand Logo */}
+      {/* Main Header */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 sm:h-20">
+          {/* Brand Title */}
           <div
             onClick={() => handleNavClick('/')}
-            className="flex items-center gap-3 cursor-pointer group select-none"
+            className="flex items-center gap-3 cursor-pointer select-none"
           >
-            <div className="w-9 h-9 rounded-lg bg-stone-900 text-stone-50 flex items-center justify-center font-editorial-serif text-sm font-bold shadow-xs border border-stone-800 group-hover:bg-stone-800 transition-colors">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-600 text-white rounded-lg flex items-center justify-center font-black text-xl tracking-wider shadow-sm">
               MIL
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-editorial-serif font-bold text-lg sm:text-xl tracking-tight text-stone-950 group-hover:text-emerald-900 transition-colors">
-                  My India Lottery
-                </span>
-                <span className="text-[10px] uppercase font-bold bg-stone-100 text-stone-700 px-1.5 py-0.5 rounded border border-stone-300 hidden md:inline-block font-mono-code">
-                  Gazette
+                <span className="font-extrabold text-xl sm:text-2xl tracking-tight text-blue-900 uppercase">
+                  MY INDIA LOTTERY
                 </span>
               </div>
-              <p className="text-[10px] text-stone-500 tracking-wide hidden sm:block">
-                Authorized State Government Result Directory &amp; Archive
+              <p className="text-xs sm:text-sm font-semibold text-blue-600 tracking-wide">
+                Latest Lottery Results &amp; Archives
               </p>
             </div>
           </div>
 
           {/* Desktop Navigation Links */}
-          <div className="hidden lg:flex items-center gap-1">
+          <nav className="hidden lg:flex items-center gap-1">
             {navItems.map(item => {
               const isActive = currentPath === item.path || (item.path !== '/' && currentPath.startsWith(item.path));
               return (
                 <button
                   key={item.path}
                   onClick={() => handleNavClick(item.path)}
-                  className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all ${
+                  className={`px-3 py-2 text-sm font-bold rounded-lg transition-colors ${
                     isActive
-                      ? 'text-stone-950 bg-stone-100 border border-stone-300 font-semibold shadow-xs'
-                      : 'text-stone-600 hover:text-stone-950 hover:bg-stone-100/70'
+                      ? 'text-white bg-blue-600'
+                      : 'text-slate-700 hover:text-blue-700 hover:bg-blue-50'
                   }`}
                 >
                   {item.label}
                 </button>
               );
             })}
-          </div>
+          </nav>
 
-          {/* Quick Actions */}
+          {/* Quick Check Ticket Button */}
           <div className="flex items-center gap-2">
             <button
               onClick={onOpenSearch}
-              className="flex items-center gap-2 text-xs text-stone-700 bg-white hover:bg-stone-50 border border-stone-300 hover:border-stone-400 px-3 py-1.5 rounded-lg transition-colors shadow-xs"
-              title="Quick Search or Check Ticket"
+              className="hidden sm:inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 active:bg-blue-800 px-4 py-2.5 rounded-lg shadow-sm transition-colors uppercase tracking-wide cursor-pointer"
             >
-              <Search className="w-3.5 h-3.5 text-stone-500" />
-              <span className="hidden md:inline font-medium">Verify Ticket / Search</span>
-              <kbd className="hidden lg:inline text-[10px] bg-stone-100 text-stone-600 px-1.5 py-0.5 rounded border border-stone-300 font-mono-code">
-                /
-              </kbd>
+              <Search className="w-4 h-4" />
+              <span>Verify Ticket</span>
             </button>
 
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 text-stone-600 hover:text-stone-900 hover:bg-stone-100 rounded-lg"
-              aria-label="Toggle menu"
+              className="lg:hidden p-2.5 text-blue-900 hover:bg-blue-50 border border-blue-200 rounded-lg"
+              aria-label="Toggle navigation menu"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
         </div>
-      </nav>
+      </div>
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-[#FBFBF9] border-b border-stone-200 px-4 pt-2 pb-6 space-y-1">
+        <div className="lg:hidden bg-white border-t border-blue-100 px-4 py-4 space-y-1 shadow-lg">
           {navItems.map(item => {
             const isActive = currentPath === item.path || (item.path !== '/' && currentPath.startsWith(item.path));
             return (
               <button
                 key={item.path}
                 onClick={() => handleNavClick(item.path)}
-                className={`w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                className={`w-full text-left px-4 py-3 rounded-lg text-base font-bold transition-colors ${
                   isActive
-                    ? 'text-stone-950 bg-stone-100 border border-stone-300 font-semibold'
-                    : 'text-stone-600 hover:bg-stone-100 hover:text-stone-950'
+                    ? 'text-white bg-blue-600'
+                    : 'text-slate-800 hover:bg-blue-50 hover:text-blue-700'
                 }`}
               >
                 {item.label}
               </button>
             );
           })}
-          <div className="pt-3 border-t border-stone-200">
+          <div className="pt-3 border-t border-slate-200">
             <button
               onClick={() => {
                 setMobileMenuOpen(false);
                 onOpenSearch();
               }}
-              className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-stone-900 hover:bg-stone-800 text-white text-xs font-semibold uppercase tracking-wider rounded-lg transition-colors shadow-xs"
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold uppercase rounded-lg shadow-sm"
             >
               <Search className="w-4 h-4" />
               Check Winning Ticket Number
