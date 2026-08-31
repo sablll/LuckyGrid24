@@ -99,12 +99,14 @@ export class GoaLotteryAdapter extends BaseLotteryAdapter {
         numberOnly: firstTicket.split(' ')[1] || firstTicket
       },
       prizes: prizeTiers,
+      officialResultImage: `/api/results/${resultId}/image`,
       officialSource: {
         sourceName: 'Directorate of Small Savings and Lotteries / Goa Official Gazette',
         sourceUrl: sourceUrl,
         gazetteNotificationNo: `GA/FIN/LOT/2026/${drawNumber}`,
         verified: true,
-        directorateName: this.officialDirectorate
+        directorateName: this.officialDirectorate,
+        officialImageUrl: `/api/results/${resultId}/image`
       },
       publishedTime: `${today}T20:00:00+05:30`,
       lastUpdatedTime: new Date().toISOString(),

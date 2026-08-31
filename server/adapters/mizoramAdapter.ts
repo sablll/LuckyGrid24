@@ -152,12 +152,14 @@ export class MizoramLotteryAdapter extends BaseLotteryAdapter {
         numberOnly: '34912'
       },
       prizes: prizeTiers,
+      officialResultImage: `/api/results/${resultId}/image`,
       officialSource: {
         sourceName: 'Directorate of IF&SL, Government of Mizoram / State Gazette',
         sourceUrl: sourceUrl,
         gazetteNotificationNo: `MZ/IFSL/LOT/2026/${drawNo}`,
         verified: true,
-        directorateName: this.officialDirectorate
+        directorateName: this.officialDirectorate,
+        officialImageUrl: `/api/results/${resultId}/image`
       },
       publishedTime: `${today}T16:30:00+05:30`,
       lastUpdatedTime: new Date().toISOString(),

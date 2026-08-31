@@ -105,12 +105,14 @@ export class ArunachalLotteryAdapter extends BaseLotteryAdapter {
         numberOnly: firstTicket
       },
       prizes: prizeTiers,
+      officialResultImage: `/api/results/${resultId}/image`,
       officialSource: {
         sourceName: 'Directorate of Arunachal Pradesh State Lotteries / Official Gazette',
         sourceUrl: sourceUrl,
         gazetteNotificationNo: `AR/LOT/FIN/2026/${drawNo}`,
         verified: true,
-        directorateName: this.officialDirectorate
+        directorateName: this.officialDirectorate,
+        officialImageUrl: `/api/results/${resultId}/image`
       },
       publishedTime: `${today}T12:30:00+05:30`,
       lastUpdatedTime: new Date().toISOString(),

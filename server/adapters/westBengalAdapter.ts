@@ -99,12 +99,14 @@ export class WestBengalLotteryAdapter extends BaseLotteryAdapter {
         numberOnly: '89214'
       },
       prizes: prizeTiers,
+      officialResultImage: `/api/results/${resultId}/image`,
       officialSource: {
         sourceName: 'Directorate of State Lotteries, West Bengal / State Gazette Publication',
         sourceUrl: sourceUrl,
         gazetteNotificationNo: `WB/FIN/LOT/2026/${drawNo}`,
         verified: true,
-        directorateName: this.officialDirectorate
+        directorateName: this.officialDirectorate,
+        officialImageUrl: `/api/results/${resultId}/image`
       },
       publishedTime: `${today}T16:30:00+05:30`,
       lastUpdatedTime: new Date().toISOString(),

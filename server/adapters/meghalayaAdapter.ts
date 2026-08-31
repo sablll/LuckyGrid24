@@ -104,12 +104,14 @@ export class MeghalayaLotteryAdapter extends BaseLotteryAdapter {
         numberOnly: firstTicket
       },
       prizes: prizeTiers,
+      officialResultImage: `/api/results/${resultId}/image`,
       officialSource: {
         sourceName: 'Directorate of Meghalaya State Lotteries / State Gazette',
         sourceUrl: sourceUrl,
         gazetteNotificationNo: `ML/ERTS/LOT/2026/${drawNo}`,
         verified: true,
-        directorateName: this.officialDirectorate
+        directorateName: this.officialDirectorate,
+        officialImageUrl: `/api/results/${resultId}/image`
       },
       publishedTime: `${today}T13:00:00+05:30`,
       lastUpdatedTime: new Date().toISOString(),

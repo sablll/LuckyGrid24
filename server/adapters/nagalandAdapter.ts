@@ -108,12 +108,14 @@ export class NagalandLotteryAdapter extends BaseLotteryAdapter {
         numberOnly: firstTicket.split(' ')[1] || firstTicket
       },
       prizes: prizeTiers,
+      officialResultImage: `/api/results/${resultId}/image`,
       officialSource: {
         sourceName: 'Nagaland State Lotteries Directorate / Government Gazette',
         sourceUrl: sourceUrl,
         gazetteNotificationNo: `NL/LOT/2026/${drawNo}`,
         verified: true,
-        directorateName: this.officialDirectorate
+        directorateName: this.officialDirectorate,
+        officialImageUrl: `/api/results/${resultId}/image`
       },
       publishedTime: `${today}T20:30:00+05:30`,
       lastUpdatedTime: new Date().toISOString(),

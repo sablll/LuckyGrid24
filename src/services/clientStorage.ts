@@ -67,6 +67,12 @@ export class ClientLotteryStore {
   public saveResults(resultsList: LotteryResult[]): void {
     for (const res of resultsList) {
       if (res && res.id) {
+        if (!res.officialResultImage) {
+          res.officialResultImage = `/api/results/${res.id}/image`;
+        }
+        if (res.officialSource && !res.officialSource.officialImageUrl) {
+          res.officialSource.officialImageUrl = res.officialResultImage;
+        }
         this.results.set(res.id, res);
       }
     }
@@ -144,7 +150,20 @@ export class ClientLotteryStore {
   }
 
   public getResultById(id: string): LotteryResult | undefined {
-    return this.results.get(id);
+    let res = this.results.get(id);
+    if (!res) {
+      const clean = id.trim().toLowerCase();
+      for (const r of this.results.values()) {
+        if (r.id.toLowerCase() === clean) {
+          res = r;
+          break;
+        }
+      }
+    }
+    if (res && !res.officialResultImage) {
+      res.officialResultImage = `/api/results/${res.id}/image`;
+    }
+    return res;
   }
 
   public getAllStates(): LotteryState[] {

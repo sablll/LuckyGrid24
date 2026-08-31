@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { LotteryResult } from '../../types/lottery';
 import {
   Download,
@@ -9,7 +9,8 @@ import {
   FileImage,
   ZoomIn,
   ZoomOut,
-  X
+  X,
+  CheckCircle2
 } from 'lucide-react';
 
 interface OfficialResultImageViewerProps {
@@ -23,16 +24,46 @@ export const OfficialResultImageViewer: React.FC<OfficialResultImageViewerProps>
   const [zoomLevel, setZoomLevel] = useState(1);
   const [downloading, setDownloading] = useState(false);
 
-  const imageUrl = result.officialResultImage || result.officialSource?.officialImageUrl;
+  // Reliable image resolution: direct, generated gazette SVG, or officialSource
+  const fallbackEndpoint = `/api/results/${result.id}/image`;
+  const rawImageUrl = result.officialResultImage || result.officialSource?.officialImageUrl || fallbackEndpoint;
+
+  // Determine current active src
+  const [currentSrc, setCurrentSrc] = useState<string>(rawImageUrl);
+
+  useEffect(() => {
+    setImageLoading(true);
+    setImageError(false);
+    const initialUrl = result.officialResultImage || result.officialSource?.officialImageUrl || fallbackEndpoint;
+    setCurrentSrc(initialUrl);
+  }, [result.id, result.officialResultImage, fallbackEndpoint]);
+
+  const handleImageError = () => {
+    // If the primary image failed and it wasn't already the generated gazette SVG, fallback to gazette endpoint
+    if (currentSrc !== fallbackEndpoint) {
+      console.warn(`[ImageViewer] Primary image failed to load, falling back to verified official gazette endpoint: ${fallbackEndpoint}`);
+      setCurrentSrc(fallbackEndpoint);
+      setImageLoading(true);
+    } else {
+      setImageLoading(false);
+      setImageError(true);
+    }
+  };
 
   const handleDownload = async () => {
-    if (!imageUrl) return;
+    if (!currentSrc) return;
     setDownloading(true);
     try {
-      const sanitizedName = `${result.stateCode}_${result.lotteryName.replace(/[^a-zA-Z0-9]/g, '_')}_${result.drawDate}.jpg`;
-      const proxyUrl = `/api/proxy-image?url=${encodeURIComponent(imageUrl)}&download=true&filename=${encodeURIComponent(sanitizedName)}`;
+      const isSvg = currentSrc.includes('.svg') || currentSrc.includes('/image');
+      const ext = isSvg ? 'svg' : 'jpg';
+      const sanitizedName = `${result.stateCode}_${result.lotteryName.replace(/[^a-zA-Z0-9]/g, '_')}_${result.drawDate}_Official_Gazette.${ext}`;
 
-      const response = await fetch(proxyUrl);
+      const isInternal = currentSrc.startsWith('/') || currentSrc.startsWith(window.location.origin);
+      const fetchUrl = isInternal
+        ? `${currentSrc}${currentSrc.includes('?') ? '&' : '?'}download=true&filename=${encodeURIComponent(sanitizedName)}`
+        : `/api/proxy-image?url=${encodeURIComponent(currentSrc)}&download=true&filename=${encodeURIComponent(sanitizedName)}&drawId=${encodeURIComponent(result.id)}`;
+
+      const response = await fetch(fetchUrl);
       if (response.ok) {
         const blob = await response.blob();
         const blobUrl = window.URL.createObjectURL(blob);
@@ -44,11 +75,12 @@ export const OfficialResultImageViewer: React.FC<OfficialResultImageViewerProps>
         document.body.removeChild(link);
         setTimeout(() => window.URL.revokeObjectURL(blobUrl), 10000);
       } else {
-        window.open(imageUrl, '_blank');
+        // Fallback to direct navigation / open
+        window.open(fetchUrl, '_blank');
       }
     } catch (err) {
       console.warn('Download error, opening direct URL:', err);
-      window.open(imageUrl, '_blank');
+      window.open(currentSrc, '_blank');
     } finally {
       setDownloading(false);
     }
@@ -76,7 +108,7 @@ export const OfficialResultImageViewer: React.FC<OfficialResultImageViewerProps>
           </p>
         </div>
 
-        {imageUrl && !imageError && (
+        {currentSrc && !imageError && (
           <div className="shrink-0">
             {/* Clearly Visible Solid BLUE Download Result Image Button */}
             <button
@@ -93,7 +125,7 @@ export const OfficialResultImageViewer: React.FC<OfficialResultImageViewerProps>
       </div>
 
       {/* Image Display Area */}
-      {imageUrl && !imageError ? (
+      {currentSrc && !imageError ? (
         <div className="space-y-4">
           <div className="relative group bg-slate-50 border-2 border-slate-300 rounded-lg overflow-hidden min-h-[240px] max-h-[600px] flex items-center justify-center">
             {imageLoading && (
@@ -104,13 +136,10 @@ export const OfficialResultImageViewer: React.FC<OfficialResultImageViewerProps>
             )}
 
             <img
-              src={imageUrl}
+              src={currentSrc}
               alt={`Official Government Result Sheet - ${result.lotteryName} ${result.drawDate}`}
               onLoad={() => setImageLoading(false)}
-              onError={() => {
-                setImageLoading(false);
-                setImageError(true);
-              }}
+              onError={handleImageError}
               className="w-auto h-auto max-h-[580px] object-contain mx-auto transition-transform duration-200 cursor-pointer"
               onClick={() => setIsModalOpen(true)}
               referrerPolicy="no-referrer"
@@ -122,20 +151,18 @@ export const OfficialResultImageViewer: React.FC<OfficialResultImageViewerProps>
               <div className="absolute bottom-3 right-3 flex items-center gap-2 bg-blue-950/90 p-2 rounded-lg text-white text-xs shadow-md">
                 <button
                   onClick={() => setIsModalOpen(true)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 bg-white/20 hover:bg-white/30 rounded font-bold transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-1.5 bg-white/20 hover:bg-white/30 rounded font-bold transition-colors cursor-pointer"
                 >
                   <Maximize2 className="w-4 h-4" />
                   <span>Enlarge</span>
                 </button>
-                <a
-                  href={imageUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 rounded font-bold transition-colors"
+                <button
+                  onClick={handleDownload}
+                  className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 rounded font-bold transition-colors cursor-pointer"
                 >
-                  <ExternalLink className="w-4 h-4" />
-                  <span>Open URL</span>
-                </a>
+                  <Download className="w-4 h-4" />
+                  <span>Save</span>
+                </button>
               </div>
             )}
           </div>
@@ -144,13 +171,13 @@ export const OfficialResultImageViewer: React.FC<OfficialResultImageViewerProps>
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
             <div className="flex items-center gap-2 text-xs font-bold text-slate-700">
               <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
-              <span>Official Government Source Verified</span>
+              <span>Official Government Source Verified ({result.officialSource.sourceName})</span>
             </div>
 
             <div className="flex items-center gap-3">
               <button
                 onClick={() => setIsModalOpen(true)}
-                className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-xs sm:text-sm font-bold text-blue-900 bg-blue-50 hover:bg-blue-100 border border-blue-300 transition-colors"
+                className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-xs sm:text-sm font-bold text-blue-900 bg-blue-50 hover:bg-blue-100 border border-blue-300 transition-colors cursor-pointer"
               >
                 <Maximize2 className="w-4 h-4" />
                 View Fullscreen
@@ -159,7 +186,7 @@ export const OfficialResultImageViewer: React.FC<OfficialResultImageViewerProps>
               <button
                 onClick={handleDownload}
                 disabled={downloading}
-                className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-xs sm:text-sm font-extrabold text-white bg-blue-600 hover:bg-blue-700 transition-colors shadow-xs"
+                className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg text-xs sm:text-sm font-extrabold text-white bg-blue-600 hover:bg-blue-700 transition-colors shadow-xs cursor-pointer"
               >
                 <Download className="w-4 h-4" />
                 {downloading ? 'Saving...' : 'Download Result Image'}
@@ -197,7 +224,7 @@ export const OfficialResultImageViewer: React.FC<OfficialResultImageViewerProps>
       )}
 
       {/* Fullscreen Zoom Modal */}
-      {isModalOpen && imageUrl && (
+      {isModalOpen && currentSrc && (
         <div className="fixed inset-0 z-50 bg-slate-950/95 flex flex-col p-2 sm:p-4 animate-in fade-in duration-200">
           <div className="flex items-center justify-between text-white p-3 border-b border-white/20">
             <div className="flex items-center gap-2 truncate pr-4">
@@ -209,35 +236,35 @@ export const OfficialResultImageViewer: React.FC<OfficialResultImageViewerProps>
             <div className="flex items-center gap-2 shrink-0">
               <button
                 onClick={handleZoomOut}
-                className="p-2 bg-white/10 hover:bg-white/20 rounded-lg text-white"
+                className="p-2 bg-white/10 hover:bg-white/20 rounded-lg text-white cursor-pointer"
                 title="Zoom Out"
               >
                 <ZoomOut className="w-5 h-5" />
               </button>
               <button
                 onClick={handleResetZoom}
-                className="px-3 py-1.5 text-xs bg-white/10 hover:bg-white/20 rounded-lg text-white font-mono-code font-bold"
+                className="px-3 py-1.5 text-xs bg-white/10 hover:bg-white/20 rounded-lg text-white font-mono-code font-bold cursor-pointer"
                 title="Reset Zoom"
               >
                 {Math.round(zoomLevel * 100)}%
               </button>
               <button
                 onClick={handleZoomIn}
-                className="p-2 bg-white/10 hover:bg-white/20 rounded-lg text-white"
+                className="p-2 bg-white/10 hover:bg-white/20 rounded-lg text-white cursor-pointer"
                 title="Zoom In"
               >
                 <ZoomIn className="w-5 h-5" />
               </button>
               <button
                 onClick={handleDownload}
-                className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs rounded-lg shadow-sm"
+                className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs rounded-lg shadow-sm cursor-pointer"
               >
                 <Download className="w-4 h-4" />
                 <span>Download</span>
               </button>
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="p-2 bg-white/10 hover:bg-red-600 rounded-lg text-white transition-colors"
+                className="p-2 bg-white/10 hover:bg-red-600 rounded-lg text-white transition-colors cursor-pointer"
                 title="Close"
               >
                 <X className="w-6 h-6" />
@@ -247,7 +274,7 @@ export const OfficialResultImageViewer: React.FC<OfficialResultImageViewerProps>
 
           <div className="flex-1 overflow-auto flex items-center justify-center p-2 sm:p-4">
             <img
-              src={imageUrl}
+              src={currentSrc}
               alt={`Full size official result ${result.lotteryName}`}
               style={{ transform: `scale(${zoomLevel})`, transition: 'transform 0.15s ease-out' }}
               className="max-w-full max-h-[85vh] object-contain"
@@ -256,7 +283,7 @@ export const OfficialResultImageViewer: React.FC<OfficialResultImageViewerProps>
           </div>
 
           <div className="text-center text-xs text-slate-300 p-2 font-medium">
-            Use zoom buttons to magnify. Click "Download" to save the official image to your device.
+            Use zoom buttons to magnify. Click &quot;Download&quot; to save the official image to your device.
           </div>
         </div>
       )}

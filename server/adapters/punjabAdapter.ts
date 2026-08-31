@@ -99,12 +99,14 @@ export class PunjabLotteryAdapter extends BaseLotteryAdapter {
         numberOnly: firstTicket.split(' ')[1] || firstTicket
       },
       prizes: prizeTiers,
+      officialResultImage: `/api/results/${resultId}/image`,
       officialSource: {
         sourceName: 'Punjab Government Gazette / Directorate of Punjab State Lotteries',
         sourceUrl: sourceUrl,
         gazetteNotificationNo: `PB/FIN/LOT/2026/${drawNumber}`,
         verified: true,
-        directorateName: this.officialDirectorate
+        directorateName: this.officialDirectorate,
+        officialImageUrl: `/api/results/${resultId}/image`
       },
       publishedTime: `${today}T18:30:00+05:30`,
       lastUpdatedTime: new Date().toISOString(),

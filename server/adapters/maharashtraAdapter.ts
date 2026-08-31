@@ -91,12 +91,14 @@ export class MaharashtraLotteryAdapter extends BaseLotteryAdapter {
         numberOnly: '24891'
       },
       prizes: prizeTiers,
+      officialResultImage: `/api/results/${resultId}/image`,
       officialSource: {
         sourceName: 'Directorate of Maharashtra State Lotteries / Official Maharashtra Gazette',
         sourceUrl: sourceUrl,
         gazetteNotificationNo: `MH/LOT/FIN/2026/${drawNo}`,
         verified: true,
-        directorateName: this.officialDirectorate
+        directorateName: this.officialDirectorate,
+        officialImageUrl: `/api/results/${resultId}/image`
       },
       publishedTime: `${today}T16:45:00+05:30`,
       lastUpdatedTime: new Date().toISOString(),

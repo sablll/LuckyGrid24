@@ -108,12 +108,14 @@ export class SikkimLotteryAdapter extends BaseLotteryAdapter {
         numberOnly: firstTicket.split(' ')[1] || firstTicket
       },
       prizes: prizeTiers,
+      officialResultImage: `/api/results/${resultId}/image`,
       officialSource: {
         sourceName: 'Directorate of Sikkim State Lotteries / State Government Gazette',
         sourceUrl: sourceUrl,
         gazetteNotificationNo: 'SK/LOT/GAZETTE/2026/D-41',
         verified: true,
-        directorateName: this.officialDirectorate
+        directorateName: this.officialDirectorate,
+        officialImageUrl: `/api/results/${resultId}/image`
       },
       publishedTime: `${today}T13:30:00+05:30`,
       lastUpdatedTime: new Date().toISOString(),

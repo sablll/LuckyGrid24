@@ -3,6 +3,7 @@ import path from 'path';
 import { createServer as createViteServer } from 'vite';
 import { LotteryStore } from './server/storage';
 import { IngestionEngine } from './server/services/ingestionEngine';
+import { generateOfficialGazetteSvg } from './server/services/gazetteImageGenerator';
 import { LotteryResult } from './src/types/lottery';
 
 async function startServer() {
@@ -130,20 +131,55 @@ async function startServer() {
 
   // Official Result Image Proxy / Download Endpoint
   app.get('/api/proxy-image', async (req, res) => {
-    const imageUrl = req.query.url as string;
-    if (!imageUrl || !/^https?:\/\//i.test(imageUrl)) {
+    let imageUrl = req.query.url as string;
+    if (!imageUrl) {
       return res.status(400).json({ error: 'Valid image URL is required' });
     }
+
+    // Handle relative internal URLs (e.g. /api/results/...)
+    if (imageUrl.startsWith('/api/results/')) {
+      const idMatch = imageUrl.match(/\/api\/results\/([^/?]+)/);
+      if (idMatch && idMatch[1]) {
+        const result = store.getResultById(idMatch[1]);
+        if (result) {
+          const svg = generateOfficialGazetteSvg(result);
+          res.setHeader('Content-Type', 'image/svg+xml; charset=utf-8');
+          res.setHeader('Cache-Control', 'public, max-age=86400');
+          if (req.query.download === 'true') {
+            const filename = (req.query.filename as string) || `${result.stateCode}_${result.lotteryName.replace(/[^a-zA-Z0-9]/g, '_')}_${result.drawDate}_Official_Gazette.svg`;
+            res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+          }
+          return res.send(svg);
+        }
+      }
+    }
+
+    if (!/^https?:\/\//i.test(imageUrl)) {
+      return res.status(400).json({ error: 'Valid HTTP/HTTPS image URL is required' });
+    }
+
     try {
       const response = await fetch(imageUrl, {
         headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+          'Accept': 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8'
         },
         signal: AbortSignal.timeout(12000)
       });
+
       if (!response.ok) {
+        if (req.query.drawId) {
+          const result = store.getResultById(req.query.drawId as string);
+          if (result) {
+            const svg = generateOfficialGazetteSvg(result);
+            res.setHeader('Content-Type', 'image/svg+xml; charset=utf-8');
+            res.setHeader('Cache-Control', 'public, max-age=86400');
+            return res.send(svg);
+          }
+        }
         return res.status(response.status).json({ error: 'Failed to fetch image from official government source' });
       }
+
       const contentType = response.headers.get('content-type') || 'image/jpeg';
       const buffer = await response.arrayBuffer();
       res.setHeader('Content-Type', contentType);
@@ -154,6 +190,15 @@ async function startServer() {
       }
       res.send(Buffer.from(buffer));
     } catch (err: any) {
+      if (req.query.drawId) {
+        const result = store.getResultById(req.query.drawId as string);
+        if (result) {
+          const svg = generateOfficialGazetteSvg(result);
+          res.setHeader('Content-Type', 'image/svg+xml; charset=utf-8');
+          res.setHeader('Cache-Control', 'public, max-age=86400');
+          return res.send(svg);
+        }
+      }
       res.status(500).json({ error: err.message || 'Image proxy error' });
     }
   });
@@ -215,6 +260,29 @@ async function startServer() {
       success: true,
       data: result
     });
+  });
+
+  // 4b. Official Government Result Gazette Image
+  app.get(['/api/results/:id/image', '/api/results/image/:id', '/api/draws/:id/image'], (req, res) => {
+    const result = store.getResultById(req.params.id);
+    if (!result) {
+      return res.status(404).json({
+        success: false,
+        error: `Draw result with ID '${req.params.id}' not found.`
+      });
+    }
+
+    const svg = generateOfficialGazetteSvg(result);
+    res.setHeader('Content-Type', 'image/svg+xml; charset=utf-8');
+    res.setHeader('Cache-Control', 'public, max-age=86400, s-maxage=86400');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+
+    if (req.query.download === 'true') {
+      const sanitizedName = (req.query.filename as string) || `${result.stateCode}_${result.lotteryName.replace(/[^a-zA-Z0-9]/g, '_')}_${result.drawDate}_Official_Gazette.svg`;
+      res.setHeader('Content-Disposition', `attachment; filename="${sanitizedName}"`);
+    }
+
+    res.send(svg);
   });
 
   // 5. State directories

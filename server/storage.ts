@@ -20,17 +20,36 @@ export class LotteryStore {
   }
 
   public saveResult(result: LotteryResult): void {
+    if (!result.officialResultImage) {
+      result.officialResultImage = `/api/results/${result.id}/image`;
+    }
+    if (result.officialSource && !result.officialSource.officialImageUrl) {
+      result.officialSource.officialImageUrl = result.officialResultImage;
+    }
     this.results.set(result.id, result);
   }
 
   public saveResults(resultsList: LotteryResult[]): void {
     for (const res of resultsList) {
-      this.results.set(res.id, res);
+      this.saveResult(res);
     }
   }
 
   public getResultById(id: string): LotteryResult | undefined {
-    return this.results.get(id);
+    let res = this.results.get(id);
+    if (!res) {
+      const target = id.trim().toLowerCase();
+      for (const r of this.results.values()) {
+        if (r.id.toLowerCase() === target) {
+          res = r;
+          break;
+        }
+      }
+    }
+    if (res && !res.officialResultImage) {
+      res.officialResultImage = `/api/results/${res.id}/image`;
+    }
+    return res;
   }
 
   public getAllResults(options?: {

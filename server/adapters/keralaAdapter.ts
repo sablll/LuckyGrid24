@@ -393,14 +393,14 @@ export class KeralaLotteryAdapter extends BaseLotteryAdapter {
           numberOnly: ticketNumber,
         },
         prizes: prizeTiers,
-        officialResultImage: officialResultImage || undefined,
+        officialResultImage: officialResultImage || `/api/results/${resultId}/image`,
         officialSource: {
           sourceName: 'Directorate of Kerala State Lotteries / Official Gazette Publication',
           sourceUrl: url,
           gazetteNotificationNo: `KL-DIR-LOTIS/${drawNo}/${drawDate}`,
           verified: true,
           directorateName: this.officialDirectorate,
-          officialImageUrl: officialResultImage || undefined
+          officialImageUrl: officialResultImage || `/api/results/${resultId}/image`
         },
         publishedTime: `${drawDate}T15:30:00+05:30`,
         lastUpdatedTime: new Date().toISOString(),
