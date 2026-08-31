@@ -161,11 +161,28 @@ export class ClientLotteryStore {
   }
 
   public getResultById(id: string): LotteryResult | undefined {
+    if (!id) return undefined;
     let res = this.results.get(id);
     if (!res) {
       const clean = id.trim().toLowerCase();
+      const cleanNormalized = clean.replace(/[^a-z0-9]/g, '');
       for (const r of this.results.values()) {
-        if (r.id.toLowerCase() === clean) {
+        const rClean = r.id.toLowerCase().replace(/[^a-z0-9]/g, '');
+        if (
+          r.id.toLowerCase() === clean ||
+          rClean === cleanNormalized ||
+          (cleanNormalized.length > 5 && (rClean.includes(cleanNormalized) || cleanNormalized.includes(rClean)))
+        ) {
+          res = r;
+          break;
+        }
+      }
+    }
+    // Search by draw number if not found
+    if (!res) {
+      const cleanDrawNum = id.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
+      for (const r of this.results.values()) {
+        if (r.drawNumber && r.drawNumber.toLowerCase().replace(/[^a-z0-9]/g, '') === cleanDrawNum) {
           res = r;
           break;
         }

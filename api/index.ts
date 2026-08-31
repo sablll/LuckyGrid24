@@ -56,14 +56,24 @@ export default async function handler(
     return;
   }
 
-  const url = new URL(req.url || '/', `http://${req.headers.host || 'localhost'}`);
+  const rawUrl = req.url || '/';
+  const url = new URL(rawUrl, `http://${req.headers.host || 'localhost'}`);
+  
+  // Extract route from query parameters (__route / path) or headers (x-matched-path) or url.pathname
+  const routeParam = url.searchParams.get('__route') || url.searchParams.get('path') || (req as any).query?.__route || (req as any).query?.path;
+  const headerPath = (req.headers['x-matched-path'] as string) || (req.headers['x-vercel-matched-path'] as string) || (req.headers['x-forwarded-uri'] as string) || (req.headers['x-original-url'] as string);
+
+  let rawPath = routeParam 
+    ? (routeParam.startsWith('/') ? routeParam : '/' + routeParam)
+    : (url.pathname !== '/api/index' && url.pathname !== '/api' && url.pathname !== '/index' ? url.pathname : (headerPath || url.pathname));
+
   // Strip leading /api or /api/
-  let pathname = url.pathname.replace(/^\/api(\/|$)/, '/');
+  let pathname = rawPath.replace(/^\/api(\/|$)/, '/');
   if (!pathname.startsWith('/')) pathname = '/' + pathname;
 
   try {
     // 1. Health check
-    if (pathname === '/health' || pathname === '/') {
+    if (pathname === '/health' || pathname === '/' || pathname === '/index') {
       res.statusCode = 200;
       res.setHeader('Content-Type', 'application/json');
       res.end(JSON.stringify({
@@ -133,11 +143,20 @@ export default async function handler(
       return;
     }
 
-    // 7. Result image endpoint: /results/:id/image or /results/image/:id or /draws/:id/image
-    const imageMatch = pathname.match(/^\/(?:results\/([a-zA-Z0-9_-]+)\/image|results\/image\/([a-zA-Z0-9_-]+)|draws\/([a-zA-Z0-9_-]+)\/image)$/);
-    if (imageMatch) {
-      const drawId = imageMatch[1] || imageMatch[2] || imageMatch[3];
-      const result = store.getResultById(drawId);
+    // 7. Result image endpoint: /results/:id/image or /results/image/:id or /draws/:id/image or query ?drawId=...
+    const isImageEndpoint = pathname.endsWith('/image') || pathname.includes('/image/') || pathname.includes('/results/image') || (pathname === '/image' && !!url.searchParams.get('id'));
+    if (isImageEndpoint) {
+      let drawId = url.searchParams.get('id') || url.searchParams.get('drawId') || '';
+      if (!drawId) {
+        const m1 = pathname.match(/\/(?:results|draws)\/(?:image\/)?([^/?#]+?)(?:\/image)?$/);
+        if (m1 && m1[1]) {
+          drawId = decodeURIComponent(m1[1]);
+        } else {
+          drawId = decodeURIComponent(pathname.replace(/^\/(?:api\/)?(?:results|draws)\//, '').replace(/\/image.*$/, ''));
+        }
+      }
+
+      const result = drawId ? store.getResultById(drawId) : undefined;
       if (!result) {
         res.statusCode = 404;
         res.setHeader('Content-Type', 'application/json');

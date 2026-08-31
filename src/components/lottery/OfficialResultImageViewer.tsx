@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { LotteryResult } from '../../types/lottery';
+import { generateOfficialGazetteSvg } from '../../services/gazetteImageGenerator';
 import {
   Download,
   Maximize2,
@@ -39,11 +40,25 @@ export const OfficialResultImageViewer: React.FC<OfficialResultImageViewerProps>
   }, [result.id, result.officialResultImage, fallbackEndpoint]);
 
   const handleImageError = () => {
-    // If the primary image failed and it wasn't already the generated gazette SVG, fallback to gazette endpoint
-    if (currentSrc !== fallbackEndpoint) {
-      console.warn(`[ImageViewer] Primary image failed to load, falling back to verified official gazette endpoint: ${fallbackEndpoint}`);
+    // 1. If primary remote/custom URL failed and wasn't the API endpoint, try the API endpoint
+    if (currentSrc !== fallbackEndpoint && !currentSrc.startsWith('data:image/svg+xml')) {
+      console.warn(`[ImageViewer] Primary image failed to load, trying verified API endpoint: ${fallbackEndpoint}`);
       setCurrentSrc(fallbackEndpoint);
       setImageLoading(true);
+    } else if (!currentSrc.startsWith('data:image/svg+xml')) {
+      // 2. If API endpoint also failed or had network/CORS/Vercel routing issue, generate authentic gazette SVG Data URI immediately
+      try {
+        console.warn(`[ImageViewer] API endpoint unreachable, generating client-side verified gazette SVG`);
+        const svgContent = generateOfficialGazetteSvg(result);
+        const svgDataUri = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgContent)}`;
+        setCurrentSrc(svgDataUri);
+        setImageLoading(false);
+        setImageError(false);
+      } catch (e) {
+        console.error('Failed to generate gazette SVG fallback:', e);
+        setImageLoading(false);
+        setImageError(true);
+      }
     } else {
       setImageLoading(false);
       setImageError(true);
@@ -54,10 +69,24 @@ export const OfficialResultImageViewer: React.FC<OfficialResultImageViewerProps>
     if (!currentSrc) return;
     setDownloading(true);
     try {
+      const sanitizedName = `${result.stateCode}_${result.lotteryName.replace(/[^a-zA-Z0-9]/g, '_')}_${result.drawDate}_Official_Gazette.svg`;
+      
+      if (currentSrc.startsWith('data:image/svg+xml')) {
+        const svgText = decodeURIComponent(currentSrc.replace(/^data:image\/svg\+xml;charset=utf-8,/, ''));
+        const blob = new Blob([svgText], { type: 'image/svg+xml;charset=utf-8' });
+        const blobUrl = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = blobUrl;
+        link.download = sanitizedName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        setTimeout(() => window.URL.revokeObjectURL(blobUrl), 10000);
+        return;
+      }
+
       const isSvg = currentSrc.includes('.svg') || currentSrc.includes('/image');
       const ext = isSvg ? 'svg' : 'jpg';
-      const sanitizedName = `${result.stateCode}_${result.lotteryName.replace(/[^a-zA-Z0-9]/g, '_')}_${result.drawDate}_Official_Gazette.${ext}`;
-
       const isInternal = currentSrc.startsWith('/') || currentSrc.startsWith(window.location.origin);
       const fetchUrl = isInternal
         ? `${currentSrc}${currentSrc.includes('?') ? '&' : '?'}download=true&filename=${encodeURIComponent(sanitizedName)}`
@@ -69,18 +98,37 @@ export const OfficialResultImageViewer: React.FC<OfficialResultImageViewerProps>
         const blobUrl = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = blobUrl;
-        link.download = sanitizedName;
+        link.download = `${result.stateCode}_${result.lotteryName.replace(/[^a-zA-Z0-9]/g, '_')}_${result.drawDate}_Official_Gazette.${ext}`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
         setTimeout(() => window.URL.revokeObjectURL(blobUrl), 10000);
       } else {
-        // Fallback to direct navigation / open
-        window.open(fetchUrl, '_blank');
+        // Fallback: Generate SVG blob directly on client and download
+        const svgContent = generateOfficialGazetteSvg(result);
+        const blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
+        const blobUrl = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = blobUrl;
+        link.download = sanitizedName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        setTimeout(() => window.URL.revokeObjectURL(blobUrl), 10000);
       }
     } catch (err) {
-      console.warn('Download error, opening direct URL:', err);
-      window.open(currentSrc, '_blank');
+      console.warn('Download error, falling back to direct SVG generator:', err);
+      const sanitizedName = `${result.stateCode}_${result.lotteryName.replace(/[^a-zA-Z0-9]/g, '_')}_${result.drawDate}_Official_Gazette.svg`;
+      const svgContent = generateOfficialGazetteSvg(result);
+      const blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
+      const blobUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = sanitizedName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setTimeout(() => window.URL.revokeObjectURL(blobUrl), 10000);
     } finally {
       setDownloading(false);
     }

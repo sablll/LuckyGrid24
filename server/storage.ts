@@ -38,11 +38,28 @@ export class LotteryStore {
   }
 
   public getResultById(id: string): LotteryResult | undefined {
+    if (!id) return undefined;
     let res = this.results.get(id);
     if (!res) {
       const target = id.trim().toLowerCase();
+      const targetClean = target.replace(/[^a-z0-9]/g, '');
       for (const r of this.results.values()) {
-        if (r.id.toLowerCase() === target) {
+        const rClean = r.id.toLowerCase().replace(/[^a-z0-9]/g, '');
+        if (
+          r.id.toLowerCase() === target ||
+          rClean === targetClean ||
+          (targetClean.length > 5 && (rClean.includes(targetClean) || targetClean.includes(rClean)))
+        ) {
+          res = r;
+          break;
+        }
+      }
+    }
+    // Search by draw number if not found
+    if (!res) {
+      const cleanDrawNum = id.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
+      for (const r of this.results.values()) {
+        if (r.drawNumber && r.drawNumber.toLowerCase().replace(/[^a-z0-9]/g, '') === cleanDrawNum) {
           res = r;
           break;
         }
