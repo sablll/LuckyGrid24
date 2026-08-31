@@ -34,7 +34,21 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
     let ogDesc = document.querySelector('meta[property="og:description"]');
     if (ogDesc) ogDesc.setAttribute('content', description);
 
-    // Inject or update JSON-LD Structured Data
+    // Update Canonical URL if url is provided
+    if (url) {
+      let canonical = document.querySelector('link[rel="canonical"]');
+      if (!canonical) {
+        canonical = document.createElement('link');
+        canonical.setAttribute('rel', 'canonical');
+        document.head.appendChild(canonical);
+      }
+      canonical.setAttribute('href', url);
+
+      let ogUrl = document.querySelector('meta[property="og:url"]');
+      if (ogUrl) ogUrl.setAttribute('content', url);
+    }
+
+    // Inject or update JSON-LD Structured Data in document head only
     if (jsonLd) {
       let scriptTag = document.getElementById('json-ld-structured-data') as HTMLScriptElement;
       if (!scriptTag) {
@@ -44,6 +58,12 @@ export const SEOHead: React.FC<SEOHeadProps> = ({
         document.head.appendChild(scriptTag);
       }
       scriptTag.textContent = JSON.stringify(jsonLd);
+    } else {
+      // If page doesn't have specific jsonLd, remove any stale draw-specific script tag
+      const existingTag = document.getElementById('json-ld-structured-data');
+      if (existingTag) {
+        existingTag.remove();
+      }
     }
 
     return () => {

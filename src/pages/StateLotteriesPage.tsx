@@ -29,11 +29,25 @@ export const StateLotteriesPage: React.FC<StateLotteriesPageProps> = ({ onSelect
       .finally(() => setLoading(false));
   }, []);
 
+  const stateLotteriesJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    'name': 'Indian State Lottery Directorates & Legal Directory',
+    'description': 'Comprehensive directory of authorized state government lotteries in India under the Lotteries (Regulation) Act, 1998.',
+    'url': 'https://myindialottery.online/states',
+    'publisher': {
+      '@type': 'Organization',
+      'name': 'My India Lottery',
+      'url': 'https://myindialottery.online'
+    }
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
       <SEOHead
         title="State Lotteries in India | Legal Directory & Directorate Portals"
         description="Comprehensive guide to authorized state government lotteries in India, legal frameworks under Lotteries Regulation Act 1998, draw times, and directorate links."
+        jsonLd={stateLotteriesJsonLd}
       />
 
       {/* Page Header */}

@@ -75,11 +75,25 @@ export const LatestResultsPage: React.FC<LatestResultsPageProps> = ({ onSelectDr
     }
   };
 
+  const latestJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    'name': 'Latest Lottery Results - Indian State Lotteries',
+    'description': 'Real-time feed of today and recent draw results published by state lottery directorates across India.',
+    'url': 'https://myindialottery.online/latest',
+    'publisher': {
+      '@type': 'Organization',
+      'name': 'My India Lottery',
+      'url': 'https://myindialottery.online'
+    }
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
       <SEOHead
         title="Latest Lottery Results | Kerala, Nagaland Dear, Sikkim, Punjab & Goa"
         description="Check live today and latest winning draw numbers for all authorized Indian state lotteries with official gazette verification."
+        jsonLd={latestJsonLd}
       />
 
       {/* Page Header */}

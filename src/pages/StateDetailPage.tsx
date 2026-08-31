@@ -52,11 +52,33 @@ export const StateDetailPage: React.FC<StateDetailPageProps> = ({
 
   const { state, schemes, recentDraws } = data;
 
+  const stateJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    'name': `${state.name} State Lottery Results & Draw Archive`,
+    'description': `Official draw results, active schemes, and winning numbers for ${state.name} State Lotteries. Conducted by ${state.directorateName}.`,
+    'url': `https://myindialottery.online/states/${state.code.toLowerCase()}`,
+    'publisher': {
+      '@type': 'Organization',
+      'name': 'My India Lottery',
+      'url': 'https://myindialottery.online'
+    },
+    'about': {
+      '@type': 'GovernmentOrganization',
+      'name': state.directorateName,
+      'areaServed': {
+        '@type': 'AdministrativeArea',
+        'name': state.name
+      }
+    }
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       <SEOHead
         title={`${state.name} State Lottery Results | Directorate & Scheme Archives`}
         description={`Official draw results, active schemes, and winning numbers for ${state.name} State Lotteries. Verified via ${state.directorateName}.`}
+        jsonLd={stateJsonLd}
       />
 
       {/* Back button */}

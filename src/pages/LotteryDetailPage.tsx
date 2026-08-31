@@ -19,7 +19,6 @@ import {
   Share2,
   CheckCircle2,
   FileCheck2,
-  Code,
   Layers
 } from 'lucide-react';
 
@@ -37,7 +36,6 @@ export const LotteryDetailPage: React.FC<LotteryDetailPageProps> = ({
   const [result, setResult] = useState<LotteryResult | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [showJsonLd, setShowJsonLd] = useState(false);
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
@@ -93,6 +91,7 @@ export const LotteryDetailPage: React.FC<LotteryDetailPageProps> = ({
         title={`${result.lotteryName} Winning Numbers | Draw ${result.drawNumber} (${result.drawDate})`}
         description={`Complete official winning numbers for ${result.lotteryName} on ${result.drawDate}. 1st prize ${result.firstPrize.amountFormatted}, 2nd, 3rd, and all prize tiers.`}
         jsonLd={jsonLdData}
+        url={`https://myindialottery.online/results/${result.id}`}
       />
 
       {/* Top Bar Navigation & Actions */}
@@ -338,23 +337,6 @@ export const LotteryDetailPage: React.FC<LotteryDetailPageProps> = ({
               {result.verificationStatus} ({result.checksum})
             </div>
           </div>
-        </div>
-
-        {/* JSON-LD Schema Inspector Toggle */}
-        <div className="pt-2 no-print">
-          <button
-            onClick={() => setShowJsonLd(!showJsonLd)}
-            className="text-xs text-blue-700 hover:text-blue-900 font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
-          >
-            <Code className="w-3.5 h-3.5 text-blue-600" />
-            {showJsonLd ? 'Hide Schema.org JSON-LD' : 'Inspect SEO Schema.org JSON-LD'}
-          </button>
-
-          {showJsonLd && (
-            <pre className="mt-3 p-4 bg-slate-900 border border-slate-800 rounded-lg text-xs font-mono-code text-slate-100 overflow-x-auto">
-              {JSON.stringify(jsonLdData, null, 2)}
-            </pre>
-          )}
         </div>
       </div>
     </div>
