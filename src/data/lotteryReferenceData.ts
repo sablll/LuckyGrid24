@@ -164,6 +164,7 @@ export const INDIAN_LOTTERY_STATES: LotteryState[] = [
 ];
 
 export const INDIAN_LOTTERY_SCHEMES: LotteryScheme[] = [
+  // --- 1. KERALA (KL) ---
   {
     id: 'KL-FIFTY-FIFTY',
     stateCode: 'KL',
@@ -174,7 +175,7 @@ export const INDIAN_LOTTERY_SCHEMES: LotteryScheme[] = [
     drawTime: '03:00 PM',
     ticketPrice: '₹50',
     firstPrize: '₹1,00,00,000 (1 Crore)',
-    description: 'Every Sunday draw with ₹1 Crore first prize and ₹10 Lakhs second prize.',
+    description: 'Weekly Sunday draw with ₹1 Crore first prize and ₹10 Lakhs second prize.',
     officialGazetteRef: 'GO(P)No.84/2026/TAXES',
     active: true
   },
@@ -188,7 +189,7 @@ export const INDIAN_LOTTERY_SCHEMES: LotteryScheme[] = [
     drawTime: '03:00 PM',
     ticketPrice: '₹40',
     firstPrize: '₹75,00,000 (75 Lakhs)',
-    description: 'Every Monday draw with ₹75 Lakhs first prize and ₹5 Lakhs second prize.',
+    description: 'Weekly Monday draw with ₹75 Lakhs first prize and ₹5 Lakhs second prize.',
     officialGazetteRef: 'GO(P)No.85/2026/TAXES',
     active: true
   },
@@ -202,8 +203,105 @@ export const INDIAN_LOTTERY_SCHEMES: LotteryScheme[] = [
     drawTime: '03:00 PM',
     ticketPrice: '₹40',
     firstPrize: '₹75,00,000 (75 Lakhs)',
-    description: 'Every Tuesday draw dedicated to women empowerment funding.',
+    description: 'Weekly Tuesday draw dedicated to women empowerment funding.',
     officialGazetteRef: 'GO(P)No.86/2026/TAXES',
+    active: true
+  },
+  {
+    id: 'KL-AKSHAYA',
+    stateCode: 'KL',
+    name: 'Akshaya (AK)',
+    code: 'AKSHAYA',
+    drawFrequency: 'WEEKLY',
+    drawDays: ['Wednesday'],
+    drawTime: '03:00 PM',
+    ticketPrice: '₹40',
+    firstPrize: '₹70,00,000 (70 Lakhs)',
+    description: 'Weekly Wednesday draw with ₹70 Lakhs first prize and ₹5 Lakhs second prize.',
+    officialGazetteRef: 'GO(P)No.87/2026/TAXES',
+    active: true
+  },
+  {
+    id: 'KL-KARUNYA-PLUS',
+    stateCode: 'KL',
+    name: 'Karunya Plus (KN)',
+    code: 'KARUNYA-PLUS',
+    drawFrequency: 'WEEKLY',
+    drawDays: ['Thursday'],
+    drawTime: '03:00 PM',
+    ticketPrice: '₹40',
+    firstPrize: '₹80,00,000 (80 Lakhs)',
+    description: 'Weekly Thursday draw funding comprehensive healthcare initiatives.',
+    officialGazetteRef: 'GO(P)No.88/2026/TAXES',
+    active: true
+  },
+  {
+    id: 'KL-NIRMAL',
+    stateCode: 'KL',
+    name: 'Nirmal (NR)',
+    code: 'NIRMAL',
+    drawFrequency: 'WEEKLY',
+    drawDays: ['Friday'],
+    drawTime: '03:00 PM',
+    ticketPrice: '₹40',
+    firstPrize: '₹70,00,000 (70 Lakhs)',
+    description: 'Weekly Friday draw with ₹70 Lakhs top prize and ₹10 Lakhs second prize.',
+    officialGazetteRef: 'GO(P)No.89/2026/TAXES',
+    active: true
+  },
+  {
+    id: 'KL-KARUNYA',
+    stateCode: 'KL',
+    name: 'Karunya (KR)',
+    code: 'KARUNYA',
+    drawFrequency: 'WEEKLY',
+    drawDays: ['Saturday'],
+    drawTime: '03:00 PM',
+    ticketPrice: '₹40',
+    firstPrize: '₹80,00,000 (80 Lakhs)',
+    description: 'Weekly Saturday draw supporting underprivileged patient treatments.',
+    officialGazetteRef: 'GO(P)No.90/2026/TAXES',
+    active: true
+  },
+  {
+    id: 'KL-ONAM-BUMPER',
+    stateCode: 'KL',
+    name: 'Thiruvonam Bumper (BR)',
+    code: 'THIRUVONAM-BUMPER',
+    drawFrequency: 'BUMPER',
+    drawTime: '02:00 PM',
+    ticketPrice: '₹500',
+    firstPrize: '₹25,00,00,000 (25 Crores)',
+    description: 'Prestigious annual Onam festival bumper lottery with ₹25 Crores jackpot.',
+    officialGazetteRef: 'GO(P)No.91/2026/TAXES',
+    active: true
+  },
+
+  // --- 2. NAGALAND (NL) ---
+  {
+    id: 'NL-DEAR-MORNING',
+    stateCode: 'NL',
+    name: 'Dear Narmada Morning',
+    code: 'DEAR-MORNING-NARMADA',
+    drawFrequency: 'DAILY',
+    drawTime: '01:00 PM',
+    ticketPrice: '₹6',
+    firstPrize: '₹1,00,00,000 (1 Crore)',
+    description: 'Daily 1:00 PM draw with ₹1 Crore top prize and ₹1,000 consolation prizes.',
+    officialGazetteRef: 'NL/LOT/2026/SEC-4/01',
+    active: true
+  },
+  {
+    id: 'NL-DEAR-DAY',
+    stateCode: 'NL',
+    name: 'Dear Desert Day',
+    code: 'DEAR-DESERT-DAY',
+    drawFrequency: 'DAILY',
+    drawTime: '06:00 PM',
+    ticketPrice: '₹6',
+    firstPrize: '₹1,00,00,000 (1 Crore)',
+    description: 'Daily afternoon 6:00 PM draw conducted under Nagaland Directorate supervision.',
+    officialGazetteRef: 'NL/LOT/2026/SEC-4/02',
     active: true
   },
   {
@@ -215,21 +313,36 @@ export const INDIAN_LOTTERY_SCHEMES: LotteryScheme[] = [
     drawTime: '08:00 PM',
     ticketPrice: '₹6',
     firstPrize: '₹1,00,00,000 (1 Crore)',
-    description: 'Daily evening 8 PM draw with ₹1 Crore top prize.',
-    officialGazetteRef: 'NL/LOT/2026/SEC-4',
+    description: 'Daily evening 8:00 PM draw with ₹1 Crore top prize and multi-series distribution.',
+    officialGazetteRef: 'NL/LOT/2026/SEC-4/03',
     active: true
   },
   {
-    id: 'NL-DEAR-MORNING',
+    id: 'NL-DEAR-BUMPER',
     stateCode: 'NL',
-    name: 'Dear Narmada Morning',
-    code: 'DEAR-MORNING-NARMADA',
+    name: 'Dear 100 Super Bumper',
+    code: 'DEAR-100-SUPER-BUMPER',
+    drawFrequency: 'MONTHLY',
+    drawTime: '08:00 PM',
+    ticketPrice: '₹100',
+    firstPrize: '₹2,50,00,000 (2.5 Crores)',
+    description: 'Monthly bumper series with ₹2.5 Crores guaranteed first prize.',
+    officialGazetteRef: 'NL/LOT/2026/BMP-01',
+    active: true
+  },
+
+  // --- 3. SIKKIM (SK) ---
+  {
+    id: 'SK-DEAR-RESPECT',
+    stateCode: 'SK',
+    name: 'Dear Respect Morning',
+    code: 'DEAR-RESPECT-MORNING',
     drawFrequency: 'DAILY',
-    drawTime: '01:00 PM',
+    drawTime: '11:55 AM',
     ticketPrice: '₹6',
     firstPrize: '₹1,00,00,000 (1 Crore)',
-    description: 'Daily 1:00 PM draw with ₹1 Crore top prize.',
-    officialGazetteRef: 'NL/LOT/2026/SEC-4',
+    description: 'Daily morning 11:55 AM draw with ₹1 Crore top prize.',
+    officialGazetteRef: 'SK/LOT/GAZETTE/2026/M-11',
     active: true
   },
   {
@@ -246,6 +359,34 @@ export const INDIAN_LOTTERY_SCHEMES: LotteryScheme[] = [
     active: true
   },
   {
+    id: 'SK-DEAR-MOUNTAIN',
+    stateCode: 'SK',
+    name: 'Dear Mountain Evening',
+    code: 'DEAR-MOUNTAIN-EVENING',
+    drawFrequency: 'DAILY',
+    drawTime: '07:00 PM',
+    ticketPrice: '₹6',
+    firstPrize: '₹1,00,00,000 (1 Crore)',
+    description: 'Daily evening 7:00 PM draw conducted at Gangtok draw hall.',
+    officialGazetteRef: 'SK/LOT/GAZETTE/2026/E-19',
+    active: true
+  },
+  {
+    id: 'SK-SINGAM-WEEKLY',
+    stateCode: 'SK',
+    name: 'Singam Weekly',
+    code: 'SINGAM-WEEKLY',
+    drawFrequency: 'WEEKLY',
+    drawTime: '04:00 PM',
+    ticketPrice: '₹20',
+    firstPrize: '₹26,00,000 (26 Lakhs)',
+    description: 'Prestigious weekly draw by Directorate of Sikkim State Lotteries.',
+    officialGazetteRef: 'SK/LOT/GAZETTE/2026/S-08',
+    active: true
+  },
+
+  // --- 4. PUNJAB (PB) ---
+  {
     id: 'PB-DEAR-100',
     stateCode: 'PB',
     name: 'Punjab State Dear 100 Monthly',
@@ -254,10 +395,51 @@ export const INDIAN_LOTTERY_SCHEMES: LotteryScheme[] = [
     drawTime: '06:00 PM',
     ticketPrice: '₹100',
     firstPrize: '₹1,50,00,000 (1.5 Crore)',
-    description: 'Monthly bumper with guaranteed 1st prize drawn from sold tickets.',
+    description: 'Monthly bumper with guaranteed 1st prize drawn strictly from sold tickets.',
     officialGazetteRef: 'PB/FIN/LOT/2026/09',
     active: true
   },
+  {
+    id: 'PB-DEAR-200',
+    stateCode: 'PB',
+    name: 'Punjab State Dear 200 Monthly',
+    code: 'PUNJAB-STATE-DEAR-200-MONTHLY',
+    drawFrequency: 'MONTHLY',
+    drawTime: '06:00 PM',
+    ticketPrice: '₹200',
+    firstPrize: '₹2,50,00,000 (2.5 Crores)',
+    description: 'High-tier monthly draw featuring multi-crore guaranteed jackpot.',
+    officialGazetteRef: 'PB/FIN/LOT/2026/10',
+    active: true
+  },
+  {
+    id: 'PB-DIWALI-BUMPER',
+    stateCode: 'PB',
+    name: 'Punjab State Diwali Bumper',
+    code: 'PUNJAB-DIWALI-BUMPER',
+    drawFrequency: 'BUMPER',
+    drawTime: '06:00 PM',
+    ticketPrice: '₹500',
+    firstPrize: '₹5,00,00,000 (5 Crores)',
+    description: 'Grand festive bumper with two guaranteed ₹5 Crore first prizes.',
+    officialGazetteRef: 'PB/FIN/LOT/2026/DW-01',
+    active: true
+  },
+  {
+    id: 'PB-LOHRI-BUMPER',
+    stateCode: 'PB',
+    name: 'Punjab State Lohri Bumper',
+    code: 'PUNJAB-LOHRI-BUMPER',
+    drawFrequency: 'BUMPER',
+    drawTime: '06:00 PM',
+    ticketPrice: '₹500',
+    firstPrize: '₹5,00,00,000 (5 Crores)',
+    description: 'Annual harvest festival bumper draw conducted at Ludhiana.',
+    officialGazetteRef: 'PB/FIN/LOT/2026/LH-01',
+    active: true
+  },
+
+  // --- 5. GOA (GA) ---
   {
     id: 'GA-RAJSHREE-50',
     stateCode: 'GA',
@@ -268,8 +450,323 @@ export const INDIAN_LOTTERY_SCHEMES: LotteryScheme[] = [
     drawTime: '07:30 PM',
     ticketPrice: '₹50',
     firstPrize: '₹21,00,000 (21 Lakhs)',
-    description: 'Weekly Monday draw with ₹21 Lakhs top prize.',
+    description: 'Weekly Monday draw with ₹21 Lakhs top prize and structured series distribution.',
     officialGazetteRef: 'GA/FIN/LOT/2026/SER-2',
+    active: true
+  },
+  {
+    id: 'GA-RAJSHREE-MANGAL',
+    stateCode: 'GA',
+    name: 'Rajshree 50 Mangal Weekly',
+    code: 'RAJSHREE-50-MANGAL-WEEKLY',
+    drawFrequency: 'WEEKLY',
+    drawDays: ['Tuesday'],
+    drawTime: '07:30 PM',
+    ticketPrice: '₹50',
+    firstPrize: '₹21,00,000 (21 Lakhs)',
+    description: 'Weekly Tuesday draw organized by Directorate of Small Savings & Lotteries.',
+    officialGazetteRef: 'GA/FIN/LOT/2026/SER-3',
+    active: true
+  },
+  {
+    id: 'GA-RAJSHREE-EVEREST',
+    stateCode: 'GA',
+    name: 'Rajshree Everest Morning',
+    code: 'RAJSHREE-EVEREST-MORNING',
+    drawFrequency: 'DAILY',
+    drawTime: '11:55 AM',
+    ticketPrice: '₹10',
+    firstPrize: '₹10,00,000 (10 Lakhs)',
+    description: 'Daily morning paper draw under statutory supervision.',
+    officialGazetteRef: 'GA/FIN/LOT/2026/EV-01',
+    active: true
+  },
+  {
+    id: 'GA-RAJSHREE-200',
+    stateCode: 'GA',
+    name: 'Rajshree 200 Monthly Bumper',
+    code: 'RAJSHREE-200-MONTHLY',
+    drawFrequency: 'MONTHLY',
+    drawTime: '04:00 PM',
+    ticketPrice: '₹200',
+    firstPrize: '₹1,00,00,000 (1 Crore)',
+    description: 'Monthly bumper with ₹1 Crore top prize.',
+    officialGazetteRef: 'GA/FIN/LOT/2026/BMP-04',
+    active: true
+  },
+
+  // --- 6. MIZORAM (MZ) ---
+  {
+    id: 'MZ-GOLDEN-KING',
+    stateCode: 'MZ',
+    name: 'Mizoram Golden King Weekly',
+    code: 'GOLDEN-KING-WEEKLY',
+    drawFrequency: 'WEEKLY',
+    drawTime: '04:00 PM',
+    ticketPrice: '₹20',
+    firstPrize: '₹20,00,000 (20 Lakhs)',
+    description: 'Weekly 4:00 PM draw by Directorate of Institutional Finance & State Lottery (IF&SL).',
+    officialGazetteRef: 'MZ/IFSL/2026/GK-01',
+    active: true
+  },
+  {
+    id: 'MZ-SILVER-WEEKLY',
+    stateCode: 'MZ',
+    name: 'Mizoram Silver Weekly',
+    code: 'SILVER-WEEKLY',
+    drawFrequency: 'WEEKLY',
+    drawTime: '07:00 PM',
+    ticketPrice: '₹10',
+    firstPrize: '₹10,00,000 (10 Lakhs)',
+    description: 'Weekly evening draw with transparent government gazette certification.',
+    officialGazetteRef: 'MZ/IFSL/2026/SW-02',
+    active: true
+  },
+  {
+    id: 'MZ-DIAMOND-BUMPER',
+    stateCode: 'MZ',
+    name: 'Mizoram Diamond Bumper',
+    code: 'DIAMOND-BUMPER',
+    drawFrequency: 'MONTHLY',
+    drawTime: '04:00 PM',
+    ticketPrice: '₹50',
+    firstPrize: '₹50,00,000 (50 Lakhs)',
+    description: 'Monthly bumper series with ₹50 Lakhs top prize.',
+    officialGazetteRef: 'MZ/IFSL/2026/DB-03',
+    active: true
+  },
+  {
+    id: 'MZ-RAJSHREE-SOM',
+    stateCode: 'MZ',
+    name: 'Rajshree Mizoram Som',
+    code: 'RAJSHREE-MIZORAM-SOM',
+    drawFrequency: 'WEEKLY',
+    drawDays: ['Monday'],
+    drawTime: '11:55 AM',
+    ticketPrice: '₹10',
+    firstPrize: '₹10,00,000 (10 Lakhs)',
+    description: 'Weekly Monday morning draw conducted at Aizawl.',
+    officialGazetteRef: 'MZ/IFSL/2026/RS-04',
+    active: true
+  },
+
+  // --- 7. MAHARASHTRA (MH) ---
+  {
+    id: 'MH-GAJLAXMI-SOM',
+    stateCode: 'MH',
+    name: 'Maharashtra Gajlaxmi Som Weekly',
+    code: 'GAJLAXMI-SOM-WEEKLY',
+    drawFrequency: 'WEEKLY',
+    drawDays: ['Monday'],
+    drawTime: '04:15 PM',
+    ticketPrice: '₹20',
+    firstPrize: '₹10,00,000 (10 Lakhs)',
+    description: 'Weekly Monday draw with ₹10 Lakhs first prize organized by Maharashtra Finance Dept.',
+    officialGazetteRef: 'MH/LOT/2026/GL-01',
+    active: true
+  },
+  {
+    id: 'MH-GAJLAXMI-BUDH',
+    stateCode: 'MH',
+    name: 'Maharashtra Gajlaxmi Budh Weekly',
+    code: 'GAJLAXMI-BUDH-WEEKLY',
+    drawFrequency: 'WEEKLY',
+    drawDays: ['Wednesday'],
+    drawTime: '04:15 PM',
+    ticketPrice: '₹20',
+    firstPrize: '₹10,00,000 (10 Lakhs)',
+    description: 'Weekly Wednesday draw supporting rural development programs.',
+    officialGazetteRef: 'MH/LOT/2026/GL-03',
+    active: true
+  },
+  {
+    id: 'MH-MAHALAXMI',
+    stateCode: 'MH',
+    name: 'Maharashtra Mahalaxmi Weekly',
+    code: 'MAHALAXMI-WEEKLY',
+    drawFrequency: 'WEEKLY',
+    drawTime: '04:45 PM',
+    ticketPrice: '₹50',
+    firstPrize: '₹25,00,000 (25 Lakhs)',
+    description: 'Weekly evening draw with ₹25 Lakhs jackpot.',
+    officialGazetteRef: 'MH/LOT/2026/ML-01',
+    active: true
+  },
+  {
+    id: 'MH-SURABHI',
+    stateCode: 'MH',
+    name: 'Maharashtra Surabhi Weekly',
+    code: 'SURABHI-WEEKLY',
+    drawFrequency: 'WEEKLY',
+    drawTime: '04:30 PM',
+    ticketPrice: '₹20',
+    firstPrize: '₹10,00,000 (10 Lakhs)',
+    description: 'Popular weekly scheme conducted at Mumbai draw center.',
+    officialGazetteRef: 'MH/LOT/2026/SR-01',
+    active: true
+  },
+
+  // --- 8. WEST BENGAL (WB) ---
+  {
+    id: 'WB-BANGALAKSHMI',
+    stateCode: 'WB',
+    name: 'Bangalakshmi Weekly',
+    code: 'BANGALAKSHMI-WEEKLY',
+    drawFrequency: 'WEEKLY',
+    drawTime: '04:00 PM',
+    ticketPrice: '₹30',
+    firstPrize: '₹50,00,000 (50 Lakhs)',
+    description: 'Authorized paper lottery draw organized by West Bengal Directorate of State Lotteries.',
+    officialGazetteRef: 'WB/LOT/2026/BL-01',
+    active: true
+  },
+  {
+    id: 'WB-BANGABHUMI',
+    stateCode: 'WB',
+    name: 'Bangabhumi Weekly',
+    code: 'BANGABHUMI-WEEKLY',
+    drawFrequency: 'WEEKLY',
+    drawTime: '04:00 PM',
+    ticketPrice: '₹30',
+    firstPrize: '₹50,00,000 (50 Lakhs)',
+    description: 'Weekly paper draw published in Kolkata State Gazette.',
+    officialGazetteRef: 'WB/LOT/2026/BB-01',
+    active: true
+  },
+  {
+    id: 'WB-BENGAL-BUMPER',
+    stateCode: 'WB',
+    name: 'Dear Bengal Bumper',
+    code: 'DEAR-BENGAL-BUMPER',
+    drawFrequency: 'BUMPER',
+    drawTime: '04:00 PM',
+    ticketPrice: '₹100',
+    firstPrize: '₹1,00,00,000 (1 Crore)',
+    description: 'Seasonal bumper series distributed across authorized centers in West Bengal.',
+    officialGazetteRef: 'WB/LOT/2026/BMP-02',
+    active: true
+  },
+  {
+    id: 'WB-BANGASHREE',
+    stateCode: 'WB',
+    name: 'Bangashree Super Weekly',
+    code: 'BANGASHREE-SUPER',
+    drawFrequency: 'WEEKLY',
+    drawTime: '04:00 PM',
+    ticketPrice: '₹20',
+    firstPrize: '₹25,00,00,000 (25 Lakhs)',
+    description: 'Weekly draw overseen by Nabanna Finance Department.',
+    officialGazetteRef: 'WB/LOT/2026/BS-01',
+    active: true
+  },
+
+  // --- 9. ARUNACHAL PRADESH (AR) ---
+  {
+    id: 'AR-SINGAM-PEAK',
+    stateCode: 'AR',
+    name: 'Singam Peak Weekly',
+    code: 'SINGAM-PEAK-WEEKLY',
+    drawFrequency: 'WEEKLY',
+    drawTime: '11:55 AM',
+    ticketPrice: '₹20',
+    firstPrize: '₹26,00,000 (26 Lakhs)',
+    description: 'Official weekly morning draw by Directorate of Arunachal Pradesh State Lotteries.',
+    officialGazetteRef: 'AR/FIN/LOT/2026/SP-01',
+    active: true
+  },
+  {
+    id: 'AR-LABHLAXMI-SOM',
+    stateCode: 'AR',
+    name: 'LabhLaxmi Som Weekly',
+    code: 'LABHLAXMI-SOM-WEEKLY',
+    drawFrequency: 'WEEKLY',
+    drawDays: ['Monday'],
+    drawTime: '05:00 PM',
+    ticketPrice: '₹10',
+    firstPrize: '₹10,00,000 (10 Lakhs)',
+    description: 'Weekly Monday evening draw under state statutory governance.',
+    officialGazetteRef: 'AR/FIN/LOT/2026/LL-01',
+    active: true
+  },
+  {
+    id: 'AR-LABHLAXMI-MANGAL',
+    stateCode: 'AR',
+    name: 'LabhLaxmi Mangal Weekly',
+    code: 'LABHLAXMI-MANGAL-WEEKLY',
+    drawFrequency: 'WEEKLY',
+    drawDays: ['Tuesday'],
+    drawTime: '05:00 PM',
+    ticketPrice: '₹10',
+    firstPrize: '₹10,00,000 (10 Lakhs)',
+    description: 'Weekly Tuesday draw conducted at Itanagar.',
+    officialGazetteRef: 'AR/FIN/LOT/2026/LL-02',
+    active: true
+  },
+  {
+    id: 'AR-SUPER-WEEKLY',
+    stateCode: 'AR',
+    name: 'Arunachal Super Weekly',
+    code: 'ARUNACHAL-SUPER-WEEKLY',
+    drawFrequency: 'WEEKLY',
+    drawTime: '11:55 AM',
+    ticketPrice: '₹50',
+    firstPrize: '₹50,00,000 (50 Lakhs)',
+    description: 'High-tier weekly draw with ₹50 Lakhs top prize.',
+    officialGazetteRef: 'AR/FIN/LOT/2026/AS-01',
+    active: true
+  },
+
+  // --- 10. MEGHALAYA (ML) ---
+  {
+    id: 'ML-SINGAM-DAY',
+    stateCode: 'ML',
+    name: 'Singam Meghalaya Day',
+    code: 'SINGAM-MEGHALAYA-DAY',
+    drawFrequency: 'DAILY',
+    drawTime: '12:30 PM',
+    ticketPrice: '₹20',
+    firstPrize: '₹29,00,000 (29 Lakhs)',
+    description: 'Daily afternoon draw organized by Directorate of Meghalaya State Lotteries.',
+    officialGazetteRef: 'ML/LOT/2026/SM-01',
+    active: true
+  },
+  {
+    id: 'ML-KUWAIT-WEEKLY',
+    stateCode: 'ML',
+    name: 'Kuwait Weekly',
+    code: 'KUWAIT-WEEKLY',
+    drawFrequency: 'WEEKLY',
+    drawTime: '03:30 PM',
+    ticketPrice: '₹10',
+    firstPrize: '₹10,00,000 (10 Lakhs)',
+    description: 'Authorized weekly paper draw conducted at Shillong.',
+    officialGazetteRef: 'ML/LOT/2026/KW-01',
+    active: true
+  },
+  {
+    id: 'ML-SUPER-WEEKLY',
+    stateCode: 'ML',
+    name: 'Meghalaya Super Weekly',
+    code: 'MEGHALAYA-SUPER-WEEKLY',
+    drawFrequency: 'WEEKLY',
+    drawTime: '12:30 PM',
+    ticketPrice: '₹30',
+    firstPrize: '₹35,00,000 (35 Lakhs)',
+    description: 'Super series draw supervised by Meghalaya Taxation Department.',
+    officialGazetteRef: 'ML/LOT/2026/MS-01',
+    active: true
+  },
+  {
+    id: 'ML-TEER-RESULTS',
+    stateCode: 'ML',
+    name: 'Traditional Teer Results (Khanapara)',
+    code: 'KHANAPARA-TEER-DAILY',
+    drawFrequency: 'DAILY',
+    drawTime: '03:30 PM',
+    ticketPrice: '₹5',
+    firstPrize: '₹80 per ₹1 stake (80x)',
+    description: 'Licensed traditional archery game arrows tally organized by Khasi Hills Archery Sports Association under Meghalaya Amusement and Betting Tax Act.',
+    officialGazetteRef: 'ML/TAX/TEER/2026/KP-01',
     active: true
   }
 ];

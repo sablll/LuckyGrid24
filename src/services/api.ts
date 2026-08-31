@@ -141,7 +141,7 @@ export async function fetchStateDetail(code: string): Promise<{
       schemes: LotteryScheme[];
       recentDraws: LotteryResult[];
     };
-  }>(`${BASE_URL}/states/${code}`);
+  }>(`${BASE_URL}/states/${encodeURIComponent(code)}`);
 
   if (remote && remote.data?.state) {
     if (remote.data.recentDraws) {
@@ -155,8 +155,8 @@ export async function fetchStateDetail(code: string): Promise<{
     throw new Error(`State with code '${code}' not found.`);
   }
 
-  const schemes = clientStore.getSchemesByState(code);
-  const { results } = clientStore.getAllResults({ stateCode: code, limit: 10 });
+  const schemes = clientStore.getSchemesByState(state.code);
+  const { results } = clientStore.getAllResults({ stateCode: state.code, limit: 10 });
 
   return {
     data: {

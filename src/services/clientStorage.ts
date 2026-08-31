@@ -85,11 +85,14 @@ export class ClientLotteryStore {
     let list = Array.from(this.results.values());
 
     if (options?.stateCode) {
-      list = list.filter(r => r.stateCode.toLowerCase() === options.stateCode?.toLowerCase());
+      const state = this.getStateByCode(options.stateCode);
+      const code = state ? state.code.toLowerCase() : options.stateCode.toLowerCase().trim();
+      list = list.filter(r => r.stateCode.toLowerCase() === code);
     }
 
     if (options?.schemeCode) {
-      list = list.filter(r => r.schemeCode.toLowerCase() === options.schemeCode?.toLowerCase());
+      const sc = options.schemeCode.toLowerCase().trim();
+      list = list.filter(r => r.schemeCode.toLowerCase() === sc || r.schemeCode.toLowerCase().replace(/[^a-z0-9]/g, '') === sc.replace(/[^a-z0-9]/g, ''));
     }
 
     if (options?.dateFrom) {
@@ -148,12 +151,32 @@ export class ClientLotteryStore {
     return Array.from(this.states.values());
   }
 
-  public getStateByCode(code: string): LotteryState | undefined {
-    return this.states.get(code.toUpperCase());
+  public getStateByCode(codeOrSlug: string): LotteryState | undefined {
+    if (!codeOrSlug) return undefined;
+    const clean = codeOrSlug.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
+
+    // Direct code lookup
+    const byCode = this.states.get(codeOrSlug.trim().toUpperCase());
+    if (byCode) return byCode;
+
+    // Search by code, name, shortName, or sanitized slug
+    for (const state of this.states.values()) {
+      if (
+        state.code.toLowerCase() === clean ||
+        state.name.toLowerCase().replace(/[^a-z0-9]/g, '') === clean ||
+        state.shortName.toLowerCase().replace(/[^a-z0-9]/g, '') === clean
+      ) {
+        return state;
+      }
+    }
+    return undefined;
   }
 
-  public getSchemesByState(stateCode: string): LotteryScheme[] {
-    return Array.from(this.schemes.values()).filter(s => s.stateCode.toUpperCase() === stateCode.toUpperCase());
+  public getSchemesByState(stateCodeOrSlug: string): LotteryScheme[] {
+    if (!stateCodeOrSlug) return [];
+    const state = this.getStateByCode(stateCodeOrSlug);
+    const code = state ? state.code.toUpperCase() : stateCodeOrSlug.trim().toUpperCase();
+    return Array.from(this.schemes.values()).filter(s => s.stateCode.toUpperCase() === code);
   }
 
   public getUpcomingDraws(): UpcomingDraw[] {
