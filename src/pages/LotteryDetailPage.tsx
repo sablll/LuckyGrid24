@@ -1,37 +1,42 @@
 import React, { useEffect, useState } from 'react';
 import { fetchResultById } from '../services/api';
-import { LotteryResult, PrizeTier } from '../types/lottery';
-import { WinningNumberPill } from '../components/common/WinningNumberPill';
-import { OfficialResultImageViewer } from '../components/lottery/OfficialResultImageViewer';
+import { LotteryResult } from '../types/lottery';
 import { LoadingState } from '../components/common/LoadingState';
 import { ErrorState } from '../components/common/ErrorState';
 import { SEOHead } from '../components/common/SEOHead';
+import { WinningNumberPill } from '../components/lottery/WinningNumberPill';
+import { OfficialResultImageViewer } from '../components/lottery/OfficialResultImageViewer';
+import { getStateCanonicalPath, getStateCanonicalUrl, buildBreadcrumbSchema } from '../utils/seoHelpers';
 import {
   Calendar,
   Clock,
-  ExternalLink,
-  ShieldCheck,
-  Trophy,
-  Award,
-  Gift,
   ArrowLeft,
   Printer,
   Share2,
-  CheckCircle2,
   FileCheck2,
-  Layers
+  ExternalLink,
+  ShieldCheck,
+  Trophy,
+  CheckCircle2,
+  Gift,
+  Layers,
+  Building2,
+  History,
+  Tag
 } from 'lucide-react';
 
 interface LotteryDetailPageProps {
   drawId: string;
   onBack: () => void;
   onOpenChecker: () => void;
+  onNavigate?: (path: string) => void;
 }
 
 export const LotteryDetailPage: React.FC<LotteryDetailPageProps> = ({
   drawId,
   onBack,
-  onOpenChecker
+  onOpenChecker,
+  onNavigate
 }) => {
   const [result, setResult] = useState<LotteryResult | null>(null);
   const [loading, setLoading] = useState(true);
@@ -50,26 +55,35 @@ export const LotteryDetailPage: React.FC<LotteryDetailPageProps> = ({
   if (loading) return <LoadingState message="Loading official draw gazette details..." />;
   if (error || !result) return <ErrorState message={error || 'Lottery draw not found.'} onRetry={onBack} />;
 
+  const canonicalStatePath = getStateCanonicalPath(result.stateCode);
+
   // JSON-LD Structured Data Schema for this Draw
-  const jsonLdData = {
-    '@context': 'https://schema.org',
-    '@type': 'NewsArticle',
-    'headline': `${result.lotteryName} Result - Draw ${result.drawNumber} (${result.drawDate})`,
-    'description': `Official winning numbers for ${result.lotteryName} held on ${result.drawDate}. First prize ${result.firstPrize.amountFormatted} won by ${result.firstPrize.winningTicket}.`,
-    'datePublished': result.publishedTime,
-    'dateModified': result.lastUpdatedTime,
-    'publisher': {
-      '@type': 'Organization',
-      'name': 'My India Lottery',
-      'url': 'https://myindialottery.online'
+  const jsonLdData = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'NewsArticle',
+      'headline': `${result.lotteryName} Result Today (${result.drawDate}) - Draw ${result.drawNumber}`,
+      'description': `Official winning numbers for ${result.lotteryName} held on ${result.drawDate} at ${result.drawTime}. First prize ${result.firstPrize.amountFormatted} won by ${result.firstPrize.winningTicket}.`,
+      'datePublished': result.publishedTime,
+      'dateModified': result.lastUpdatedTime,
+      'publisher': {
+        '@type': 'Organization',
+        'name': 'My India Lottery',
+        'url': 'https://myindialottery.online'
+      },
+      'mainEntityOfPage': `https://myindialottery.online/results/${result.id}`,
+      'about': {
+        '@type': 'GovernmentOrganization',
+        'name': result.officialSource.directorateName,
+        'description': result.officialSource.sourceName
+      }
     },
-    'mainEntityOfPage': `https://myindialottery.online/results/${result.id}`,
-    'about': {
-      '@type': 'Thing',
-      'name': `${result.stateName} State Lottery`,
-      'description': result.officialSource.sourceName
-    }
-  };
+    buildBreadcrumbSchema([
+      { name: 'Home', url: '/' },
+      { name: `${result.stateName} Lottery`, url: canonicalStatePath },
+      { name: result.lotteryName, url: `/results/${result.id}` }
+    ])
+  ];
 
   const handleShare = () => {
     if (navigator.share) {
@@ -88,8 +102,8 @@ export const LotteryDetailPage: React.FC<LotteryDetailPageProps> = ({
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
       <SEOHead
-        title={`${result.lotteryName} Winning Numbers | Draw ${result.drawNumber} (${result.drawDate})`}
-        description={`Complete official winning numbers for ${result.lotteryName} on ${result.drawDate}. 1st prize ${result.firstPrize.amountFormatted}, 2nd, 3rd, and all prize tiers.`}
+        title={`${result.lotteryName} Result Today (${result.drawDate}) | Draw #${result.drawNumber} Winning Numbers`}
+        description={`Complete official winning numbers for ${result.lotteryName} on ${result.drawDate} at ${result.drawTime}. 1st prize ${result.firstPrize.amountFormatted} (${result.firstPrize.winningTicket}), 2nd, 3rd, and verified gazette.`}
         jsonLd={jsonLdData}
         url={`https://myindialottery.online/results/${result.id}`}
       />
@@ -107,7 +121,7 @@ export const LotteryDetailPage: React.FC<LotteryDetailPageProps> = ({
         <div className="flex items-center gap-2">
           <button
             onClick={() => window.print()}
-            className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-bold text-slate-700 bg-white hover:bg-slate-50 border border-slate-300 transition-colors shadow-2xs"
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-bold text-slate-700 bg-white hover:bg-slate-50 border border-slate-300 transition-colors shadow-2xs cursor-pointer"
           >
             <Printer className="w-4 h-4 text-blue-600" />
             <span>Print Result</span>
@@ -115,7 +129,7 @@ export const LotteryDetailPage: React.FC<LotteryDetailPageProps> = ({
 
           <button
             onClick={handleShare}
-            className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-bold text-slate-700 bg-white hover:bg-slate-50 border border-slate-300 transition-colors shadow-2xs"
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-bold text-slate-700 bg-white hover:bg-slate-50 border border-slate-300 transition-colors shadow-2xs cursor-pointer"
           >
             <Share2 className="w-4 h-4 text-blue-600" />
             <span>{copied ? 'Copied Link!' : 'Share'}</span>
@@ -123,7 +137,7 @@ export const LotteryDetailPage: React.FC<LotteryDetailPageProps> = ({
 
           <button
             onClick={onOpenChecker}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-extrabold text-white bg-blue-600 hover:bg-blue-700 transition-colors shadow-xs uppercase tracking-wider"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-extrabold text-white bg-blue-600 hover:bg-blue-700 transition-colors shadow-xs uppercase tracking-wider cursor-pointer"
           >
             <span>Verify Ticket</span>
           </button>
@@ -134,10 +148,20 @@ export const LotteryDetailPage: React.FC<LotteryDetailPageProps> = ({
       <div className="bg-white border-2 border-slate-200 rounded-lg p-6 sm:p-8 space-y-4 shadow-xs">
         <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-200">
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-xs font-extrabold uppercase bg-blue-600 text-white px-3 py-1 rounded">
-              {result.stateName} State Lottery
-            </span>
-            <span className="text-xs text-slate-700 font-mono-code font-bold">
+            {onNavigate ? (
+              <button
+                onClick={() => onNavigate(canonicalStatePath)}
+                className="text-xs font-extrabold uppercase bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition-colors cursor-pointer flex items-center gap-1"
+              >
+                <Building2 className="w-3.5 h-3.5" />
+                <span>{result.stateName} State Lottery</span>
+              </button>
+            ) : (
+              <span className="text-xs font-extrabold uppercase bg-blue-600 text-white px-3 py-1 rounded">
+                {result.stateName} State Lottery
+              </span>
+            )}
+            <span className="text-xs text-slate-700 font-mono-code font-bold bg-slate-100 px-2 py-0.5 rounded border border-slate-300">
               Draw No: #{result.drawNumber}
             </span>
           </div>
@@ -183,9 +207,9 @@ export const LotteryDetailPage: React.FC<LotteryDetailPageProps> = ({
           </div>
 
           <div className="bg-slate-50 p-3 rounded-lg border border-slate-200">
-            <div className="text-slate-500 font-bold text-[11px] mb-0.5">Total Series</div>
-            <div className="font-mono-code text-slate-900 font-bold truncate">
-              {result.seriesList?.join(', ') || 'N/A'}
+            <div className="text-slate-500 font-bold text-[11px] mb-0.5">Last Updated</div>
+            <div className="font-mono-code text-slate-800 font-bold truncate text-[11px] mt-0.5">
+              {result.lastUpdatedTime ? new Date(result.lastUpdatedTime).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }) : 'Live'}
             </div>
           </div>
         </div>
@@ -337,6 +361,32 @@ export const LotteryDetailPage: React.FC<LotteryDetailPageProps> = ({
               {result.verificationStatus} ({result.checksum})
             </div>
           </div>
+        </div>
+
+        {/* Links to state page & previous results */}
+        <div className="pt-3 border-t border-slate-200 flex flex-wrap gap-2 text-xs">
+          {onNavigate && (
+            <>
+              <button
+                onClick={() => onNavigate(canonicalStatePath)}
+                className="px-3 py-1.5 rounded bg-blue-50 text-blue-900 font-bold hover:bg-blue-100 border border-blue-200 transition-colors cursor-pointer"
+              >
+                More {result.stateName} Results
+              </button>
+              <button
+                onClick={() => onNavigate('/lottery-sambad-today')}
+                className="px-3 py-1.5 rounded bg-blue-50 text-blue-900 font-bold hover:bg-blue-100 border border-blue-200 transition-colors cursor-pointer"
+              >
+                Lottery Sambad Today
+              </button>
+              <button
+                onClick={() => onNavigate('/lottery-sambad-old-result')}
+                className="px-3 py-1.5 rounded bg-slate-100 text-slate-800 font-bold hover:bg-slate-200 border border-slate-300 transition-colors cursor-pointer"
+              >
+                Old Results Archive
+              </button>
+            </>
+          )}
         </div>
       </div>
     </div>

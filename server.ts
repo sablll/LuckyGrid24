@@ -402,6 +402,10 @@ async function startServer() {
 
     const staticPages = [
       { path: '', changefreq: 'hourly', priority: '1.0' },
+      { path: '/lottery-sambad-today', changefreq: 'hourly', priority: '1.0' },
+      { path: '/dear-lottery-result-today', changefreq: 'hourly', priority: '1.0' },
+      { path: '/lottery-result-today', changefreq: 'hourly', priority: '1.0' },
+      { path: '/lottery-sambad-old-result', changefreq: 'daily', priority: '0.9' },
       { path: '/latest', changefreq: 'hourly', priority: '0.9' },
       { path: '/previous', changefreq: 'daily', priority: '0.8' },
       { path: '/states', changefreq: 'daily', priority: '0.8' },
@@ -411,6 +415,19 @@ async function startServer() {
       { path: '/disclaimer', changefreq: 'monthly', priority: '0.5' },
       { path: '/contact', changefreq: 'monthly', priority: '0.5' }
     ];
+
+    const stateSlugs: Record<string, string> = {
+      KL: 'kerala-lottery-result',
+      NL: 'nagaland-lottery-result',
+      SK: 'sikkim-lottery-result',
+      WB: 'west-bengal-lottery-result',
+      PB: 'punjab-lottery-result',
+      GA: 'goa-lottery-result',
+      MZ: 'mizoram-lottery-result',
+      MH: 'maharashtra-lottery-result',
+      AR: 'arunachal-pradesh-lottery-result',
+      ML: 'meghalaya-lottery-result'
+    };
 
     let xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
@@ -429,13 +446,14 @@ async function startServer() {
 `;
     }
 
-    // State category pages
+    // State category pages (both canonical SEO slug and code)
     for (const st of states) {
+      const slug = stateSlugs[st.code.toUpperCase()] || st.code.toLowerCase();
       xml += `  <url>
-    <loc>${domain}/states/${st.code.toLowerCase()}</loc>
+    <loc>${domain}/states/${slug}</loc>
     <lastmod>${today}</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
+    <changefreq>hourly</changefreq>
+    <priority>0.9</priority>
   </url>
 `;
     }

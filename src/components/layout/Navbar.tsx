@@ -22,12 +22,12 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath, onNavigate, onOpenS
 
   const navItems = [
     { label: 'Home', path: '/' },
-    { label: 'Latest Results', path: '/latest' },
-    { label: 'State Lotteries', path: '/states' },
-    { label: 'Previous Results', path: '/previous' },
-    { label: 'Search / Check Ticket', path: '/search' },
-    { label: 'Statistics', path: '/statistics' },
-    { label: 'About & Disclaimer', path: '/about' }
+    { label: 'Lottery Sambad', path: '/lottery-sambad-today' },
+    { label: 'Dear Lottery', path: '/dear-lottery-result-today' },
+    { label: 'All Results', path: '/lottery-result-today' },
+    { label: 'States', path: '/states' },
+    { label: 'Old Results', path: '/lottery-sambad-old-result' },
+    { label: 'Search', path: '/search' }
   ];
 
   const handleNavClick = (path: string) => {

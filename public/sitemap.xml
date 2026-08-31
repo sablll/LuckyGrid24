@@ -8,6 +8,26 @@
     <priority>1.0</priority>
   </url>
   <url>
+    <loc>https://myindialottery.online/lottery-sambad-today</loc>
+    <changefreq>hourly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://myindialottery.online/dear-lottery-result-today</loc>
+    <changefreq>hourly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://myindialottery.online/lottery-result-today</loc>
+    <changefreq>hourly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://myindialottery.online/lottery-sambad-old-result</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://myindialottery.online/latest</loc>
     <changefreq>hourly</changefreq>
     <priority>0.9</priority>
@@ -47,54 +67,55 @@
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
+  <!-- State Canonical SEO URLs -->
   <url>
-    <loc>https://myindialottery.online/states/kl</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
+    <loc>https://myindialottery.online/states/kerala-lottery-result</loc>
+    <changefreq>hourly</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://myindialottery.online/states/nl</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
+    <loc>https://myindialottery.online/states/nagaland-lottery-result</loc>
+    <changefreq>hourly</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://myindialottery.online/states/sk</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
+    <loc>https://myindialottery.online/states/sikkim-lottery-result</loc>
+    <changefreq>hourly</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://myindialottery.online/states/pb</loc>
+    <loc>https://myindialottery.online/states/west-bengal-lottery-result</loc>
     <changefreq>daily</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://myindialottery.online/states/ga</loc>
+    <loc>https://myindialottery.online/states/punjab-lottery-result</loc>
     <changefreq>daily</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://myindialottery.online/states/bt</loc>
+    <loc>https://myindialottery.online/states/goa-lottery-result</loc>
     <changefreq>daily</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://myindialottery.online/states/mz</loc>
+    <loc>https://myindialottery.online/states/mizoram-lottery-result</loc>
     <changefreq>daily</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://myindialottery.online/states/ml</loc>
+    <loc>https://myindialottery.online/states/maharashtra-lottery-result</loc>
     <changefreq>daily</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://myindialottery.online/states/ar</loc>
+    <loc>https://myindialottery.online/states/arunachal-pradesh-lottery-result</loc>
     <changefreq>daily</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://myindialottery.online/states/wb</loc>
+    <loc>https://myindialottery.online/states/meghalaya-lottery-result</loc>
     <changefreq>daily</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
   </url>
 </urlset>

@@ -17,6 +17,13 @@ import { AboutPage } from './pages/AboutPage';
 import { DisclaimerPage } from './pages/DisclaimerPage';
 import { ContactPage } from './pages/ContactPage';
 
+// Dedicated SEO Landing Pages
+import { LotterySambadTodayPage } from './pages/LotterySambadTodayPage';
+import { DearLotteryResultTodayPage } from './pages/DearLotteryResultTodayPage';
+import { LotteryResultTodayPage } from './pages/LotteryResultTodayPage';
+import { LotterySambadOldResultPage } from './pages/LotterySambadOldResultPage';
+import { getStateCanonicalPath } from './utils/seoHelpers';
+
 export default function App() {
   const [currentPath, setCurrentPath] = useState<string>(() => {
     return window.location.pathname || '/';
@@ -89,18 +96,19 @@ export default function App() {
   // Route Dispatcher
   const renderCurrentPage = () => {
     // Detail Route: /results/:id
-    if (currentPath.startsWith('/results/')) {
+    if (currentPath.startsWith('/results/') && currentPath !== '/results') {
       const drawId = currentPath.replace('/results/', '');
       return (
         <LotteryDetailPage
           drawId={drawId}
           onBack={() => navigateTo('/latest')}
           onOpenChecker={() => handleOpenCheckerForDraw(drawId)}
+          onNavigate={navigateTo}
         />
       );
     }
 
-    // State Detail Route: /states/:stateCode
+    // State Detail Route: /states/:stateCodeOrSlug
     if (currentPath.startsWith('/states/') && currentPath !== '/states') {
       const stateCode = currentPath.replace('/states/', '');
       return (
@@ -109,11 +117,55 @@ export default function App() {
           onBack={() => navigateTo('/states')}
           onSelectDraw={(id) => navigateTo(`/results/${id}`)}
           onCheckTicket={(id) => handleOpenCheckerForDraw(id)}
+          onOpenChecker={() => handleOpenCheckerForDraw()}
+          onNavigate={navigateTo}
         />
       );
     }
 
     switch (currentPath) {
+      // Dedicated SEO Landing Pages
+      case '/lottery-sambad-today':
+        return (
+          <LotterySambadTodayPage
+            onSelectDraw={(id) => navigateTo(`/results/${id}`)}
+            onCheckTicket={(id) => handleOpenCheckerForDraw(id)}
+            onOpenChecker={() => handleOpenCheckerForDraw()}
+            onNavigate={navigateTo}
+          />
+        );
+
+      case '/dear-lottery-result-today':
+        return (
+          <DearLotteryResultTodayPage
+            onSelectDraw={(id) => navigateTo(`/results/${id}`)}
+            onCheckTicket={(id) => handleOpenCheckerForDraw(id)}
+            onOpenChecker={() => handleOpenCheckerForDraw()}
+            onNavigate={navigateTo}
+          />
+        );
+
+      case '/lottery-result-today':
+        return (
+          <LotteryResultTodayPage
+            onSelectDraw={(id) => navigateTo(`/results/${id}`)}
+            onCheckTicket={(id) => handleOpenCheckerForDraw(id)}
+            onOpenChecker={() => handleOpenCheckerForDraw()}
+            onNavigate={navigateTo}
+          />
+        );
+
+      case '/lottery-sambad-old-result':
+        return (
+          <LotterySambadOldResultPage
+            onSelectDraw={(id) => navigateTo(`/results/${id}`)}
+            onCheckTicket={(id) => handleOpenCheckerForDraw(id)}
+            onOpenChecker={() => handleOpenCheckerForDraw()}
+            onNavigate={navigateTo}
+          />
+        );
+
+      case '/results':
       case '/latest':
         return (
           <LatestResultsPage
@@ -126,7 +178,7 @@ export default function App() {
       case '/states':
         return (
           <StateLotteriesPage
-            onSelectState={(code) => navigateTo(`/states/${code.toLowerCase()}`)}
+            onSelectState={(code) => navigateTo(getStateCanonicalPath(code))}
           />
         );
 
