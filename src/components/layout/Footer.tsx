@@ -40,7 +40,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               </span>
             </div>
             <p className="text-slate-600 text-xs font-semibold leading-relaxed">
-              Official Indian state government lottery results portal. Providing fast, verified winning numbers, gazette PDF images, and archival lookup since 1998.
+              Independent Lottery Results Portal. Providing fast, cross-checked winning numbers, gazette PDF images, and archival lookup for legal Indian state lotteries.
             </p>
           </div>
 
@@ -151,6 +151,22 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               </li>
             </ul>
           </div>
+        </div>
+
+        {/* Mandatory Independent Disclaimer Block */}
+        <div className="pt-6 border-t border-slate-200 text-[11px] sm:text-xs text-slate-500 leading-relaxed space-y-2 bg-slate-50 p-4 rounded-lg border border-slate-200">
+          <p className="font-semibold text-slate-700">
+            My India Lottery is an independent lottery results information website. We are not affiliated with, operated by, or endorsed by any Indian state government or lottery department.
+          </p>
+          <p>
+            We provide lottery results, draw information, winning numbers, and historical archives for informational purposes. Results are collected and cross-checked against publicly available official government lottery sources.
+          </p>
+          <p>
+            My India Lottery does not sell lottery tickets, process lottery payments, or operate any lottery scheme.
+          </p>
+          <p className="font-medium text-slate-600">
+            For official confirmation, users should always verify lottery results with the relevant state government's official lottery department or gazette.
+          </p>
         </div>
 
         {/* Copyright */}

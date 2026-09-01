@@ -116,7 +116,7 @@ export const LotterySambadOldResultPage: React.FC<LotterySambadOldResultPageProp
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-2">
             <span className="text-xs font-black uppercase bg-blue-600 text-white px-3 py-1 rounded">
-              Official Archive
+              Results Archive
             </span>
             <span className="text-xs font-bold text-slate-700 bg-slate-100 px-3 py-1 rounded border border-slate-300 font-mono-code">
               Past Draw Gazette Records

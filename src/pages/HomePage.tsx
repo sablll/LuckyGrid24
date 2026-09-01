@@ -193,7 +193,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate, onOpenChecker, o
                 Indian State Lottery Results &amp; Daily Draw Schedule
               </h2>
               <p className="text-xs sm:text-sm text-slate-600 mt-1 font-medium leading-relaxed">
-                Welcome to <strong>My India Lottery</strong>, the verified national portal for legal Indian state government lottery results. We provide authentic, gazette-verified winning numbers published strictly under the authority of state directorates in compliance with <strong>The Lotteries (Regulation) Act, 1998</strong>.
+                Welcome to <strong>My India Lottery</strong>, the independent information portal for legal Indian state lottery results. We provide authentic, gazette-cross-checked winning numbers in compliance with <strong>The Lotteries (Regulation) Act, 1998</strong>.
               </p>
             </div>
 

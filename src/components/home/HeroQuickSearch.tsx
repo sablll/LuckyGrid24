@@ -56,7 +56,7 @@ export const HeroQuickSearch: React.FC<HeroQuickSearchProps> = ({
             Latest Lottery Results
           </p>
           <p className="text-xs sm:text-sm text-slate-600 max-w-xl mx-auto pt-1 font-medium">
-            Daily winning numbers published directly from official State Government Gazettes across India.
+            Daily winning numbers cross-checked with official State Government Gazettes across India.
           </p>
         </div>
 

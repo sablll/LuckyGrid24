@@ -29,6 +29,28 @@ export const DisclaimerPage: React.FC = () => {
         </p>
       </div>
 
+      {/* Mandatory Independent Disclaimer Card */}
+      <div className="bg-white border-2 border-blue-600 rounded-lg p-6 space-y-4 shadow-sm">
+        <div className="flex items-center gap-2 text-blue-900 font-black text-base uppercase">
+          <Info className="w-5 h-5 text-blue-600" />
+          Independent Information Portal Notice
+        </div>
+        <div className="text-xs sm:text-sm text-slate-700 leading-relaxed space-y-3 font-medium">
+          <p className="font-bold text-slate-900">
+            My India Lottery is an independent lottery results information website. We are not affiliated with, operated by, or endorsed by any Indian state government or lottery department.
+          </p>
+          <p>
+            We provide lottery results, draw information, winning numbers, and historical archives for informational purposes. Results are collected and cross-checked against publicly available official government lottery sources.
+          </p>
+          <p>
+            My India Lottery does not sell lottery tickets, process lottery payments, or operate any lottery scheme.
+          </p>
+          <p className="font-semibold text-blue-950">
+            For official confirmation, users should always verify lottery results with the relevant state government's official lottery department or gazette.
+          </p>
+        </div>
+      </div>
+
       {/* Alert Banner */}
       <div className="bg-blue-50 border-2 border-blue-600 rounded-lg p-6 space-y-3 shadow-xs">
         <div className="flex items-center gap-2 text-blue-900 font-black text-base uppercase">
@@ -36,7 +58,7 @@ export const DisclaimerPage: React.FC = () => {
           Mandatory Verification with Official Gazette
         </div>
         <p className="text-xs sm:text-sm text-slate-800 leading-relaxed font-medium">
-          While utmost care is taken to ensure accuracy by parsing authorized state directorate records, <strong>My India Lottery is not responsible for any inadvertent error, typo, or omission</strong> that may have crept into the results published on this website. <strong>Winners are strongly advised to verify their numbers with the official State Government Gazette before surrendering tickets or making prize claims.</strong>
+          While utmost care is taken to ensure accuracy by parsing publicly available official records, <strong>My India Lottery is not responsible for any inadvertent error, typo, or omission</strong> that may have crept into the results published on this website. <strong>Winners are strongly advised to verify their numbers with the official State Government Gazette before surrendering tickets or making prize claims.</strong>
         </p>
       </div>
 
@@ -68,10 +90,10 @@ export const DisclaimerPage: React.FC = () => {
         <div className="bg-white border-2 border-slate-200 rounded-lg p-6 space-y-2 shadow-xs">
           <h2 className="text-base font-black text-blue-900 uppercase flex items-center gap-2">
             <Info className="w-4 h-4 text-blue-600" />
-            3. Non-Affiliation and No Commercial Activity
+            3. Non-Affiliation and Independent Operations
           </h2>
           <p className="text-slate-600 leading-relaxed font-medium">
-            My India Lottery is an independent archival and news portal. We are NOT affiliated with, authorized by, or an agent of any State Lottery Department. We DO NOT sell tickets, accept money, process wagers, or run syndicates.
+            My India Lottery is an independent lottery results information website. We are not affiliated with, operated by, or endorsed by any Indian state government or lottery department. My India Lottery does not sell lottery tickets, process lottery payments, or operate any lottery scheme.
           </p>
         </div>
 

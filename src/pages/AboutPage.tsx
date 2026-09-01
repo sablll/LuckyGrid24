@@ -30,6 +30,22 @@ export const AboutPage: React.FC = () => {
         </p>
       </div>
 
+      {/* Mandatory Disclaimer Statement */}
+      <div className="bg-slate-50 border-2 border-slate-300 rounded-lg p-6 space-y-3 text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
+        <p className="font-bold text-slate-900">
+          My India Lottery is an independent lottery results information website. We are not affiliated with, operated by, or endorsed by any Indian state government or lottery department.
+        </p>
+        <p>
+          We provide lottery results, draw information, winning numbers, and historical archives for informational purposes. Results are collected and cross-checked against publicly available official government lottery sources.
+        </p>
+        <p>
+          My India Lottery does not sell lottery tickets, process lottery payments, or operate any lottery scheme.
+        </p>
+        <p className="font-semibold text-blue-950">
+          For official confirmation, users should always verify lottery results with the relevant state government's official lottery department or gazette.
+        </p>
+      </div>
+
       {/* Zero Fabrication Integrity Pledge */}
       <div className="bg-white border-2 border-blue-600 rounded-lg p-6 sm:p-8 space-y-4 shadow-sm">
         <div className="flex items-center gap-2 text-blue-900 font-black text-lg uppercase">

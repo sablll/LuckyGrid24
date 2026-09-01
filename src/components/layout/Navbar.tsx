@@ -43,10 +43,10 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath, onNavigate, onOpenS
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
           <div className="flex items-center gap-2 font-medium">
             <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span>Official Government Lottery Results Portal &bull; Daily Draw Updates</span>
+            <span>Independent Lottery Results Portal &bull; Daily Draw Updates</span>
           </div>
           <div className="hidden sm:flex items-center gap-3 text-[11px] text-blue-100 font-medium">
-            <span>100% Verified Official Sources</span>
+            <span>Results Cross-Checked With Official Sources</span>
             <span>&bull;</span>
             <span>The Lotteries (Regulation) Act, 1998</span>
           </div>

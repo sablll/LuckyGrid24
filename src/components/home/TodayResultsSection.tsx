@@ -51,7 +51,7 @@ export const TodayResultsSection: React.FC<TodayResultsSectionProps> = ({
             </h2>
           </div>
           <p className="text-xs sm:text-sm text-slate-600 mt-1 font-semibold">
-            Official winning numbers updated live as soon as gazettes are declared.
+            Winning numbers updated live as cross-checked with gazette publications.
           </p>
         </div>
 
