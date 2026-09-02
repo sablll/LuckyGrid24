@@ -20,8 +20,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               Legal Age 18+ Only. Governed by The Lotteries (Regulation) Act, 1998.
             </p>
           </div>
-          <div className="text-xs text-blue-900 font-extrabold uppercase">
-            Informational Results Portal &bull; No Ticket Sales
+          <div className="text-xs text-blue-900 font-extrabold uppercase tracking-wide">
+            Independent informational website &bull; Not affiliated with any government lottery department &bull; No ticket sales
           </div>
         </div>
       </div>
@@ -40,7 +40,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               </span>
             </div>
             <p className="text-slate-600 text-xs font-semibold leading-relaxed">
-              Independent Lottery Results Portal. Providing fast, cross-checked winning numbers, gazette PDF images, and archival lookup for legal Indian state lotteries.
+              My India Lottery is an independent informational website providing lottery results, draw information, archives, and result references collected and cross-checked from publicly available official sources. We are not a government website, lottery operator, ticket seller, or government-authorized lottery agent.
             </p>
           </div>
 

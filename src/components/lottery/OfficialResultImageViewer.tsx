@@ -146,11 +146,11 @@ export const OfficialResultImageViewer: React.FC<OfficialResultImageViewerProps>
           <div className="flex items-center gap-2">
             <FileImage className="w-6 h-6 text-blue-600" />
             <h2 className="text-xl sm:text-2xl font-black text-blue-900 tracking-tight">
-              Official Result Gazette Image
+              Draw Result &amp; Gazette Reference Image
             </h2>
           </div>
           <p className="text-xs sm:text-sm text-slate-600 mt-1 font-medium">
-            Official scanned government gazette published by {result.stateName} State Lottery for{' '}
+            Gazette reference sheet published by {result.stateName} State Lottery for{' '}
             <span className="font-bold text-slate-900">{result.lotteryName}</span> (Draw #{result.drawNumber}) on{' '}
             <span className="font-bold text-slate-900 font-mono-code">{result.drawDate}</span>.
           </p>

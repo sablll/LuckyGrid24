@@ -1,6 +1,6 @@
 {
   "name": "My India Lottery",
-  "description": "Lottery Result Today | Lottery Sambad | Indian State Lottery Results - Live draw announcements, state schemes, and verified winning numbers for authorized Indian state lotteries.",
+  "description": "Independent India lottery results, draw information and archives with references to official sources.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

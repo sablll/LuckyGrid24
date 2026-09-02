@@ -52,18 +52,18 @@ export const LotteryDetailPage: React.FC<LotteryDetailPageProps> = ({
       .finally(() => setLoading(false));
   }, [drawId]);
 
-  if (loading) return <LoadingState message="Loading official draw gazette details..." />;
+  if (loading) return <LoadingState message="Loading draw results & gazette references..." />;
   if (error || !result) return <ErrorState message={error || 'Lottery draw not found.'} onRetry={onBack} />;
 
   const canonicalStatePath = getStateCanonicalPath(result.stateCode);
 
-  // JSON-LD Structured Data Schema for this Draw
+  // JSON-LD Structured Data Schema for this Draw (Truthful Organization and BreadcrumbList only)
   const jsonLdData = [
     {
       '@context': 'https://schema.org',
       '@type': 'NewsArticle',
       'headline': `${result.lotteryName} Result Today (${result.drawDate}) - Draw ${result.drawNumber}`,
-      'description': `Official winning numbers for ${result.lotteryName} held on ${result.drawDate} at ${result.drawTime}. First prize ${result.firstPrize.amountFormatted} won by ${result.firstPrize.winningTicket}.`,
+      'description': `Winning numbers for ${result.lotteryName} held on ${result.drawDate} at ${result.drawTime}. First prize ${result.firstPrize.amountFormatted} won by ${result.firstPrize.winningTicket}.`,
       'datePublished': result.publishedTime,
       'dateModified': result.lastUpdatedTime,
       'publisher': {
@@ -71,12 +71,7 @@ export const LotteryDetailPage: React.FC<LotteryDetailPageProps> = ({
         'name': 'My India Lottery',
         'url': 'https://myindialottery.online'
       },
-      'mainEntityOfPage': `https://myindialottery.online/results/${result.id}`,
-      'about': {
-        '@type': 'GovernmentOrganization',
-        'name': result.officialSource.directorateName,
-        'description': result.officialSource.sourceName
-      }
+      'mainEntityOfPage': `https://myindialottery.online/results/${result.id}`
     },
     buildBreadcrumbSchema([
       { name: 'Home', url: '/' },
@@ -167,9 +162,9 @@ export const LotteryDetailPage: React.FC<LotteryDetailPageProps> = ({
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="inline-flex items-center gap-1 text-xs text-emerald-800 font-bold bg-emerald-50 px-3 py-1 rounded border border-emerald-300">
-              <ShieldCheck className="w-4 h-4 text-emerald-600" />
-              Verified Official Gazette
+            <span className="inline-flex items-center gap-1 text-xs text-blue-900 font-bold bg-blue-50 px-3 py-1 rounded border border-blue-200">
+              <ShieldCheck className="w-4 h-4 text-blue-600" />
+              Cross-Checked With Gazette
             </span>
           </div>
         </div>
@@ -320,12 +315,22 @@ export const LotteryDetailPage: React.FC<LotteryDetailPageProps> = ({
       <div className="bg-white border-2 border-slate-200 rounded-lg p-6 space-y-4 shadow-xs">
         <div className="flex items-center gap-2 text-xs font-black text-blue-900 uppercase tracking-wider">
           <FileCheck2 className="w-4 h-4 text-blue-600" />
-          Official Gazette &amp; Verification Audit Trail
+          Draw Source &amp; Verification Reference
+        </div>
+
+        {/* Mandatory Independent Result Notice */}
+        <div className="bg-slate-50 border border-slate-300 rounded-md p-3 text-xs text-slate-700 leading-relaxed font-medium space-y-1">
+          <p className="font-bold text-slate-900">
+            Source/reference: Official lottery source ({result.officialSource.sourceName} / {result.officialSource.directorateName})
+          </p>
+          <p>
+            This website independently publishes this information for reference. Verify important results with the relevant official source.
+          </p>
         </div>
 
         <div className="grid sm:grid-cols-2 gap-4 text-xs text-slate-700 bg-slate-50 p-4 rounded-lg border border-slate-200 font-semibold">
           <div>
-            <div className="text-slate-500 text-[11px]">Official Source Authority:</div>
+            <div className="text-slate-500 text-[11px]">Source Reference Authority:</div>
             <div className="font-bold text-slate-900 mt-0.5">{result.officialSource.sourceName}</div>
           </div>
           <div>
@@ -335,7 +340,7 @@ export const LotteryDetailPage: React.FC<LotteryDetailPageProps> = ({
           <div>
             <div className="text-slate-500 text-[11px]">Gazette Notification Ref:</div>
             <div className="text-slate-900 mt-0.5 font-bold">
-              {result.officialSource.gazetteNotificationNo || 'Direct Government Gazette'}
+              {result.officialSource.gazetteNotificationNo || 'Direct State Gazette'}
             </div>
           </div>
           <div>

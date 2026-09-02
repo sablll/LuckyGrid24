@@ -33,20 +33,17 @@ export const DisclaimerPage: React.FC = () => {
       <div className="bg-white border-2 border-blue-600 rounded-lg p-6 space-y-4 shadow-sm">
         <div className="flex items-center gap-2 text-blue-900 font-black text-base uppercase">
           <Info className="w-5 h-5 text-blue-600" />
-          Independent Information Portal Notice
+          Statutory Non-Affiliation &amp; Independent Disclaimer
         </div>
         <div className="text-xs sm:text-sm text-slate-700 leading-relaxed space-y-3 font-medium">
-          <p className="font-bold text-slate-900">
-            My India Lottery is an independent lottery results information website. We are not affiliated with, operated by, or endorsed by any Indian state government or lottery department.
+          <p className="font-bold text-slate-900 text-sm">
+            My India Lottery is an independent informational website. It is not owned, operated, sponsored, endorsed, or officially affiliated with any Indian state government, government lottery department, or lottery operator. We do not sell lottery tickets, process lottery payments, or guarantee lottery winnings. Lottery information is provided for informational and reference purposes only. Users should verify results with the relevant official source.
           </p>
           <p>
-            We provide lottery results, draw information, winning numbers, and historical archives for informational purposes. Results are collected and cross-checked against publicly available official government lottery sources.
-          </p>
-          <p>
-            My India Lottery does not sell lottery tickets, process lottery payments, or operate any lottery scheme.
+            My India Lottery is an independent informational website providing lottery results, draw information, archives, and result references collected and cross-checked from publicly available official sources. We are not a government website, lottery operator, ticket seller, or government-authorized lottery agent.
           </p>
           <p className="font-semibold text-blue-950">
-            For official confirmation, users should always verify lottery results with the relevant state government's official lottery department or gazette.
+            For official confirmation, winners and participants should always verify their ticket numbers with the official State Government Gazette published by the respective Directorate of State Lotteries before surrendering physical tickets.
           </p>
         </div>
       </div>
